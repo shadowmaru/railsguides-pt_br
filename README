@@ -1,1 +1,6 @@
-Bem, quem for traduzir, basta copiar o arquivo que fica dentro de guide/source/ traduz e modifica o nome do arquivo colocando a terminação *_pt_br.txt e por dentro da pasta guide/source/pt_BR/
+Bem, quem quiser ajudar a traduzir, basta clonar o projeto e da um pull request.
+
+Estamos os arquivos da tradução.
+
+E como é está patronização:
+	Basta copiar o arquivo que fica dentro de guide/source/ modificar o nome do arquivo deixando em portugues e colocando dentro da pasta guide/source/pt-BR/
