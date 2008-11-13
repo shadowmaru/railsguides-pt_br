@@ -9,5 +9,5 @@ Como o próprio projeto original do Rails Guides ainda está em andamento e muit
 
 O projeto está hospedado no [Light House][light_url], você pode ir até lá, criar uma conta caso você ainda não tenha, escolher um dos tickets abertos e deixar um comentário dizendo que você quer traduzir o respectivo guia. Deixe seus dados para contato.
 
-[light_url]: http://lighthouseapp.com/
+[light_url]: http://railsguides-pt_br.lighthouseapp.com/dashboard
 [railsguides_url]: http://guides.rubyonrails.org/
