@@ -1,0 +1,108 @@
+== Executando migrações ==
+
+Rails fornece um conjunto de tarefas rake para trabalhar com as migrações, que se resume em rodar alguns conjuntos de migrações. A tarefa rake mais relatada que você provavelmente usará é `db:migrate`. Na sua forma mais básica certamente rodará o método `up` para todas as migrações que ainda não foram rodadas. Se não existir migrações ele sai.
+
+Se você especificar uma migração, o Active Record irá rodar as migrações requeridas (up ou down) até que ela tenha chegado nessa versão específica. A versão é o prefixo numérico do nome de uma migração. Por exemplo para migrar até a versão 20080906120000 execute
+
+------------------------------------
+rake db:migrate VERSION=20080906120000
+------------------------------------
+
+Se a versão for maior do que a versão corrente (ou seja, está migrando para cima) irá rodar o método `up` de em todas as migrações acima e incluindo a versão 20080906120000, se a migração for para baixo, então será executado os métodos `down` de todas as migrações para baixo até, mas não incluindo, 20080906120000.
+
+=== Reversão ===
+
+Uma tarefa comum é regressar a última migração, por exemplo, se você cometeu um engano e deseja corrigi-lo. Ao invés de monitorar o método down com a migração anterior, você pode rodar
+
+------------------
+rake db:rollback
+------------------
+
+Isso irá rodar o método `down` da migração mais recente. Se você precisa se desfazer de várias migrações, você pode fornecer o parâmetro `STEP`:
+
+------------------
+rake db:rollback STEP=3
+------------------
+
+irá rodar o método `down` das 3 últimas migrações.
+
+A tarefa `db:migrate:redo` é um atalho para fazer uma reversão e a migração de volta. Assim como na tarefa `db:rollback` você pode usar o parâmetro `STEP` se você precisar voltar em mais de uma versão, por exemplo
+
+------------------
+rake db:migrate:redo STEP=3
+------------------
+
+Nenhuma dessas tarefas Rake fazem qualquer coisa que você não poderia fazer com `db:migrate`, são simplesmente mais convenientes, desde que você não precise explicitamente especificar a versão de uma migração para outra.
+
+Finalmente, a tarefa `db:reset` irá destruir sua base de dados, recria-la e carregar o schema atual dentro dela.
+
+NOTE: Isto não é o mesmo que você rodar todas as migrações - veja a seção em <<schema,schema.rb>>.
+
+=== Especificando uma migração ===
+
+Se você precisa especificar uma migração para cima ou para baixo, as tarefas `db:migrate:up` e `db:migrate:down` irão fazer isso. Basta especificar a versão apropriada e a migração correspondente e terá seu método `up` ou `down` invocado, por exemplo
+
+------------------
+rake db:migrate:up VERSION=20080906120000
+------------------
+
+irá rodar o método `up` da migração 20080906120000. Estas tarefas checa se a migração já tenha sido executada, se por exemplo `db:migrate:up VERSION=20080906120000` não irá fazer nada se o Active Record acreditar que 20080906120000 já tenha sido executada.
+
+=== Sendo comunicativo ===
+
+Por padrão, as migrações falam exatamente o que elas estão fazendo e o tempo de duração. Uma migração criando uma tabela e adicionando um index produz uma saída como esta
+
+-------------------------
+== 20080906170109 CreateProducts: migrating ===================================
+-- create_table(:products)
+   -> 0.0021s
+-- add_index(:products, :name)
+   -> 0.0026s
+== 20080906170109 CreateProducts: migrated (0.0059s) ==========================
+-------------------------
+Vários método fornecem para você o controle tudo isto:
+
+* `suppress_messages` suprime qualquer mensagem gerada pelo bloco
+* `say` saída de texto (o segundo argumento controle se é recortado ou não)
+* `say_with_time` saída de texto com o tempo utilizado pelos blocos. Se o bloco retornar um inteiro, assume-se que este é o número de linhas afetadas.
+
+For example, esta migração
+
+[source, ruby]
+----------------------
+class CreateProducts < ActiveRecord::Migration
+  def self.up
+    suppress_messages do
+      create_table :products do |t|
+        t.string :name
+        t.text :description
+        t.timestamps
+      end
+    end
+    say "Created a table"
+    suppress_messages {add_index :products, :name}
+    say "and an index!", true
+    say_with_time 'Waiting for a while' do
+      sleep 10
+      250
+    end
+  end
+
+  def self.down
+    drop_table :products
+  end
+end
+----------------------
+
+gerará a seguinte saída
+----------------------
+== 20080906170109 CreateProducts: migrating ===================================
+-- Created a table
+   -> and an index!
+-- Waiting for a while
+   -> 10.0001s
+   -> 250 rows
+== 20080906170109 CreateProducts: migrated (10.0097s) =========================
+----------------------
+
+Se você quiser que o Active Record mantenha-se em silêncio, então execute `rake db:migrate VERBOSE=false` e irá suprimir qualquer saída.

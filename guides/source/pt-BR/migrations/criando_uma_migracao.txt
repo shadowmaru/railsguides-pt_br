@@ -1,0 +1,104 @@
+== Criando uma migração ==
+
+=== Criando um modelo ===
+
+Um Modelo e os geradores de scaffold criará migrações apropriadas para criação de um novo Modelo. Esta migração contém instruções prontas para criação de uma tabela relevante. Se você mostrar pro Rails as colunas que você precisa então as declarações já estarão criadas. Por exemplo, rodando `ruby script/generate model Product name:string description:text` gerará uma migração como esta
+
+[source, ruby]
+-----------------------
+class CreateProducts < ActiveRecord::Migration
+  def self.up
+    create_table :products do |t|
+      t.string :name
+      t.text :description
+
+      t.timestamps
+    end
+  end
+
+  def self.down
+    drop_table :products
+  end
+end
+-----------------------
+
+Você pode adicionar quantos nomes/tipo de colunas como você deseja. Por padrão `t.timestamps` (Que criam as colunas `updated_at` e `created_at` que serão populadas automáticamentes pelo Active Record) podem ser adicionadas por você.
+
+=== Criando uma migração autônoma ===
+Se você criar uma migração para outros propósitos (Por exemplo para adicionar uma coluna em uma tabela já existente) então você pode usar o gerador de migrações:
+
+`ruby script/generate migration AddPartNumberToProducts`
+
+Isto irá criar uma migração vazia mas já apropriada com o nome da migração:
+
+[source, ruby]
+-----------------------
+class AddPartNumberToProducts < ActiveRecord::Migration
+  def self.up
+  end
+
+  def self.down
+  end
+end
+-----------------------
+
+Se o nome da migração é na forma AddXXXtoYYY ou RemoveXXXtoYYY e for seguida de uma lista de nomes de colunas e seus tipos então a migração será criada contendo declarações apropriadas para adicionar e remover colunas.
+
+`ruby script/generate migration AddPartNumberToProducts part_number:string`
+
+Criará
+
+[source, ruby]
+-----------------------
+class AddPartNumberToProducts < ActiveRecord::Migration
+  def self.up
+    add_column :products, :part_number, :string
+  end
+
+  def self.down
+    remove_column :products, :part_number
+  end
+end
+-----------------------
+
+Similarmente,
+
+`ruby script/generate migration RemovePartNumberFromProducts part_number:string`
+
+irá gerar
+
+[source, ruby]
+-----------------------
+class RemovePartNumberFromProducts < ActiveRecord::Migration
+  def self.up
+    remove_column :products, :part_number
+  end
+
+  def self.down
+    add_column :products, :part_number, :string
+  end
+end
+-----------------------
+
+E você não está limitado a gerar magicamente apenas uma coluna, por exemplo
+
+`ruby script/generate migration AddDetailsToProducts part_number:string price:decimal`
+
+irá gerar
+
+[source, ruby]
+-----------------------
+class AddDetailsToProducts < ActiveRecord::Migration
+  def self.up
+    add_column :products, :part_number, :string
+    add_column :products, :price, :decimal
+  end
+
+  def self.down
+    remove_column :products, :price
+    remove_column :products, :part_number
+  end
+end
+-----------------------
+
+E sempre o que foi gerado é apenas um ponto de partida. Você pode adicionar ou remover a partir dele o que você quiser, como você achar melhor.

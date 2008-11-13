@@ -1,0 +1,7 @@
+[[foreign_key]]
+== Active Record e Integridade Referencial ==
+O Active Record é a maneira inteligente de permanecer em seus modelos, não no banco de dados. Alguns recursos como triggers ou constraints de chaves estrangeiras, que empurra alguma inteligência de volta para os banco de dados não são muito usados.
+
+Validações como `validates_uniqueness_of` é uma forma de seus modelos podem valer a integridade dos dados. A opção `:dependent` em associações adiciona aos modelos automaticamente destruir os objetos filhos que seus pais são destruídos. Como tudo que funciona a nível de aplicação, estes não podem garantir integridade referencial e algumas pessoas aumentam com constraints de chaves estrangeiras.
+
+Apesar de o Active Record não fornecer todas as ferramentas para trabalhar diretamente com todos os recursos, o método `execute` pode ser usado para executar SQL arbitrárias. Há também uma série de plugins como http://agilewebdevelopment.com/plugins/search?search=redhillonrails[redhillonrails] que adicionam suporte a chaves estrangeiras para o Active Record (incluindo suporte para destruir chaves estrangeiras no `schema.rb`)

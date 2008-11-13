@@ -1,0 +1,45 @@
+== Armazenando esquemas e você ==
+[[schema]]
+=== Quais são os arquivos do esquema? ===
+Migrações, poderosas como são, não são fontes autorizada para o esquema do seu banco de dados. Esse papel cabe ao `schema.rb` ou ao um arquivo SQL gerado pelo Active Record através da análise do banco de dados. Este arquivo não foi projetado para ser editado, ele é uma representação do estado atual do banco de dados.
+
+Não é necessário (e isto é um erro propenso) para implantar uma nova instancia de uma aplicação repetindo o histórico inteiro da migração. É mais simples e rápido apenas carregar dentro do banco de dados a descrição do esquema atual.
+
+Por exemplo, esta é a forma de como o banco de dados de testes é criado: o banco de dados atual de desenvolvimento é excluído (tanto para o `schema.rb` ou para `development.sql`) e então carregado dentro do banco de dados de teste.
+
+Arquivos de esquema também são uteis se deseja olhar rapidamente quais atributos o objeto do Active Record possui. Estas informações não está no código do modelo e frequentemente está espalhado pelas várias migrations mas está resumido no arquivo de esquema. O plugin http://agilewebdevelopment.com/plugins/annotate_models[annotate_models], adiciona automaticamente cada (e atualiza) os comentários no início de cada model resumindo o esquema, que pode ser de seu interesse.
+
+=== Formas de armazenar o esquema === 
+Existe duas formas de armazenar o esquema. Uma é setar em `config/environment.rb` atribuindo o `config.active_record.schema_format`, que pode ser `:sql` ou `:ruby`.
+
+Se `:ruby` é selecionada então o esquema será armazenado em `db/schema.rb`. Se você olhar este arquivo você verá que não encontrará um pouco mais do que uma grande migração:
+
+[source, ruby]
+--------------------------------------
+ActiveRecord::Schema.define(:version => 20080906171750) do
+  create_table "authors", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "products", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "part_number"
+  end
+end
+--------------------------------------
+De muitas formas é exatamente isso. Este arquivo é criado pela examinação do banco de dados e expressado em estruturas usando `create_table`, `add_index` e assim por diante. Por causa da independência do banco de dados ele deve carregar dentro de qualquer banco de dados que o Active Record suporta. Isso poderia ser muito útil se você quiser distribuir a aplicação para rodar em vários banco de dados.
+
+Existe porém uma desvantagem: `schema.rb` não expressa itens específicos de banco de dados como constraints de chaves estrangeiras, triggers ou stored procedures. Enquanto na migração você pode executar SQL customizadas, o esquema armazenado não pode reconstituir essas atribuições do banco de dados. Se você usar recursos como este, então você deve atribuir o esquema para `:sql`.
+
+Em vez de usar o esquema de armazenamento do Active Record a estrutura será armazenada usando uma ferramenta específica do banco de dados (pela tarefa rake `db:structure:dump`) dentro de `db/#\{RAILS_ENV\}_structure.sql`. Por exemplo para o PostgreSQL a utilidade `pg_dump` é usada e para o MySQL este arquivo irá conter a saída de SHOW CREATE TABLE para as várias tabelas. Carregando este esquema é uma simples questão de executar as declarações SQL contida dentro.
+
+Por definição irá fazer uma copia perfeita da estrutura do banco de dados mas isso vai impedir o carregamento do esquema dentro de outros banco de dados que não seja um dos utilizados para criá-lo. 
+
+=== Armazenamento de esquema e controle de código ===
+
+Por causa da autoridade do código do seu esquema de banco de dados, é altamente recomendado que você verifique dentro de seu controle de código.

@@ -1,0 +1,158 @@
+== Escrevendo uma migração ==
+
+Uma vez que você criou uma migração usando um dos geradores, é a hora de trabalhar!
+
+=== Criando uma tabela ===
+
+`create_table` será um dos métodos mais usados. Tipicamente pode ser usado assim
+
+[source, ruby]
+---------------------
+create_table :products do |t|
+  t.string :name
+end
+---------------------
+criará uma tabela `products` com uma coluna chamada `name` (e como discutido anteriormente, implicitamente criará uma coluna `id`).
+
+O objeto "renderizado" (yielded) no bloco permite você criar colunas na tabela. Existe duas formas de se fazer isso. A primeira é algo assim
+
+[source, ruby]
+---------------------
+create_table :products do |t|
+  t.column :name, :string, :null => false
+end
+---------------------
+
+a segunda forma, que é chamada de migração "sexy", elimina a redundância dos métodos. Em vez de `string`, `integer`, etc os métodos são criados a partir do tipo da coluna, onde os parâmetros subseqüentes são idênticos.
+
+[source, ruby]
+---------------------
+create_table :products do |t|
+  t.string :name, :null => false
+end
+---------------------
+
+Por padrão `create_table` criará uma chave primária chamada `id`. Você pode alterar o nome da chave primária com a opção `:primary_key` (Não esqueça de atualizar o modelo correspondente) ou se você não precisar de uma chave primária (por exemplo HABTM (has and belongs to many) join table) você pode passar `:id ⇒ false`. Se você precisa passar alguma informação específica, você pode passar um fragmento SQL na opção `:options`. Por exemplo:
+
+[source, ruby]
+---------------------
+create_table :products, :options => "ENGINE=BLACKHOLE" do |t|
+  t.string :name, :null => false
+end
+---------------------
+Irá anexar `ENGINE=BLACKHOLE` na sql usada para criar a tabela (Quando se usa MySQL por padrão é usado "ENGINE=InnoDB".
+
+Os tipos que o Active Record suporta são `:primary_key`, `:string`, `:text`, `:integer`, `:float`, `:decimal`, `:datetime`, `:timestamp`, `:time`, `:date`, `:binary`, `:boolean`.
+
+Eles vão ser mapeados apropriadamente para cada banco de dados, por exemplo com MySQL `:string` é mapeada para `VARCHAR(255)`. Você pode criar colunas e tipos não suportados pelo Active Record usando uma sintaxe não sexy, por exemplo:
+
+[source, ruby]
+---------------------
+create_table :products do |t|
+  t.column :name, 'polygon', :null => false
+end
+---------------------
+Desta forma, no entanto, dificulta a portabilidade para outros banco de dados.
+
+=== Mudando tabelas ===
+
+O primo mais próximo de `create_table` é `change_table`. Usado para alterar tabelas existentes, é similarmente usada como o `create_table` mas o objeto "rendenrizado" (yielded) para o bloco conhece mais truques. Por exemplo
+
+[source, ruby]
+---------------------
+change_table :products do |t|
+  t.remove :description, :name
+  t.string :part_number
+  t.index :part_number
+  t.rename :upccode, :upc_code
+end
+---------------------
+remove a coluna `description` e `name`, adiciona a coluna `part_number` e adiciona um index nesta mesma coluna. E por ultimo altera o nome da coluna `upccode`. É o mesmo que fazer
+
+[source, ruby]
+---------------------
+remove_column :products, :description
+remove_column :products, :name
+add_column :products, :part_number, :string
+add_index :products, :part_number
+rename_column :products, :upccode, :upc_code
+---------------------
+
+Você não deve manter repetindo o nome da tabela e de todos os grupos de declarações relatados para modificar uma tabela em particular. Em uma transformação individual os nomes são curtos, por exemplo `remove_column` torna-se `remove` e `add_index` torna-se `index`.
+
+=== Helpers especiais ===
+
+O Active Record fornece alguns atalhos para as funcionalidades mais comuns. Por exemplo, é muito comum adicionar as colunas `created_at` e `updated_at` e o método que faz exatamente isso é:
+
+[source, ruby]
+---------------------
+create_table :products do |t|
+  t.timestamps
+end
+---------------------
+Criará uma tabela products com essas duas colunas
+
+[source, ruby]
+---------------------
+change_table :products do |t|
+  t.timestamps
+end
+---------------------
+Adiciona essas duas colunas a uma tabela existente.
+
+Outro helper é chamado de `references` (Também disponível como `belongs_to`). Na sua forma mais simples adiciona alguma habilidade de reutilização.
+
+[source, ruby]
+---------------------
+create_table :products do |t|
+  t.references :category
+end
+---------------------
+
+então criará a coluna `category_id` com o tipo apropriado. Note que você deve passar o nome do modelo e não da coluna. O Active Record adicionará o sufixo `_id` para você. Se você tiver uma associação belongs_to polimórfica então `references` irá adicionar as colunas referidas:
+
+[source, ruby]
+---------------------
+create_table :products do |t|
+  t.references :attachment, :polymorphic => {:default => 'Photo'}
+end
+---------------------
+irá adicionar a coluna `attachment_id` e a coluna `attachment_type` com o valor padrão 'Photo'.
+
+NOTE: O heler `references` atualmente não cria uma constraints de chave estrangeira para você. Você precisará usar `execute` para executar ou um plugin para adicionar <<foreign_key,suporte a chave estrangeira>>.
+
+Se os helpers fornecidos pelo Active Record não for suficiente, você pode utilizar a função `execute` para executar SQL arbitrárias.
+
+Para mais detalhes e exemplos de métodos individuais dê uma olhada na documentação da API, em particular a documentação para http://api.rubyonrails.com/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html[ActiveRecord::ConnectionAdapters::SchemaStatements] (na qual fornece os métodos disponíveis nos métodos `up` e `down`), http://api.rubyonrails.com/classes/ActiveRecord/ConnectionAdapters/TableDefinition.html[ActiveRecord::ConnectionAdapters::TableDefinition] (na qual fornece os métodos disponíveis para o objeto "rendenrizado" (yielded) por `create_table`) e o http://api.rubyonrails.com/classes/ActiveRecord/ConnectionAdapters/Table.html[ActiveRecord::ConnectionAdapters::Table] (na qual fornece os métodos disponíveis para o objeto "rendenrizado" (yielded) por `change_table`).
+
+=== Escrevendo seu método down ===
+
+O método `down` da sua migração deve reverter as transformações concluídas pelo método `up`. Em outras palavras, o banco de dados deve se manter inalterado se você fizer um `up` seguido de um `down`. Por exemplo, se você criar uma tabela no método up você deverá excluí-la no método `down`. Deve ser sábio e precisamente inverso ao método `up`. Por exemplo
+
+[source, ruby]
+---------------------
+class ExampleMigration < ActiveRecord::Migration
+
+  def self.up
+    create_table :products do |t|
+      t.references :category
+    end
+    #add a foreign key
+    execute "ALTER TABLE products ADD CONSTRAINT fk_products_categories FOREIGN KEY (category_id) REFERENCES categories(id)"
+    
+    add_column :users, :home_page_url, :string
+    
+    rename_column :users, :email, :email_address
+  end
+  
+  def self.down
+    rename_column :users, :email_address, :email
+    remove_column :users, :home_page_url
+    execute "ALTER TABLE products DROP FOREIGN KEY fk_products_categories"
+    drop_table :products
+  end
+end
+---------------------
+Algmas vezes a sua migração pode fazer algumas coisas irreversíveis, por exemplo quando você destrói alguns dados. Em casos como esse onde você não pode reverter uma migração, você pode lançar IrreversibleMigration para o seu método `down`. Se alguém tentar reverter a sua migração uma mensagem será mostrada falando que ela não será completa.
+displayed saying that it can't be done.
+

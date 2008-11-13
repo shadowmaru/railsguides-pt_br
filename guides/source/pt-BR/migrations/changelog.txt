@@ -1,0 +1,7 @@
+== Changelog ==
+
+http://rails.lighthouseapp.com/projects/16213-rails-guides/tickets/6[Lighthouse ticket]
+
+* 14 de Setembro de 2008: versão inical por link:../authors.html#fcheung[Frederick Cheung]
+
+* 10 de Novembro de 2008: tradução por http://www.caironoleto.com[Cairo Noleto]

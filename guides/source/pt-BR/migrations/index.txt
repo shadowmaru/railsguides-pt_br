@@ -1,0 +1,22 @@
+Migrações
+==========
+
+Migrações é a forma conveniente de você alterar seu banco de dados de uma maneira organizada e estruturada. Você poderia editar fragmentos de SQL na mão mas você teria a responsabilidade de comunicar aos outros desenvolvedores que eles precisam ir lá e executá-los. Você também necessita acompanhar as mudanças na máquina de produção na próxima vez que você for fazer deploy. O Active Record marca as migrações que já foram executadas e tudo que você precisa fazer é atualizar seu código e rodar `rake db:migrate`. O Active Record irá trabalhar para que suas migrações sejam executadas.
+
+Migrações é a forma de você descrever essas transformações usando Ruby. A grande coisa disso tudo (como muito das funcionalidades do Active Record) é a independência do banco de dados: você não precisa se preocupar com mais nenhuma sintaxe para CREATE TABLE, ou que você se preocupe sobre variações de SELECT * (você pode abstrair os requisitos específicos de banco de dados SQL). Por exemplo, você poderia usar SQLite 3 no desenvolvimento, mas MySQL em produção.
+
+Você aprenderá tudo sobre migrações incluindo:
+
+* Os geradores que você pode usar para criá-los
+* Os métodos que o Active Record provê para manipular seu banco de dados
+* As tarefas Rake que você pode manipular
+* Como eles são relativo ao `schema.rb`
+
+include::anatomia_de_uma_migracao.txt[]
+include::criando_uma_migracao.txt[]
+include::escrevendo_uma_migracao.txt[]
+include::ao_redor_de_rakeing.txt[]
+include::usando_models_na_migracao.txt[]
+include::scheming.txt[]
+include::chaves_estrangeiras.txt[]
+include::changelog.txt[]

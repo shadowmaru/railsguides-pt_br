@@ -1,0 +1,46 @@
+[[models]]
+== Usando models nas suas migrações ==
+Ao criar ou atualizar dados na sua migração, muitas vezes, é tentador utilizar um de seus models. Afinal eles existem para fornecer acesso fácil nos dados subjacentes. Isto pode ser feito mas um certo cuidado devem ser observados.
+
+Considere por exemplo a migração que usa o modelo Product para atualizar a linha na tabela correspondente. Alice depois atualiza o modelo Product, adicionando uma nova coluna e uma validação. Bob volta do feriado, atualiza o código e roda as migrações pendentes com `rake db:migrate`, incluindo o modelo que é utilizado para o Product. Quando o código é atualizado e só então o modelo Product possui a validação adicionada pela Alice. O banco de dados entretanto não é atualizado e assim não possui a coluna e então gerará um erro, por que a validação para esta coluna ainda não existe.
+
+Frequentemente eu preciso atualizar as linhas no banco de dados sem escrever SQL pelas minhas mãos. Eu não estou usando qualquer especialidade do modelo. Um padrão para isso é definir uma cópia do modelo dentro da própria migração, por exemplo
+
+[source, ruby]
+-------------------------
+class AddPartNumberToProducts < ActiveRecord::Migration
+  class Product < ActiveRecord::Base
+  end
+  
+  def self.up
+    ...
+  end
+
+  def self.down
+    ...
+  end
+end
+-------------------------
+A migração possuirá uma própria copia mínima do modelo Product e não mais precisará saber sobre o modelo Product definido na própria aplicação.
+
+=== Lidando com mudanças nos modelos ===
+
+Por razões de performance, as informações sobre as colunas de um modelo são cacheadas. Por exemplo, se você adicionar a coluna na tabela e tentar usar o modelo correspondente para inserir uma nova linha, ele pode tentar usar as informações antigas. Você pode forçar o Active Record para reler a informação da coluna com o método `reset_column_information`, por exemplo
+
+[source, ruby]
+-------------------------
+class AddPartNumberToProducts < ActiveRecord::Migration
+  class Product < ActiveRecord::Base
+  end
+  
+  def self.up
+    add_column :product, :part_number, :string
+    Product.reset_column_information
+    ...
+  end
+
+  def self.down
+    ...
+  end
+end
+-------------------------
