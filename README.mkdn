@@ -6,6 +6,6 @@ Este projeto é para a tradução dos artigos do Rails Guides.
 
 ## Como colaborar?
 
-Estamos abrindo uma conta no [Light House][light_url] para gerenciar quem está traduzindo o que. Quando estiver pronto, você pode ajudar na tradução.
+O projeto está hospedado no [Light House][light_url], você pode ir até lá, criar uma conta caso voc ainda não tenha, escolher um dos tickets abertos e deixar um comentário dizendo que você quer traduzir o respectivo guia. Deixe seus dados para contato.
 
 [light_url]: http://lighthouseapp.com/
