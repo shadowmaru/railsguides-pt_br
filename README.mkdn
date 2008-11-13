@@ -1,11 +1,13 @@
-# Rails Guides
+# Rails Guides - PT_BR
 
 ## Sobre o projeto
 
-Este projeto é para a tradução dos artigos do Rails Guides.
+Este projeto é para a tradução para Língia Portuguesa dos artigos do [Rails Guides][railsguides_url]. 
+Como o próprio projeto original do Rails Guides ainda está em andamento e muitos dos guias ainda estão sendo escritos/atualizados, somente serão traduzidos os guias que se tornarem "stable". Logo, novos tickets serão abertos no [Light House][light_url] para cada novo guia a ser incluído na tradução.
 
 ## Como colaborar?
 
-O projeto está hospedado no [Light House][light_url], você pode ir até lá, criar uma conta caso voc ainda não tenha, escolher um dos tickets abertos e deixar um comentário dizendo que você quer traduzir o respectivo guia. Deixe seus dados para contato.
+O projeto está hospedado no [Light House][light_url], você pode ir até lá, criar uma conta caso você ainda não tenha, escolher um dos tickets abertos e deixar um comentário dizendo que você quer traduzir o respectivo guia. Deixe seus dados para contato.
 
 [light_url]: http://lighthouseapp.com/
+[railsguides_url]: http://guides.rubyonrails.org/
