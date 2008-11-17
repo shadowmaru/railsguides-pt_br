@@ -24,11 +24,9 @@ GET /patients/17
 
 a engine de roteamento dentro do Rails é a parte do código que dispara uma solicitação para o local apropriado na sua aplicação. Neste caso, a aplicação provavelmente executaria a ação +show+ dentro do controlador +patients+, mostrando os detalhes do paciente cujo ID é 17.
 
-the routing engine within Rails is the piece of code that dispatches the request to the appropriate spot in your application. In this case, the application would most likely end up running the +show+ action within the +patients+ controller, displaying the details of the patient whose ID is 17.
- 
-=== Generating URLs from Code
+=== Gerando URLs do código
 
-Routing also works in reverse. If your application contains this code:
+O roteamento também funciona no caminho reverso. Se sua aplicação contem este código:
 
 [source, ruby]
 -------------------------------------------------------
@@ -36,17 +34,17 @@ Routing also works in reverse. If your application contains this code:
 <%= link_to "Patient Record", patient_path(@patient) %>
 -------------------------------------------------------
 
-Then the routing engine is the piece that translates that to a link to a URL such as +http://example.com/patients/17+. By using routing in this way, you can reduce the brittleness of your application as compared to one with hard-coded URLs, and make your code easier to read and understand.
+Então a engine de roteamento é a parte que traduz o link para a URL como +http://example.com/patients/17+. Usando o roteamento nesta forma, você pode reduzir a fragilidade da sua aplicação se comparada com uma aplicação com URLs codificada dificilmente, e torna o seu código ser facilmente lido e entendido.
 
-NOTE: Patient needs to be declared as a resource for this style of translation via a named route to be available.
+NOTE: Patient necessita ser declarado como um recurso para a tradução de rotas nomeadas possam ser disponível.
 
-== Quick Tour of Routes.rb
+== Rápido Tour de Routes.rb
 
-There are two components to routing in Rails: the routing engine itself, which is supplied as part of Rails, and the file +config/routes.rb+, which contains the actual routes that will be used by your application. Learning exactly what you can put in +routes.rb+ is the main topic of this guide, but before we dig in let's get a quick overview.
+Há dois componentes para roteamento no Rails: a própria engine de roteameneto, que é fornecida como parte do Rails, e o arquivo +config/routes.rb+, que contém as rotas atuais que serão usadas pela sua aplicação. Aprender exatamente o que você pode colocar em +routes.rb+ é o tópico principal deste guia, mas antes vamos obter uma visão geral rápida.
 
-=== Processing the File
+=== Processando o arquivo
 
-In format, +routes.rb+ is nothing more than one big block sent to +ActionController::Routing::Routes.draw+. Within this block, you can have comments, but it's likely that most of your content will be individual lines of code - each line being a route in your application. You'll find five main types of content in this file:
+No formato, +routes.rb+ não é nada mais do que um grande bloco enviado para +ActionController::Routing::Routes.draw+. Junto com este bloco, você pode ter comentários, mas é provável que a maior parte do seu contéudo será de linhas individuais de código - cada linha iniciando uma rota na sua aplicação. Você encontrará cinco tipos principaos de conteudo neste arquivo:
 
 * RESTful Routes
 * Named Routes
@@ -54,22 +52,22 @@ In format, +routes.rb+ is nothing more than one big block sent to +ActionControl
 * Regular Routes
 * Default Routes
 
-Each of these types of route is covered in more detail later in this guide.
+Cada um desses tipos de rotas é cobertas em mais detalhes neste guia.
 
-The +routes.rb+ file is processed from top to bottom when a request comes in. The request will be dispatched to the first matching route. If there is no matching route, then Rails returns HTTP status 404 to the caller.
+O arquivo +routes.rb+ é processado de cima para baixo quando chega uma requisição.A requisição será executada na primeira combinação de rota. Se não nenhum combinação de rota, então o Rails retorna um status HTTP 404 ao chamador.
 
-=== RESTful Routes
+=== Rotas RESTful
 
-RESTful routes take advantage of the built-in REST orientation of Rails to wrap up a lot of routing information in a single declaration. A RESTful route looks like this:
+Rotas RESTful tiram a vantagem da orientação built-in do REST do Rails para empacotar muitas das informações de roteamento em uma simples declaração. Uma rota RESTful se parece como esta:
 
 [source, ruby]
 -------------------------------------------------------
 map.resources :books
 -------------------------------------------------------
 
-=== Named Routes
+=== Rotas nomeadas
 
-Named routes give you very readable links in your code, as well as handling incoming requests. Here's a typical named route:
+Rotas nomeadas da a você muita links legivéis no seu código, bem como manipulação nas solicitações recebidas. Veja aqui uma típica rota nomeada:
 
 [source, ruby]
 -------------------------------------------------------
