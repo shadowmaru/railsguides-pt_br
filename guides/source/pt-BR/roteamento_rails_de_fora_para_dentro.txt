@@ -74,9 +74,9 @@ Rotas nomeadas da a você muita links legivéis no seu código, bem como manipul
 map.login '/login', :controller => 'sessions', :action => 'new'
 -------------------------------------------------------
 
-=== Nested Routes
+=== Rotas aninhadas
 
-Nested routes let you declare that one resource is contained within another resource. You'll see later on how this translates to URLs and paths in your code. For example, if your application includes parts, each of which belongs to an assembly, you might have this nested route declaration:
+Rotas aninhadas permite você declarar que um recurso está contido dentro de outro recurso. Você verá mais tarde como pode traduzir para URLs e caminhos no seu código. Por exemplo, se sua aplicação incluir parts, cada uma das quais pertence a um assembly, você pode declarar esta rota aninhada como:
 
 [source, ruby]
 -------------------------------------------------------
@@ -85,18 +85,18 @@ map.resources :assemblies do |assemblies|
 end
 -------------------------------------------------------
 
-=== Regular Routes
+=== Rotas regulares
 
-In many applications, you'll also see non-RESTful routing, which explicitly connects the parts of a URL to a particular action. For example,
+Em muitas aplicações, você verá roteamentos não RESTful, que conecta explicitamente cada parte da URL a uma ação em particular. Por exemplo,
 
 [source, ruby]
 -------------------------------------------------------
 map.connect 'parts/:number', :controller => 'inventory', :action => 'show'
 -------------------------------------------------------
 
-=== Default Routes
+=== Rotas padrões
 
-The default routes are a safety net that catch otherwise-unrouted requests. Many Rails applications will contain this pair of default routes:
+As rotas padrões são a forma segura de capturar requisições sem outras formas de rotas. Muitas aplicações Rails contem este par de rotas como padrão:
 
 [source, ruby]
 -------------------------------------------------------
@@ -104,65 +104,66 @@ map.connect ':controller/:action/:id'
 map.connect ':controller/:action/:id.:format'
 -------------------------------------------------------
 
-These default routes are automatically generated when you create a new Rails application. If you're using RESTful routing for everything in your application, you will probably want to remove them. But be sure you're not using the default routes before you remove them!
+Estas rotas padrões são geradas automaticamentes quando você cria uma nova aplicação Rails. Se você está usando roteamento RESTful para tudo na sua aplicação, você provavelmente precisará remove-la. Mas verifique se você não está usando rotas padrões antes de remove-las.
 
-== RESTful Routing: the Rails Default
+== Roteamento RESTful: o Padrão Rails
 
-RESTful routing is the current standard for routing in Rails, and it's the one that you should prefer for new applications. It can take a little while to understand how RESTful routing works, but it's worth the effort; your code will be easier to read and you'll be working with Rails, rather than fighting against it, when you use this style of routing.
+Roteamento RESTful é o padrão corrente para roteamento em Rails, e a única que você deve preferir para novas aplicações. Pode demorar um pouco enquando você entende como funciona o roteamento RESTful, mas que vale o esforço; seu código será mais fácil de ser lido e você estará trabalho com Rails, ao invés de lutar contra ele, quando você usa este estilo de roteamento.
 
-=== What is REST?
+=== O que é REST?
 
-The foundation of RESTful routing is generally considered to be Roy Fielding's doctoral thesis, link:http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm[Architectural Styles and the Design of Network-based Software Architectures]. Fortunately, you need not read this entire document to understand how REST works in Rails. REST, an acronym for Representational State Transfer, boils down to two main principles for our purposes:
+O Fundação do roteamento RESTful é geralmente considerado na tese de doutorado de Roy Fielding, link:http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm[Architectural Styles and the Design of Network-based Software Architectures]. Felizmente, você não precisa ler este documento para entender como o REST funciona no Rails. REST é um acronimo para Representational State Transfer, que resume-se em dois principios fundamentais para nossos propósitos:
 
-* Using resource identifiers (which, for the purposes of discussion, you can think of as URLs) to represent resources
-* Transferring representations of the state of that resource between system components. 
+* Usando um identificador de recurso (na qual, para o propósito da discussão, você pode pensar como as URLs) para representar recursos
+* Transferindo represetações de statos entre recursos e componentes do sistema.
 
-For example, to a Rails application a request such as this:
+Por exemplo, para uma requisição em uma aplicação Rails como esta:
 
 +DELETE /photos/17+
 
-would be understood to refer to a photo resource with the ID of 17, and to indicate a desired action - deleting that resource. REST is a natural style for the architecture of web applications, and Rails makes it even more natural by using conventions to shield you from some of the RESTful complexities.
-  
-=== CRUD, Verbs, and Actions
+seria entendido como uma referencia a um recurso foto com o ID 17, e indicaria a ação desejada - deletar este recurso. REST é um estilo natural para a arquitetura de aplicações web, e Rails faz isso de uma forma mais natural usando convenções para protejer você de algumas complexidades do RESTful.
 
-In Rails, a RESTful route provides a mapping between HTTP verbs, controller actions, and (implicitly) CRUD operations in a database. A single entry in the routing file, such as
+=== CRUD, verbos e ações  
+
+No Rails, uma rota RESTful fornece o mapeamento entre verbos HTTP, ações de controladores, e (implicitamente) a operações CRUD no banco de dados. Uma entrada unica no arquivo de roteamento, como essa
 
 [source, ruby]
 -------------------------------------------------------
 map.resources :photos
 -------------------------------------------------------
 
-creates seven different routes in your application:
+cria sete diferentes rotas na sua aplicação:
 
 [grid="all"]
-`----------`---------------`-----------`--------`-------------------------------------------
+`----------`---------------`-----------`--------`----------------------------------------------------------
 HTTP verb  URL             controller  action   used for
---------------------------------------------------------------------------------------------
-GET        /photos         Photos      index    display a list of all photos
-GET        /photos/new     Photos      new      return an HTML form for creating a new photo
-POST       /photos         Photos      create   create a new photo
-GET        /photos/1       Photos      show     display a specific photo
-GET        /photos/1/edit  Photos      edit     return an HTML form for editing a photo
-PUT        /photos/1       Photos      update   update a specific photo
-DELETE     /photos/1       Photos      destroy  delete a specific photo
---------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------
+GET        /photos         Photos      index    mostra a lista de todas as fotos
+GET        /photos/new     Photos      new      retorna um formulário HTML para a criação de uma nova foto
+POST       /photos         Photos      create   cria uma nova foto
+GET        /photos/1       Photos      show     mostra uma foto específica
+GET        /photos/1/edit  Photos      edit     retorna um formulário HTML para edição da foto
+PUT        /photos/1       Photos      update   atualiza uma foto específica
+DELETE     /photos/1       Photos      destroy  apaga uma foto específica
+-----------------------------------------------------------------------------------------------------------
 
-For the specific routes (those that reference just a single resource), the identifier for the resource will be available within the corresponding controller action as +params[:id]+.
+Para rotas específicas (aqueles que fazem referencia a um uníco recurso), o indetificador do recurso deverá ser disponível na ação correspondente de um controlador como um +params[:id]+.
 
-TIP: If you consistently use RESTful routes in your application, you should disable the default routes in +routes.rb+ so that Rails will enforce the mapping between HTTP verbs and routes.
 
-=== URLs and Paths
+TIP: Se você consistentimente usar rotas RESTful na sua aplicação, você deverá desabilitar as rotas padrões em +routes.rb+ de modo que o Rails aplicará o mapeamento entre verbos HTTP e rotas.
 
-Creating a RESTful route will also make available a pile of helpers within your application:
+=== URLs e Caminhos
 
-* +photos_url+ and +photos_path+ map to the path for the index and create actions
-* +new_photo_url+ and +new_photo_path+ map to the path for the new action
-* +edit_photo_url+ and +edit_photo_path+ map to the path for the edit action
-* +photo_url+ and +photo_path+ map to the path for the show, update, and destroy actions
+Criando uma rota RESTful também tornará disponível um monte de helpers dentro da sua aplicação:
 
-NOTE: Because routing makes use of the HTTP verb as well as the path in the request to dispatch requests, the seven routes generated by a RESTful routing entry only give rise to four pairs of helpers.
+* +photos_url+ e +photos_path+ mapeia do caminho para as ações index e create.
+* +new_photo_url+ e +new_photo_path+ mapeia o caminho para a ação new
+* +edit_photo_url+ e +edit_photo_path+ mapeia o caminho para a ação edit
+* +photo_url+ e +photo_path+ mapeia o caminho para as ações show, update e destroy
 
-In each case, the +_url+ helper generates a string containing the entire URL that the application will understand, while the +_path+ helper generates a string containing the relative path from the root of the application. For example:
+NOTE: Por que o roteamento faz uso de verbos HTTP, bem como o caminho no pedido para expedir requisições, as setes rotas geradas pelo roteamento RESTful só dão origem a quatro pares de helpers.
+
+Em cada caso, o helper +_url+ gera uma string contendo toda a URL que a aplicação irá entender, enquanto o helper +_path+ gera uma string contendo um caminho relativo para a raiz da aplicação. Por exemplo:
 
 [source, ruby]
 -------------------------------------------------------
@@ -170,16 +171,16 @@ photos_url  # => "http://www.example.com/photos"
 photos_path # => "/photos"
 -------------------------------------------------------
 
-=== Defining Multiple Resources at the Same Time
+=== Definindo Múltiplos Recursos ao Mesmo Tempo
 
-If you need to create routes for more than one RESTful resource, you can save a bit of typing by defining them all with a single call to +map.resources+:
+Se você precisa criar rotas para mais de um recurso RESTful, você pode diminuir um pouco de digitar, definindo todas as chamadas para +map.resources+:
 
 [source, ruby]
 -------------------------------------------------------
 map.resources :photos, :books, :videos
 -------------------------------------------------------
 
-This has exactly the same effect as 
+Isto tem exatamente o mesmo efeito de
 
 [source, ruby]
 -------------------------------------------------------
@@ -188,40 +189,40 @@ map.resources :books
 map.resources :videos
 -------------------------------------------------------
 
-=== Singular Resources
+=== Recursos singulares
 
-You can also apply RESTful routing to singleton resources within your application. In this case, you use +map.resource+ instead of +map.resources+ and the route generation is slightly different. For example, a routing entry of
+Você pode também aplicar o roteamento RESTful para um único recurso dentro da sua aplicação. Neste caso, você usa +map.resource+ em vez de +map.resources+ e a geração das rotas é ligeiramente diferente. Por exemplo, uma entrada para o roteamento
 
 [source, ruby]
 -------------------------------------------------------
 map.resource :geocoder
 -------------------------------------------------------
 
-creates six different routes in your application:
+cria seis rotas diferentes na sua aplicação:
 
 [grid="all"]
-`----------`---------------`-----------`--------`-------------------------------------------
+`----------`---------------`-----------`--------`-----------------------------------------------------------
 HTTP verb  URL             controller  action   used for
+------------------------------------------------------------------------------------------------------------
+GET        /geocoder/new   Geocoders   new      retorna um formulário HTML para criação de um novo geocoder
+POST       /geocoder       Geocoders   create   cria um novo geocoder
+GET        /geocoder       Geocoders   show     mostra um e somente um recurso geocoder
+GET        /geocoder/edit  Geocoders   edit     retorna um formulário HTML para edição do geocoder
+PUT        /geocoder       Geocoders   update   atualiza um e somente um recurso do geocoder
+DELETE     /geocoder       Geocoders   destroy  apaga um recurso geocoder
 --------------------------------------------------------------------------------------------
-GET        /geocoder/new   Geocoders   new      return an HTML form for creating the new geocoder
-POST       /geocoder       Geocoders   create   create the new geocoder
-GET        /geocoder       Geocoders   show     display the one and only geocoder resource
-GET        /geocoder/edit  Geocoders   edit     return an HTML form for editing the geocoder
-PUT        /geocoder       Geocoders   update   update the one and only geocoder resource
-DELETE     /geocoder       Geocoders   destroy  delete the geocoder resource
---------------------------------------------------------------------------------------------
 
-NOTE: Even though the name of the resource is singular in +routes.rb+, the matching controller is still plural.
+NOTE: Mesmo que o nome do recurso seja singular em +routes.rb+, o controlador correspondente continua no plural.
 
-A singular RESTful route generates an abbreviated set of helpers:
+Uma rota RESTful singular gera um conjunto abreviados de helpers:
 
-* +new_geocoder_url+ and +new_geocoder_path+ map to the path for the new action
-* +edit_geocoder_url+ and +edit_geocoder_path+ map to the path for the edit action
-* +geocoder_url+ and +geocoder_path+ map to the path for the create, show, update, and destroy actions
+* +new_geocoder_url+ e +new_geocoder_path+ mapeia o caminho para a ação new
+* +edit_geocoder_url+ e +edit_geocoder_path+ mapeia o caminho para a ação edit
+* +geocoder_url+ e +geocoder_path+ mapeia o caminho para as ações create, show, update e destroy.
 
-=== Customizing Resources
+=== Customizando recursos
 
-Although the conventions of RESTful routing are likely to be sufficient for many applications, there are a number of ways to customize the way that RESTful routes work. These options include:
+Apesar das convenções do roteamento RESTful serem suficientes para muitas aplicações, existe inúmeras formas de customizar a forma como uma rota RESTful funciona. Estas opções incluem:
 
 * +:controller+
 * +:singular+
@@ -232,11 +233,11 @@ Although the conventions of RESTful routing are likely to be sufficient for many
 * +:path_prefix+
 * +:name_prefix+
 
-You can also add additional routes via the +:member+ and +:collection+ options, which are discussed later in this guide.
+Você pode adicionar rotas adicionais pelas opções +:member+ e +:collection+, na qual serão discutidos mais tarde neste guia.
 
-==== Using :controller
+==== Usando :controller
 
-The +:controller+ option lets you use a controller name that is different from the public-facing resource name. For example, this routing entry:
+A opção +:controller+ permite você usar o nome do controlador diferente do nome do recurso público. Por exemplo, esta entrada de roteamento:
 
 [source, ruby]
 -------------------------------------------------------
