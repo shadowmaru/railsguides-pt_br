@@ -37,7 +37,6 @@ Quando você acaba destruindo a sua base de teste (e isto vai acontecer), você 
 
 === Rails Sets up for Testing from the Word Go ===
 
-Rails creates a +test+ folder for you as soon as you create a Rails project using +rails _application_name_+. If you list the contents of this folder then you shall see:
 O Rails cria uma pasta +test+ assim que você cria uma aplicação usando +rails _nome_do_projeto_+. Se você listar o conteúdo desta pasta você verá
 
 [source,shell]
@@ -49,22 +48,20 @@ fixtures/       functional/     integration/    test_helper.rb  unit/
 
 A pasta +unit+ é encarregada de armazenar testes para os seus models, a pasta +functional+ armazena testes para os seus controllers e a pasta +integration+ deve guardar testes que envolvam interações entre seus controllers. Fixtures são uma forma de organizar os dados de teste; elas ficam na pasta +fixtures+. O arquivo +test_helper.rb+ guarda as configurações padrão para os seus testes.
 
-=== The Low-Down on Fixtures ===
+=== Fixtures, o Pulo do Gato ===
 
 Para ter bons testes, você precisará configurar dados de testes. No Rails, isto pode ser feito definindo e ajustando fixtures.
 
 ==== O Que São Fixtures? ====
 
-_Fixtures_ é um nome bonito para amostra de dados. Fixtures permitem que você configure a sua base de dados de teste com informações pré-definidas antes de rodar os seus testes. São independentes de banco de dados e assumem um dos dois formatos: *YAML* ou *CSV*. Neste guia nós vamos usar *YAML*, que è o formato preferido.
+_Fixtures_ é um nome bonito para amostra de dados. Fixtures permitem que você configure a sua base de dados de teste com informações pré-definidas antes de rodar os seus testes. São independentes de banco de dados e assumem um dos dois formatos: *YAML* ou *CSV*. Neste guia nós vamos usar o *YAML*, que é o formato preferido.
 
 Você encontrará fixtures no seu diretório +test/fixtures+. Quando você roda +script/generate model+ para criar um novo model, fixture stubs serão criados e colocados neste diretórico automaticamente.
 
 ==== YAML ====
 
-YAML-formatted fixtures are a very human-friendly way to describe your sample data. These types of fixtures have the *.yml* file extension (as in +users.yml+).
 Fixtures do tipo YAML são uma forma muito amigável de descrever as suas amostras de dados. Estes tipos de fixtures têm a extensão *.yml* (como em +users.yml+).
 
-Here's a sample YAML fixture file:
 Aqui está um exemplo de um arquivo de fixture YAML:
 
 [source,ruby]
@@ -81,11 +78,11 @@ steve:
  profession: guy with keyboard
 ---------------------------------------------
 
-Cada fixture tem um nome seguido seguido por uma lista de pares chave/valor desejados. Registros são separados por um espaço em branco. Você pode colocar comentário em uma fixture digitando o caracter # na primeira coluna.
+Cada fixture tem um nome seguido seguido por uma lista de pares chave/valor desejados. Registros são separados por um espaço em branco. Você pode colocar comentários em uma fixture digitando o caracter # na primeira coluna.
 
-==== ERb'in It Up ====
+==== ERb Dando Uma Força ====
 
-ERb allows you embed ruby code within templates. Both the YAML and CSV fixture formats are pre-processed with ERb when you load fixtures. This allows you to use Ruby to help you generate some sample data.
+ERb permite que você introduza código ruby em templates. Tanto as fixtures de formato YAML como CSV são pré-processadas com ERb quando carregadas. Com isso, é possível utilizar Ruby para te ajudar a gerar dados para seus testes.
 
 [source, ruby]
 --------------------------------------------------------------
@@ -103,56 +100,56 @@ mars:
   brightest_on: <%= 13.days.from_now.to_s(:db) %>
 --------------------------------------------------------------
 
-Anything encased within the
+Qualquer coisa escrita ente a tag
 
 [source, ruby]
 ------------------------
 <% %>
 ------------------------
 
-tag is considered Ruby code. When this fixture is loaded, the +size+ attribute of the three records will be set to 20/50, 20/2, and 20-69 respectively. The +brightest_on+ attribute will also be evaluated and formatted by Rails to be compatible with the database.
+é considerada código Ruby. Quando esta fixture é carregada, o atributo +size+ dos três registros vão ser setados para 20/50, 20/2 e 20-69, respectivamente. O atributo +brightest_on+ também será calculado e formatado pelo Rails para ser compatível com a sua base de dados.
 
-==== Fixtures in Action ====
+==== Fixtures em Ação ====
 
-Rails by default automatically loads all fixtures from the 'test/fixtures' folder for your unit and functional test. Loading involves three steps:
+Por padrão, o Rails carrega automaticamente todas as fixtures existentes na pasta 'test/fixtures' para seus testes unitários e funcionais. O carregamento envolve três passos:
 
- * Remove any existing data from the table corresponding to the fixture
- * Load the fixture data into the table
- * Dump the fixture data into a variable in case you want to access it directly
+ * Remoção de qualquer dado pré-existente na tabela correspondente à fixture
+ * Carregamento dos dados da fixture na tabela
+ * Cópia do dado da fixture para uma variável para o caso de você querer acessá-lo diretamente
 
-==== Hashes with Special Powers ====
+==== Hashes Com Poderes Especiais ====
 
-Fixtures are basically Hash objects. As mentioned in point #3 above, you can access the hash object directly because it is automatically setup as a local variable of the test case. For example:
+As fixtures são basicamente objetos Hash. Como mencionado no tópico #3 acima, é possível acessar o objeto hahs diretamente porque ele é automaticamente setado como uma variável local do caso de teste. Por exemplo:
 
 [source, ruby]
 --------------------------------------------------------------
-# this will return the Hash for the fixture named david
+# isso vai retornar a Hash para a fixture de nome david
 users(:david)
 
-# this will return the property for david called id
+# isso vai retornar a propriedade id do objeto david
 users(:david).id
 --------------------------------------------------------------
 
-Fixtures can also transform themselves into the form of the original class. Thus, you can get at the methods only available to that class.
+As fixtures também podem tomar a forma da sua classe original. Desta forma, você poderá acessar somente os métodos disponíveis para aquela classe.
 
 [source, ruby]
 --------------------------------------------------------------
-# using the find method, we grab the "real" david as a User
+# usando o método find, nós temos o david como um User
 david = users(:david).find
 
-# and now we have access to methods only available to a User class
+# e agora nós temos acesso somente aos métodos disponível na classe User
 email(david.girlfriend.email, david.location_tonight)
 --------------------------------------------------------------
 
-== Unit Testing your Models ==
+== Teste Unitários para os seus Models ==
 
-In Rails, unit tests are what you write to test your models.
+Em Rails, testes unitários é o que você escreve para testar os seus models.
 
-For this guide we will be using Rails _scaffolding_. It will create the model, a migration, controller and views for the new resource in a single operation. It will also create a full test suite following Rails best practises. I will be using examples from this generated code and would be supplementing it with additional examples where necessary.
+Para este guia, nós vamos usar o recurso _scaffolding_ do Rails. Ele vai gerar o model, uma migration, controller e views para o novo recurso numa única operação. Ele também vai gerar uma suíte de testes completa seguindo as melhores práticas do Rails. Eu vou usar exemplos deste código gerado e vou complementando-o com exemplos adicionais quando necessário.
 
-NOTE: For more information on Rails _scaffolding_, refer to link:../getting_started_with_rails.html[Getting Started with Rails]
+NOTA: Para mais informações a respeito do Rails _scaffolding_, consulte o link:../comecando_com_rails.html[Começando com Rails]
 
-When you use +script/generate scaffold+, for a resource among other things it creates a test stub in the +test/unit+ folder:
+Quando você usa +script/generate scaffold+ para um recurso, dentre outras coisas, ele cria um teste stub na pasta +test/unit+:
 
 -------------------------------------------------------
 $ script/generate scaffold post title:string body:text
@@ -164,6 +161,7 @@ create  test/fixtures/posts.yml
 -------------------------------------------------------
 
 The default test stub in +test/unit/post_test.rb+ looks like this:
+O teste stub padrão em +test/unit/post_test.rb+ é algo do tipo:
 
 [source,ruby]
 --------------------------------------------------
@@ -177,42 +175,43 @@ class PostTest < ActiveSupport::TestCase
 end
 --------------------------------------------------
 
-A line by line examination of this file will help get you oriented to Rails testing code and terminology.
+Uma análise de cada linha deste arquivo vai te orientar em relação ao código de teste do Rails e à sua terminologia.
 
 [source,ruby]
 --------------------------------------------------
 require 'test_helper'
 --------------------------------------------------
 
-As you know by now that `test_helper.rb` specifies the default configuration to run our tests. This is included with all the tests, so any methods added to this file are available to all your tests.
+O arquivo `test_helper.rb` especifica a configuração padrão para rodar nossos testes. Isto é incluído em todos os testes, então todos os métodos existentes neste arquivo estão disponíveis para todos os seus testes.
 
 [source,ruby]
 --------------------------------------------------
 class PostTest < ActiveSupport::TestCase
 --------------------------------------------------
 
-The +PostTest+ class defines a _test case_ because it inherits from +ActiveSupport::TestCase+. +PostTest+ thus has all the methods available from +ActiveSupport::TestCase+. You'll see those methods a little later in this guide.
+A classe +PostTest+ define um _test case_ (caso de teste) porque ela herda de +ActiveSupport::TestCase+. +PostTest+ tem, portanto, todos os métodos disponíveis em +ActiveSupport::TestCase+. Nós vamos estudar estes métodos um pouco mais a frente neste guia.
 
 [source,ruby]
 --------------------------------------------------
 def test_truth
 --------------------------------------------------
 
-Any method defined within a test case that begins with +test+ (case sensitive) is simply called a test. So, +test_password+, +test_valid_password+ and +testValidPassword+ all are legal test names and are run automatically when the test case is run. 
+Qualquer método definido em um test case que começa com +test+ (case sensitive) é considerado um teste. +test_password+, +test_valid_password+ e +testValidPassword+ são nomes de testes válidos e são rodados automaticamente quando o test case é executado.
 
 [source,ruby]
 --------------------------------------------------
 assert true
 --------------------------------------------------
 
-This line of code is called an _assertion_. An assertion is a line of code that evaluates an object (or expression) for expected results. For example, an assertion can check:
+Esta linha de código é chamada de _assertion_. Uma assertion é uma linha de código que avalia um objeto (ou uma expressão) e espera alguns resultados. Por exemplo, uma assertion pode validar coisas do tipo:
 
-* is this value = that value? 
-* is this object nil? 
-* does this line of code throw an exception? 
-* is the user's password greater than 5 characters? 
+* este valor é = a outro valor?  
+* is this object nil?
+* este objeto é nulo?  
+* esta linha de código lança uma exceção?
+* a senha do usuário tem mais do que 5 caracteres? 
 
-Every test contains one or more assertions. Only when all the assertions are successful the test passes.
+Cada teste tem uma ou mais assertions. Somente quando todas as assertions são válidas o teste passa.
 
 === Preparing you Application for Testing ===
 
