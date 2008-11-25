@@ -35,7 +35,7 @@ Por exemplo, suponha que você precise testar o seu novo +apague_este_usuario_e_
 
 Quando você acaba destruindo a sua base de teste (e isto vai acontecer), você pode reconstruí-la do zero de acordo com as especificações definidas nela mesma. Você pode fazer isso rodando +rake db:test:prepare+.
 
-=== Rails Sets up for Testing from the Word Go ===
+=== Rails preparado para Testes desde o Início ===
 
 O Rails cria uma pasta +test+ assim que você cria uma aplicação usando +rails _nome_do_projeto_+. Se você listar o conteúdo desta pasta você verá
 
@@ -48,7 +48,7 @@ fixtures/       functional/     integration/    test_helper.rb  unit/
 
 A pasta +unit+ é encarregada de armazenar testes para os seus models, a pasta +functional+ armazena testes para os seus controllers e a pasta +integration+ deve guardar testes que envolvam interações entre seus controllers. Fixtures são uma forma de organizar os dados de teste; elas ficam na pasta +fixtures+. O arquivo +test_helper.rb+ guarda as configurações padrão para os seus testes.
 
-=== Fixtures, o Pulo do Gato ===
+=== Os Segredos das Fixtures ===
 
 Para ter bons testes, você precisará configurar dados de testes. No Rails, isto pode ser feito definindo e ajustando fixtures.
 
@@ -134,7 +134,7 @@ As fixtures também podem tomar a forma da sua classe original. Desta forma, voc
 
 [source, ruby]
 --------------------------------------------------------------
-# usando o método find, nós temos o david como um User
+# usando o método find, nós temos o david como um objeto do tipo User
 david = users(:david).find
 
 # e agora nós temos acesso somente aos métodos disponível na classe User
@@ -206,7 +206,6 @@ assert true
 Esta linha de código é chamada de _assertion_. Uma assertion é uma linha de código que avalia um objeto (ou uma expressão) e espera alguns resultados. Por exemplo, uma assertion pode validar coisas do tipo:
 
 * este valor é = a outro valor?  
-* is this object nil?
 * este objeto é nulo?  
 * esta linha de código lança uma exceção?
 * a senha do usuário tem mais do que 5 caracteres? 
