@@ -1,5 +1,5 @@
 Começando com Rails
-==========================
+==================
 
 This guide covers getting up and running with Ruby on Rails.  After reading it, you should be familiar with:
 ¿¿¿¿ Este guia aborda a configuração e . Após a sua leitura, você deve estar familiarizado com: ?????

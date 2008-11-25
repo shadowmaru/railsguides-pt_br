@@ -1,5 +1,5 @@
 Guias para o Ruby on Rails
-====================
+========================
 
 WARNING: Esta página é resultado do projeto http://github.com/cassiomarques/railsguides-pt_br/tree/master[RailsGuides-Pt-BR] e é um trabalho em andamento.
 

@@ -95,7 +95,7 @@ end
 ----------------------
 
 gerará a seguinte saída
-----------------------
+------------------------------------------------------------------------------------------------------------
 == 20080906170109 CreateProducts: migrating ===================================
 -- Created a table
    -> and an index!
@@ -103,6 +103,7 @@ gerará a seguinte saída
    -> 10.0001s
    -> 250 rows
 == 20080906170109 CreateProducts: migrated (10.0097s) =========================
-----------------------
+------------------------------------------------------------------------------------------------------------
 
 Se você quiser que o Active Record mantenha-se em silêncio, então execute `rake db:migrate VERBOSE=false` e irá suprimir qualquer saída.
+
