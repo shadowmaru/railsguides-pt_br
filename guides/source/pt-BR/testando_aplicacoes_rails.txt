@@ -212,9 +212,9 @@ Esta linha de código é chamada de _assertion_. Uma assertion é uma linha de c
 
 Cada teste tem uma ou mais assertions. Somente quando todas as assertions são válidas o teste passa.
 
-=== Preparing you Application for Testing ===
+=== Preparando a sua Aplicação para ser Testada ===
 
-Before you can run your tests you need to ensure that the test database structure is current. For this you can use the following rake commands:
+Antes de poder rodar os testes, você precisa se certificar de que a estrutura da sua base de testes está atualizada. Para isso, você pode usar os seguintes comandos rake:
 
 [source, shell]
 -------------------------------------------------------
@@ -223,28 +223,28 @@ $ rake db:migrate
 $ rake db:test:load
 -------------------------------------------------------
 
-Above +rake db:migrate+ runs any pending migrations on the _developemnt_ environment and updates +db/schema.rb+. +rake db:test:load+ recreates the test database from the current db/schema.rb. On subsequent attempts it is a good to first run +db:test:prepare+ as it first checks for pending migrations and warns you appropriately.
++rake db:migrate+ todas as migrations que estiverem pendentes no ambiente _developemnt_ (ambiente de desenvolvimento) e atualiza o seu +db/schema.rb+. +rake db:test:load+ recria a base de testes a partir do db/schema.rb atual. Nas próximas vezes, é bom rodar primeiro +db:test:prepare+ para primeiramente verificar se há migrations pendentes e ver eventuais alertas apropriadamente.
 
-NOTE: +db:test:prepare+ will fail with an error if db/schema.rb doesn't exists.
+NOTA: +db:test:prepare+ irá falhar se o arquivo db/schema.rb não existir.
 
-==== Rake Tasks for Preparing you Application for Testing ==
+==== Preparando a Aplicação para Testes com Tasks Rake ==
 
 [grid="all"]
---------------------------------`----------------------------------------------------
-Tasks                           Description
-------------------------------------------------------------------------------------
-+rake db:test:clone+            Recreate the test database from the current environment's database schema
-+rake db:test:clone_structure+  Recreate the test databases from the development structure
-+rake db:test:load+             Recreate the test database from the current +schema.rb+
-+rake db:test:prepare+          Check for pending migrations and load the test schema
-+rake db:test:purge+            Empty the test database.
-------------------------------------------------------------------------------------
+--------------------------------`-----------------------------------------------------------------
+Tasks                           Descrição
+--------------------------------------------------------------------------------------------------
++rake db:test:clone+            Recria a base de teste a partir do schema atual do banco de dados
++rake db:test:clone_structure+  Recria as bases de teste a partir da estrutura de desenvolvimento
++rake db:test:load+             Recria a base de teste a partir do +schema.rb+ atual
++rake db:test:prepare+          Verifica se há migrations pendentes e carrega o schema de teste
++rake db:test:purge+            Limpa o banco de dados de teste.
+--------------------------------------------------------------------------------------------------
 
-TIP: You can see all these rake tasks and their descriptions by running +rake --tasks --describe+
+DICA: Você pode consultar todas estas tasks rake e suas descrições rodando +rake --tasks --describe+
 
-=== Running Tests ===
+=== Rodando os Testes ===
 
-Running a test is as simple as invoking the file containing the test cases through Ruby:
+Para rodar um teste basta invocar o arquivo contendo os testes pelo Ruby:
 
 [source, shell]
 -------------------------------------------------------
@@ -259,9 +259,9 @@ Finished in 0.023513 seconds.
 1 tests, 1 assertions, 0 failures, 0 errors
 -------------------------------------------------------
 
-This will run all the test methods from the test case.
+Isto vai rodar todos os métodos de teste do arquivo.
 
-You can also run a particular test method from the test case by using the +-n+ switch with the +test method name+.
+Você também pode rodar um método de teste em particular usando a opção +-n+ com o +nome do método de teste+.
 
 -------------------------------------------------------
 $ ruby unit/post_test.rb -n test_truth
@@ -274,9 +274,9 @@ Finished in 0.023513 seconds.
 1 tests, 1 assertions, 0 failures, 0 errors
 -------------------------------------------------------
 
-The +.+ (dot) above indicates a passing test. When a test fails you see an +F+; when a test throws an error you see an +E+ in its place. The last line of the output is the summary. 
+O +.+ (ponto) acima indica um teste que passou. Quando um teste falhar, você verá um +F+; quando um teste lançar um erro, você verá um +E+ no seu lugar. A última linha da saída é o sumário.
 
-To see how a test failure is reported, you can add a failing test to the +post_test.rb+ test case.
+Para ver com um teste falho é reportado, você pode adicionar um teste falhando ao teste +post_test.rb+.
 
 [source,ruby]
 --------------------------------------------------
@@ -286,7 +286,7 @@ def test_should_not_save_post_without_title
 end
 --------------------------------------------------
 
-Let us run this newly added test.
+Vamos rodar este novo teste.
 
 -------------------------------------------------------
 $ ruby unit/post_test.rb -n test_should_not_save_post_without_title
