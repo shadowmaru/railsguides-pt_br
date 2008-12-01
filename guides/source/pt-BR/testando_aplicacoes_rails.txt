@@ -147,7 +147,7 @@ Em Rails, testes unitários é o que você escreve para testar os seus models.
 
 Para este guia, nós vamos usar o recurso _scaffolding_ do Rails. Ele vai gerar o model, uma migration, controller e views para o novo recurso numa única operação. Ele também vai gerar uma suíte de testes completa seguindo as melhores práticas do Rails. Eu vou usar exemplos deste código gerado e vou complementando-o com exemplos adicionais quando necessário.
 
-NOTA: Para mais informações a respeito do Rails _scaffolding_, consulte o link:../comecando_com_rails.html[Começando com Rails]
+NOTE: Para mais informações a respeito do Rails _scaffolding_, consulte o link:../comecando_com_rails.html[Começando com Rails]
 
 Quando você usa +script/generate scaffold+ para um recurso, dentre outras coisas, ele cria um teste stub na pasta +test/unit+:
 
@@ -225,7 +225,7 @@ $ rake db:test:load
 
 +rake db:migrate+ todas as migrations que estiverem pendentes no ambiente _developemnt_ (ambiente de desenvolvimento) e atualiza o seu +db/schema.rb+. +rake db:test:load+ recria a base de testes a partir do db/schema.rb atual. Nas próximas vezes, é bom rodar primeiro +db:test:prepare+ para primeiramente verificar se há migrations pendentes e ver eventuais alertas apropriadamente.
 
-NOTA: +db:test:prepare+ irá falhar se o arquivo db/schema.rb não existir.
+NOTE: +db:test:prepare+ irá falhar se o arquivo db/schema.rb não existir.
 
 ==== Preparando a Aplicação para Testes com Tasks Rake ==
 
@@ -240,7 +240,7 @@ Tasks                           Descrição
 +rake db:test:purge+            Limpa o banco de dados de teste.
 --------------------------------------------------------------------------------------------------
 
-DICA: Você pode consultar todas estas tasks rake e suas descrições rodando +rake --tasks --describe+
+TIP: Você pode consultar todas estas tasks rake e suas descrições rodando +rake --tasks --describe+
 
 === Rodando os Testes ===
 
@@ -305,17 +305,17 @@ test_should_not_save_post_without_title(PostTest)
 1 tests, 1 assertions, 1 failures, 0 errors
 -------------------------------------------------------
 
-In the output, +F+ denotes a failure. You can see the corresponding trace shown under +1)+ along with the name of the failing test. The next few lines contain the stack trace followed by a message which mentions the actual value and the expected value by the assertion. The default assertion messages provide just enough information to help pinpoint the error. To make the assertion failure message more readable every assertion provides an optional message parameter, as shown here:
+O +F+ na saída indica uma falha. Você pode ver o trace abaixo do +1)+ com o nome do teste que falhou. As próximas linhas contém o stack trace seguido por uma mensagem que indica o valor real (aquele produzido pelo seu programa) e o valor esperado pela assertion. As mensagens padrão da assertion nos dá somente a informação necessária para localizar o erro. Para tornar a mensagem de falha mais legível, toda assertion tem um parâmetro de mensagem opcional, como mostrado aqui:
 
 [source,ruby]
 --------------------------------------------------
 def test_should_not_save_post_without_title
   post = Post.new
-  assert !post.save, "Saved the post without a title"
+  assert !post.save, "Post salvo sem um título"
 end
 --------------------------------------------------
 
-Running this test shows the friendlier assertion message:
+Ao rodar este teste, é exibida uma mensagem mais amigável:
 
 -------------------------------------------------------
 $ ruby unit/post_test.rb -n test_should_not_save_post_without_title
@@ -329,13 +329,13 @@ test_should_not_save_post_without_title(PostTest)
     [unit/post_test.rb:11:in `test_should_not_save_post_without_title'
      /opt/local/lib/ruby/gems/1.8/gems/activesupport-2.1.1/lib/active_support/testing/setup_and_teardown.rb:33:in `__send__'
      /opt/local/lib/ruby/gems/1.8/gems/activesupport-2.1.1/lib/active_support/testing/setup_and_teardown.rb:33:in `run']:
-Saved the post without a title.
+Post salvo sem um título.
 <false> is not true.
 
 1 tests, 1 assertions, 1 failures, 0 errors
 -------------------------------------------------------
 
-Now to get this test to pass we can add a model level validation for the _title_ field.
+Agora para fazer com que este teste passe, nós podemos adicionar uma validação no model para o campo _title_
 
 [source,ruby]
 --------------------------------------------------
@@ -344,7 +344,7 @@ class Post < ActiveRecord::Base
 end
 --------------------------------------------------
 
-Now the test should pass. Let us verify by running the test again:
+Agora o teste deve passar. Vamos verificar rodando novamente:
 
 -------------------------------------------------------
 $ ruby unit/post_test.rb -n test_should_not_save_post_without_title
@@ -356,11 +356,11 @@ Finished in 0.193608 seconds.
 1 tests, 1 assertions, 0 failures, 0 errors
 -------------------------------------------------------
 
-Now if you noticed we first wrote a test which fails for a desired functionality, then we wrote some code which adds the functionality and finally we ensured that our test passes. This approach to software development is referred to as _Test-Driven Development_ (TDD). 
+Se você reparar, primeiramente nós escrevemos um teste que falharia para uma funcionalidade desejada, então nós escrevemos um código que adiciona a funcionalidade e, finalmente, garantimos que nosso teste passaria. Este modo de desenvolver software é conhecido como _Test-Driven Development_ (TDD).
 
-TIP: Many Rails developers practice _Test-Driven Development_ (TDD). This is an excellent way to build up a test suite that exercises every part of your application. TDD is beyond the scope of this guide, but one place to start is with link:http://andrzejonsoftware.blogspot.com/2007/05/15-tdd-steps-to-create-rails.html[15 TDD steps to create a Rails application].
+TIP: Muitos desenvolvedores Rails praticam _Test-Driven Development_ (TDD). Este é um modo excelente de construir uma suíte de testes que exercita todas as partes da sua aplicação. TDD foge do escopo deste guia, mas um lugar para se começar é com link:http://andrzejonsoftware.blogspot.com/2007/05/15-tdd-steps-to-create-rails.html[15 TDD steps to create a Rails application].
 
-To see how an error gets reported, here's a test containing an error:
+Para ver como um erro é reportado, aqui está um teste contendo um:
 
 [source,ruby]
 --------------------------------------------------
@@ -371,7 +371,7 @@ def test_should_report_error
 end
 --------------------------------------------------
 
-Now you can see even more output in the console from running the tests:
+Agora você pode ver muito mais informações no console ao rodar os testes:
 
 -------------------------------------------------------
 $ ruby unit/post_test.rb -n test_should_report_error
@@ -391,48 +391,48 @@ NameError: undefined local variable or method `some_undefined_variable' for #<Po
 1 tests, 0 assertions, 0 failures, 1 errors
 -------------------------------------------------------
 
-Notice the 'E' in the output. It denotes a test with error. 
+Repare no 'E' da saída. Ele indica um teste com erro.
 
-NOTE: The execution of each test method stops as soon as any error or a assertion failure is encountered, and the test suite continues with the next method. All test methods are executed in alphabetical order.
+NOTE: A execução de cada teste é interrompida assim que qualquer erro ou falha nas assertions seja encontrado, e a suíte de testes continua sendo executada no próximo método. Todos os testes são executados em ordem alfabética.
 
-=== What to Include in Your Unit Tests ===
+=== O Que Incluir Nos Seus Testes Unitários ===
 
-Ideally you would like to include a test for everything which could possibly break. It's a good practice to have at least one test for each of your validations and at least one test for every method in your model.
+Idealmente, você deveria escrever testes para tudo que possa falhar na sua aplicação. É uma boa prática ter pelo menos um teste para cada validação e ao menos um teste para cada método no seu model.
 
-=== Assertions Available ===
+=== Assertions Disponíveis ===
 
-By now you've caught a glimpse of some of the assertions that are available. Assertions are the worker bees of testing. They are the ones that actually perform the checks to ensure that things are going as planned.
+Até agora, você teve somente uma idéia de algumas assertions disponíveis. Assertions são as 'formiguinhas' dos testes. Elas são quem realmente realizam as checagens e garantem que as coisas estão correndo como o planejado.
 
-There are a bunch of different types of assertions you can use. Here's the complete list of assertions that ship with +test/unit+, the testing library used by Rails. The +[msg]+ parameter is an optional string message you can specify to make your test failure messages clearer. It's not required.
+Há muitos tipos de assertions diferentes que você pode usar. Aqui está uma listagem completa das assertions existentes na +test/unit+, a biblioteca de testes usada pelo Rails. O parâmetro +[msg]+ é uma mensagem de texto opcional que você pode usar para que as mensagens de falha dos testes sejam mais claras. Não é um parâmetro obrigatório.
 
 [grid="all"]
 `-----------------------------------------------------------------`------------------------------------------------------------------------
-Assertion                                                         Purpose
+Assertion                                                         Objetivo
 ------------------------------------------------------------------------------------------------------------------------------------------
-+assert( boolean, [msg] )+                                        Ensures that the object/expression is true.
-+assert_equal( obj1, obj2, [msg] )+                               Ensures that +obj1 == obj2+ is true.
-+assert_not_equal( obj1, obj2, [msg] )+                           Ensures that +obj1 == obj2+ is false.
-+assert_same( obj1, obj2, [msg] )+			                      Ensures that +obj1.equal?(obj2)+ is true.
-+assert_not_same( obj1, obj2, [msg] )+                            Ensures that +obj1.equal?(obj2)+ is false.
-+assert_nil( obj, [msg] )+                                        Ensures that +obj.nil?+ is true.
-+assert_not_nil( obj, [msg] )+                                    Ensures that +obj.nil?+ is false.
-+assert_match( regexp, string, [msg] )+                           Ensures that a string matches the regular expression.
-+assert_no_match( regexp, string, [msg] )+                        Ensures that a string doesn't matches the regular expression.
-+assert_in_delta( expecting, actual, delta, [msg] )+              Ensures that the numbers `expecting` and `actual` are within `delta` of each other.
-+assert_throws( symbol, [msg] ) { block }+                        Ensures that the given block throws the symbol.
-+assert_raises( exception1, exception2, ... ) { block }+          Ensures that the given block raises one of the given exceptions.
-+assert_nothing_raised( exception1, exception2, ... ) { block }+  Ensures that the given block doesn't raise one of the given exceptions.
-+assert_instance_of( class, obj, [msg] )+                         Ensures that +obj+ is of the +class+ type.
-+assert_kind_of( class, obj, [msg] )+                             Ensures that +obj+ is or descends from +class+.
-+assert_respond_to( obj, symbol, [msg] )+                         Ensures that +obj+ has a method called +symbol+.
-+assert_operator( obj1, operator, obj2, [msg] )+                  Ensures that +obj1.operator(obj2)+ is true.
-+assert_send( array, [msg] )+                                     Ensures that executing the method listed in +array[1]+ on the object in +array[0]+ with the parameters of +array[2 and up]+ is true. This one is weird eh?
-+flunk( [msg] )+                                                  Ensures failure. This is useful to explicitly mark a test that isn't finished yet.
++assert( boolean, [msg] )+                                        Garante que o objeto/expressão é true.
++assert_equal( obj1, obj2, [msg] )+                               Garante que +obj1 == obj2+ é true.
++assert_not_equal( obj1, obj2, [msg] )+                           Garante que +obj1 == obj2+ é false.
++assert_same( obj1, obj2, [msg] )+			                      Garante que +obj1.equal?(obj2)+ é true.
++assert_not_same( obj1, obj2, [msg] )+                            Garante que +obj1.equal?(obj2)+ é false.
++assert_nil( obj, [msg] )+                                        Garante que +obj.nil?+ é true.
++assert_not_nil( obj, [msg] )+                                    Garante que +obj.nil?+ é false.
++assert_match( regexp, string, [msg] )+                           Garante que a string atende à expressão regular.
++assert_no_match( regexp, string, [msg] )+                        Garante que a string não atende à expressão regular.
++assert_in_delta( expecting, actual, delta, [msg] )+              Garante que os números `expecting` e `actual` estão dentro do `delta`.
++assert_throws( symbol, [msg] ) { block }+                        Garante que o bloco lança o símbolo.
++assert_raises( exception1, exception2, ... ) { block }+          Garante que o bloco cria uma das exceções.
++assert_nothing_raised( exception1, exception2, ... ) { block }+  Garante que o bloco não cria nenhuma das exceções.
++assert_instance_of( class, obj, [msg] )+                         Garante que +obj+ é do mesmo tipo de +class+.
++assert_kind_of( class, obj, [msg] )+                             Garante que +obj+ é ou estende de +class+.
++assert_respond_to( obj, symbol, [msg] )+                         Garante que +obj+ tem um método chamado +symbol+.
++assert_operator( obj1, operator, obj2, [msg] )+                  Garante que +obj1.operator(obj2)+ é true.
++assert_send( array, [msg] )+                                     Garante que executar o método listado em +array[1]+ no objeto +array[0]+ com os parâmetros de +array[2 e acima]+ é true. Esta é estranha, não é?
++flunk( [msg] )+                                                  Ensures falha. É útil para marcar um teste que ainda não está terminado.
 ------------------------------------------------------------------------------------------------------------------------------------------
 
-Because of the modular nature of the testing framework, it is possible to create your own assertions. In fact, that's exactly what Rails does. It includes some specialized assertions to make your life easier.
+Por conta da natureza modular do framework de teste, é possível criar as suas próprias assertions. De fato, é exatamente o que o Rails faz. Ele inclui umas assertions especializadas para facilitar o seu trabalho.
 
-NOTE: Creating your own assertions is an advanced topic that we won't cover in this tutorial.
+NOTE: Criar as suas próprias assertions é um tópico avanado que nós não vamos cobrir neste tutorial.
 
 === Rails Specific Assertions ===
 
