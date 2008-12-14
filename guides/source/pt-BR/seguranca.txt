@@ -34,7 +34,7 @@ Um bom lugar para começar a dar uma olhada na segurança é nas sessõs, as qua
 A maioria das aplicações precisam ter controle sobre alguns aspectos relacionados ao estado de um usuário particular. Pode ser o conteúdo de um carrinho de compras ou o id do usuário atualmente autenticado. Sem a idéia de sessões, o usuário teria que se identificar, e provavelmente se autenticar, a cada nova requisição.
 O Rails criará uma nova sessão automaticamente se um novo usuário acessar a aplicação, mas usará uma sessão existente se  usuário já tiver usado a aplicação anteriormente.
 
-A session usually consists of a hash of values and a session id, usually a 32-character string, to identify the hash. Every cookie sent to the client's browser includes the session id. And the other way round: the browser will send it to the server on every request from the client. In Rails you can save and retrieve values using the session method:
+Uma sessão consiste em um hash de valores e um id de sessão, geralmente uma string com 32 caracteres, para identificar o hash. Cada cookie enviado para o browser do usuário inclui o id de sessão. No caminho inverso, o browser enviará o id de sessão para o servidor em cada request. No Rails você pode salvar e recuperar valores usando o método +session+:
 
 [source, ruby]
 ----------------------------------------------------------------------------
@@ -42,11 +42,11 @@ session[:user_id] = @current_user.id
 User.find(session[:user_id])
 ----------------------------------------------------------------------------
 
-=== Session id
+=== Id de sessão
 
--- _The session id is a 32 byte long MD5 hash value._
+-- _O id de sessão é um hash MD5 com 32 bytes de comprimento._
 
-A session id consists of the hash value of a random string. The random string is the current time, a random number between 0 and 1, the process id number of the Ruby interpreter (also basically a random number) and a constant string. Currently it is not feasible to brute-force Rails' session ids. To date MD5 is uncompromised, but there have been collisions, so it is theoretically possible to create another input text with the same hash value. But this has had no security impact to date.
+Um id de sessão consiste em um hash criado a partir de uma string aleatória. A string aleatória é composta pelo horário atual, um número aleatório entre 0 e 1, o id do processo do interpretador Ruby (basicamente um número aleatório também) e uma string constante. Atualmente é realmente muito difícil quebrar ids de sessão do Rails usando força bruta. O algorítmo MD5 não é totalmente garantido, dado que teoricamente é possível criar dois textos de entrada diferentes que resultam em um mesmo hash MD5. Entretanto, até o momento isso não teve nenhum impacto na segurança do Rails.
 
 === Session hijacking
 
