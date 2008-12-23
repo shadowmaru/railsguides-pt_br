@@ -5,7 +5,7 @@ task :guias do
   source = "source/pt-BR"
   html   = "html/pt-BR"
   FileUtils.rm_r(html) if File.directory?(html)
-  FileUtils.mkdir(html)
+  FileUtils.mkdir_p(html)
 
   template = File.expand_path("source/templates/guides.html.erb")
   asciidoc_conf = 'asciidoc.conf'
