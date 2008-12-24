@@ -10,7 +10,7 @@ Este guia apresenta técnicas para depurar aplicações no Ruby on Rails. Atrav�
 
 == View Helpers para Depuração
 
-One common task is to inspect the contents of a variable. In Rails, you can do this with three methods:
+Uma tarefa comum é inspecionar os conteúdos de uma variável. No Rails, você pode fazer isto de três maneiras:
 
 * `debug`
 * `to_yaml`
@@ -18,32 +18,32 @@ One common task is to inspect the contents of a variable. In Rails, you can do t
 
 === debug
 
-The `debug` helper will return a <pre>-tag that renders the object using the YAML format. This will generate human-readable data from any object. For example, if you have this code in a view:
+O helper `debug` retornará uma tag <pre> que renderiza o objeto utilizando o formato YAML. Isto gera um bloco de dados legível para um humano a partir de qualquer objeto. Por exemplo, se você tiver este código em uma view:
 
 [source, html]
 ----------------------------------------------------------------------------
 <%= debug @post %>
 <p>
-  <b>Title:</b>
+  <b>Título:</b>
   <%=h @post.title %>
 </p>
 ----------------------------------------------------------------------------
 
-You'll see something like this:
+Você terá algo parecido com isto:
 
 ----------------------------------------------------------------------------
 --- !ruby/object:Post
 attributes:
   updated_at: 2008-09-05 22:55:47
-  body: It's a very helpful guide for debugging your Rails app.
-  title: Rails debugging guide
+  body: É um guia muito útil para depurar suas aplicações Rails.
+  title: Guia de depuração com Rails
   published: t
   id: "1"
   created_at: 2008-09-05 22:55:47
 attributes_cache: {}
 
 
-Title: Rails debugging guide
+Title: Guia de depuração com Rails
 ----------------------------------------------------------------------------
 
 === to_yaml
