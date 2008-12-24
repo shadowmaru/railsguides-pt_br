@@ -98,26 +98,26 @@ Será renderizado da seguinte forma:
 Title: Guia de depuração com Rails
 ----------------------------------------------------------------------------
 
-=== Debugging Javascript
+=== Depurando Javascript
 
-Rails has built-in support to debug RJS, to active it, set `ActionView::Base.debug_rjs` to _true_, this will specify whether RJS responses should be wrapped in a try/catch block that alert()s the caught exception (and then re-raises it).
+Rails possui suporte embutido para se depurar RJS. Para ativá-lo, ajuste `ActionView::Base.debug_rjs` para _true_. Isto especificará que respostas RJS serão encapsuladas em um bloco try/catch que realizará alert()s quando uma exceção for capturada (a exceção então é relançada).
 
-To enable it, add the following in the `Rails::Initializer do |config|` block inside +environment.rb+:
+Para habilitá-lo, adicione a seguinte linha ao bloco `Rails::Initializer do |config|` dentro de +environment.rb+:
 
 [source, ruby]
 ----------------------------------------------------------------------------
 config.action_view[:debug_rjs] = true
 ----------------------------------------------------------------------------
 
-Or, at any time, setting `ActionView::Base.debug_rjs` to _true_:
+Ou, a qualquer momento, ajuste `ActionView::Base.debug_rjs` para _true_:
 
 [source, ruby]
 ----------------------------------------------------------------------------
 ActionView::Base.debug_rjs = true
 ----------------------------------------------------------------------------
 
-[TIP]
-For more information on debugging javascript refer to link:http://getfirebug.com/[Firebug], the popular debugger for Firefox.
+[DICA]
+Para mais informações ao depurar javascript visite link:http://getfirebug.com/[Firebug], a popular extensão de depuração para o Firefox.
 
 == The Logger
 
