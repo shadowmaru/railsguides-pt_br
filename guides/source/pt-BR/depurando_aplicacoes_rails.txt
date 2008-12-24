@@ -48,33 +48,33 @@ Title: Guia de depuração com Rails
 
 === to_yaml
 
-Displaying an instance variable, or any other object or method, in yaml format can be achieved this way:
+Para imprimir no formato YAML uma variável de instância ou qualquer outro objeto ou método, você pode fazer da seguinte maneira:
 
 [source, html]
 ----------------------------------------------------------------------------
 <%= simple_format @post.to_yaml %>
 <p>
-  <b>Title:</b>
+  <b>Título:</b>
   <%=h @post.title %>
 </p>
 ----------------------------------------------------------------------------
 
-The `to_yaml` method converts the method to YAML format leaving it more readable, and then the `simple_format` helper is used to render each line as in the console. This is how `debug` method does its magic.
+O método `to_yaml` converte o método para o formato YAML, deixando-o mais legível, e então o helper `simple_format` é utilizado para renderizar cada linha como acontece no console. Esta é a forma pela qual o método `debug` realiza a sua mágica.
 
-As a result of this, you will have something like this in your view:
+Como resultado, você terá o seguinte em sua view:
 
 ----------------------------------------------------------------------------
 --- !ruby/object:Post
 attributes:
 updated_at: 2008-09-05 22:55:47
-body: It's a very helpful guide for debugging your Rails app.
-title: Rails debugging guide
+body: É um guia muito útil para depurar suas aplicações Rails.
+title: Guia de depuração com Rails
 published: t
 id: "1"
 created_at: 2008-09-05 22:55:47
 attributes_cache: {}
 
-Title: Rails debugging guide
+Title: Guia de depuração com Rails
 ----------------------------------------------------------------------------
 
 === inspect
