@@ -79,23 +79,23 @@ Title: Guia de depuração com Rails
 
 === inspect
 
-Another useful method for displaying object values is `inspect`, especially when working with arrays or hashes. This will print the object value as a string. For example:
+Outro método útil para imprimir valores de objetos é o `inspect`, especialmente quando se está trabalhando com arrays ou hashes.  Ele imprimirá o valor do objeto como uma string. Por exemplo:
 
 [source, html]
 ----------------------------------------------------------------------------
 <%= [1, 2, 3, 4, 5].inspect %>
 <p>
-  <b>Title:</b>
+  <b>Título:</b>
   <%=h @post.title %>
 </p>
 ----------------------------------------------------------------------------
 
-Will be rendered as follows:
+Será renderizado da seguinte forma:
 
 ----------------------------------------------------------------------------
 [1, 2, 3, 4, 5]
 
-Title: Rails debugging guide
+Title: Guia de depuração com Rails
 ----------------------------------------------------------------------------
 
 === Debugging Javascript
