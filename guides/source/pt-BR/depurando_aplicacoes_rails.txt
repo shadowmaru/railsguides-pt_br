@@ -29,7 +29,7 @@ O helper `debug` retornará uma tag <pre> que renderiza o objeto utilizando o fo
 </p>
 ----------------------------------------------------------------------------
 
-Você terá algo parecido com isto:
+Você verá algo parecido com isto:
 
 ----------------------------------------------------------------------------
 --- !ruby/object:Post
@@ -59,7 +59,7 @@ Para imprimir no formato YAML uma variável de instância ou qualquer outro obje
 </p>
 ----------------------------------------------------------------------------
 
-O método `to_yaml` converte o método para o formato YAML, deixando-o mais legível, e então o helper `simple_format` é utilizado para renderizar cada linha como acontece no console. Esta é a forma pela qual o método `debug` realiza a sua mágica.
+O método `to_yaml` converte o método para o formato YAML, deixando-o mais legível, e então o helper `simple_format` é utilizado para renderizar cada linha como acontece em um console. Esta é a forma pela qual o método `debug` realiza a sua mágica.
 
 Como resultado, você terá o seguinte em sua view:
 
@@ -117,7 +117,7 @@ ActionView::Base.debug_rjs = true
 ----------------------------------------------------------------------------
 
 [DICA]
-Para mais informações ao depurar javascript visite link:http://getfirebug.com/[Firebug], a popular extensão de depuração para o Firefox.
+Para mais informações ao depurar javascript visite a página do link:http://getfirebug.com/[Firebug], a popular extensão de depuração para o Firefox.
 
 == The Logger
 
