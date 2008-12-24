@@ -119,49 +119,49 @@ ActionView::Base.debug_rjs = true
 [DICA]
 Para mais informações ao depurar javascript visite a página do link:http://getfirebug.com/[Firebug], a popular extensão de depuração para o Firefox.
 
-== The Logger
+== O Logger
 
-It can also be useful to save information to log files at runtime. Rails maintains a separate log file for each runtime environment.
+Também pode ser útil guardar informações em arquivos de log durante a execução de sua aplicação. O Rails mantém um arquivo de log separado para cada ambiente de execução.
 
-=== What is The Logger?
+=== O que é O Logger?
 
-Rails makes use of Ruby's standard `logger` to write log information. You can also substitute another logger such as `Log4R` if you wish.
+Rails utiliza o `logger` padrão do Ruby para escrever informações de log. Você pode substituí-lo por outros loggers, como o `Log4R` se você preferir.
 
-You can specify an alternative logger in your +environment.rb+ or any environment file:
+Você pode especificar um logger alternativo em seu +environment.rb+ ou em qualquer arquivo de ambiente:
 
 [source, ruby]
 ----------------------------------------------------------------------------
 ActiveRecord::Base.logger = Logger.new(STDOUT)
-ActiveRecord::Base.logger = Log4r::Logger.new("Application Log")
+ActiveRecord::Base.logger = Log4r::Logger.new("Log da Aplicação")
 ----------------------------------------------------------------------------
 
-Or in the +Initializer+ section, add _any_ of the following
+Ou, na seção +Initializer+, adicione _algum_ dos seguintes
 
 [source, ruby]
 ----------------------------------------------------------------------------
 config.logger = Logger.new(STDOUT)
-config.logger = Log4r::Logger.new("Application Log")
+config.logger = Log4r::Logger.new("Log da Aplicação")
 ----------------------------------------------------------------------------
 
-[TIP]
-By default, each log is created under `RAILS_ROOT/log/` and the log file name is +environment_name.log+.
+[DICA]
+Por padrão, cada log é criado em `RAILS_ROOT/log/` e o nome do arquivo de log é +environment_name.log+.
 
-=== Log Levels
+=== Níveis de Log
 
-When something is logged it's printed into the corresponding log if the log level of the message is equal or higher than the configured log level. If you want to know the current log level you can call the `ActiveRecord::Base.logger.level` method.
+Quando uma mensagem é enviada para o log, ela é impressa no arquivo de log correspondente se o nível de log da mensagem é igual ou maior do que o nível configurado para o log. Para saber o nível configurado atual de um log, você pode chamar o método `ActiveRecord::Base.logger.level`.
 
-The available log levels are: +:debug+, +:info+, +:warn+, +:error+, and +:fatal+, corresponding to the log level numbers from 0 up to 4 respectively. To change the default log level, use
+Os níveis de log disponíveis são: +:debug+, +:info+, +:warn+, +:error+, e +:fatal+, correspondendo aos níveis de log dos número de 0 até 4 respectivamente. Para alterar o nível de log, utilize
 
 [source, ruby]
 ----------------------------------------------------------------------------
-config.log_level = Logger::WARN # In any environment initializer, or
-ActiveRecord::Base.logger.level = 0 # at any time
+config.log_level = Logger::WARN # Em qualquer inicializador de ambiente, ou
+ActiveRecord::Base.logger.level = 0 # a qualquer momento
 ----------------------------------------------------------------------------
 
-This is useful when you want to log under development or staging, but you don't want to flood your production log with unnecessary information.
+Isto é útil para quando você deseja depurar algo durante o desenvolvimento e estagiamento, mas não deseja encher seu log de produção com informações desnecessárias.
 
-[TIP]
-The default Rails log level is +info+ in production mode and +debug+ in development and test mode.
+[DICA]
+O nível de log padrão do Rails é +info+ no modo de produção e +debug+ nos modos de desenvolvimento e teste.
 
 === Sending Messages
 
