@@ -10,7 +10,7 @@ Este guia apresenta técnicas para depurar aplicações no Ruby on Rails. Atrav�
 
 == View Helpers para Depuração
 
-Uma tarefa comum é inspecionar os conteúdos de uma variável. No Rails, você pode fazer isto de três maneiras:
+Uma tarefa comum é inspecionar os conteúdos de uma variável. No Rails, você pode fazer isto de três formas:
 
 * `debug`
 * `to_yaml`
@@ -48,7 +48,7 @@ Title: Guia de depuração com Rails
 
 === to_yaml
 
-Para imprimir no formato YAML uma variável de instância ou qualquer outro objeto ou método, você pode fazer da seguinte maneira:
+Para imprimir no formato YAML uma variável de instância ou qualquer outro objeto ou método, você pode fazer da seguinte forma:
 
 [source, html]
 ----------------------------------------------------------------------------
