@@ -1,4 +1,4 @@
-Guia Sobre Segurança no Ruby on Rails
+aGuia Sobre Segurança no Ruby on Rails
 ===================================
  
 Este manual descreve problemas de segurança comuns em aplicações web e como evitá-los com Rails. Após lê-lo, você deverá estar familiarizado com:
