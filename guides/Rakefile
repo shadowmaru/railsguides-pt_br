@@ -1,4 +1,4 @@
-desc "Generacao dos HTMLs para os guias do Rails em portugues"
+desc "Geracao dos HTMLs para os guias do Rails em portugues"
 task :guias do
   require 'mizuho/generator'
 
