@@ -116,7 +116,7 @@ Ou, a qualquer momento, ajuste `ActionView::Base.debug_rjs` para _true_:
 ActionView::Base.debug_rjs = true
 ----------------------------------------------------------------------------
 
-[DICA]
+[TIP]
 Para mais informações ao depurar javascript visite a página do link:http://getfirebug.com/[Firebug], a popular extensão de depuração para o Firefox.
 
 == O Logger
@@ -143,7 +143,7 @@ config.logger = Logger.new(STDOUT)
 config.logger = Log4r::Logger.new("Log da Aplicação")
 ----------------------------------------------------------------------------
 
-[DICA]
+[TIP]
 Por padrão, cada log é criado em `RAILS_ROOT/log/` e o nome do arquivo de log é +environment_name.log+.
 
 === Níveis de Log
@@ -160,7 +160,7 @@ ActiveRecord::Base.logger.level = 0 # a qualquer momento
 
 Isto é útil para quando você deseja depurar algo durante o desenvolvimento e estagiamento, mas não deseja encher seu log de produção com informações desnecessárias.
 
-[DICA]
+[TIP]
 O nível de log padrão do Rails é +info+ no modo de produção e +debug+ nos modos de desenvolvimento e teste.
 
 === Enviando Mensagens
@@ -219,28 +219,28 @@ Redirected to #<Post:0x20af760>
 Completed in 0.01224 (81 reqs/sec) | DB: 0.00044 (3%) | 302 Found [http://localhost/posts]
 ----------------------------------------------------------------------------
 
-Adicionar informações de logs extras como estas torna mais simples a busca por comportamentos inexperados ou incomuns em seus logs. Se você adicionar informações extras de log, certifique-se de utilizar corretamente os níveis de log, para evitar encher seu log de produção com informações inúteis.
+Adicionar informações de logs extras como estas torna mais simples a busca por comportamentos inexperados ou incomuns em seus logs. Se você adicionar informações extras de log, certifique-se de utilizar corretamente os níveis de log, para evitar encher seu log de produção com informações não-úteis.
 
-== Debugging with ruby-debug
+== Depurando com ruby-debug
 
-When your code is behaving in unexpected ways, you can try printing to logs or the console to diagnose the problem. Unfortunately, there are times when this sort of error tracking is not effective in finding the root cause of a problem. When you actually need to journey into your running source code, the debugger is your best companion.
+Quando o seu código estiver comportando-se de forma diferente do esperado, você pode tentar imprimir mensagem nos logs ou no console para diagnosticar o problema. Infelizmente, pode acontecer de haver situações em que este tipo de análise de erro não ser efetivo para encontrar a raiz de um problema. Quando você precisar analisar mais profundamente seu código durante sua execução, o depurador será seu melhor amigo.
 
-The debugger can also help you if you want to learn about the Rails source code but don't know where to start. Just debug any request to your application and use this guide to learn how to move from the code you have written deeper into Rails code.
+O depurador também poderá lhe ajudar caso você deseje aprender sobre o código fonte do Rails e não souber por onde começar. Simplesmente depure qualquer requisição em sua aplicação e utilize este guia para aprender como se aprofundar a partir de seu código para o código do Rails.
 
-=== Setup
+=== Configuração
 
-The debugger used by Rails, +ruby-debug+, comes as a gem. To install it, just run:
+O depurador utilizado pelo Rails, +ruby-debug+, vem em forma de uma gem. Para instalá-lo, execute:
 
 [source, shell]
 ----------------------------------------------------------------------------
 $ sudo gem install ruby-debug
 ----------------------------------------------------------------------------
 
-In case you want to download a particular version or get the source code, refer to the link:http://rubyforge.org/projects/ruby-debug/[project's page on rubyforge].
+No caso do você precisar baixar uma versão diferente ou o código fonte, você pode acessar link:http://rubyforge.org/projects/ruby-debug/[a página do projeto no rubyforge].
 
-Rails has had built-in support for ruby-debug since Rails 2.0. Inside any Rails application you can invoke the debugger by calling the `debugger` method.
+O Rails tem suporte ao ruby-debug desde a versão 2.0. Dentro de qualquer aplicação Rails você pode utilizar o depurador chamando o método `debugger`.
 
-Here's an example:
+Aqui temos um exemplo:
 
 [source, ruby]
 ----------------------------------------------------------------------------
@@ -252,13 +252,13 @@ class PeopleController < ApplicationController
 end
 ----------------------------------------------------------------------------
 
-If you see the message in the console or logs:
+Se você receber a seguinte mensagem no console ou nos logs:
 
 ----------------------------------------------------------------------------
 ***** Debugger requested, but was not available: Start server with --debugger to enable *****
 ----------------------------------------------------------------------------
 
-Make sure you have started your web server with the option +--debugger+:
+Certifique-se de iniciar o seu servidor web com a opção +--debugger+:
 
 [source, shell]
 ----------------------------------------------------------------------------
@@ -270,9 +270,9 @@ Make sure you have started your web server with the option +--debugger+:
 ----------------------------------------------------------------------------
 
 [TIP]
-In development mode, you can dynamically `require \'ruby-debug\'` instead of restarting the server, if it was started without `--debugger`.
+No modo de desenvolvimento, você pode dinamicamente utilizar o depurador com `require \'ruby-debug\'` ao invés de ter de reiniciar o servidor, se ele não foi iniciado com a opção `--debugger`.
 
-In order to use Rails debugging you'll need to be running either *WEBrick* or *Mongrel*. For the moment, no alternative servers are supported.
+Para utilizar o depurador do Rails você deverá utilizar o *WEBrick* ou o *Mongrel*. No momento, nenhum servidor alternativo possui suporte a depuração.
 
 === The Shell
 
@@ -381,7 +381,7 @@ Moving up and down the stack frame: You can use `up [n]` (`u` for abbreviated) a
 The debugger can list, stop, resume and switch between running threads by using the command `thread` (or the abbreviated `th`). This command has a handful of options:
 
 * `thread` shows the current thread.
-* `thread list` is used to list all threads and their statuses. The plus + character and the number indicates the current thread of execution.
+* `thread list` is used to list all threads and their statuses. The plus + character and the number inTIPtes the current thread of execution.
 * `thread stop _n_` stop thread _n_.
 * `thread resume _n_` resumes thread _n_.
 * `thread switch _n_` switches the current thread context to _n_.
