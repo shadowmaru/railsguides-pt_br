@@ -274,20 +274,20 @@ No modo de desenvolvimento, você pode dinamicamente utilizar o depurador com `r
 
 Para utilizar o depurador do Rails você deverá utilizar o *WEBrick* ou o *Mongrel*. No momento, nenhum servidor alternativo possui suporte a depuração.
 
-=== The Shell
+=== A Interface
 
-As soon as your application calls the `debugger` method, the debugger will be started in a debugger shell inside the terminal window where you launched your application server, and you will be placed at ruby-debug's prompt `(rdb:n)`. The _n_ is the thread number. The prompt will also show you the next line of code that is waiting to run.
+Assim que sua aplicação invocar o método `debugger`, o depurador será inicializado em uma interface de depuração dentro do terminal de onde você iniciou seu servidor de aplicações, e você poderá interagir com o prompt do ruby-debug `(rdb:n)`. O _n_ é o número da thread. O prompt também lhe mostrará a próxima linha de código que está na espera para ser executada.
 
-If you got there by a browser request, the browser tab containing the request will be hung until the debugger has finished and the trace has finished processing the entire request.
+Se o código for chamado a partir de uma requisição de um navegador, a aba do navegador contendo a requisição será paralisada até que o processo de depuração e toda a requisição sejam finalizados.
 
-For example:
+Por exemplo:
 
 ----------------------------------------------------------------------------
 @posts = Post.find(:all)
 (rdb:7)
 ----------------------------------------------------------------------------
 
-Now it's time to explore and dig into your application. A good place to start is by asking the debugger for help... so type: `help` (You didn't see that coming, right?)
+Agora é a hora de explorar a sua aplicação. Uma boa forma de começar é pedir ajuda ao depurador... então digite: `help` (você não esperava por esta, né?)
 
 ----------------------------------------------------------------------------
 (rdb:7) help
@@ -303,11 +303,11 @@ continue   edit     frame   method  putl  set      tmate   where
 ----------------------------------------------------------------------------
 
 [TIP]
-To view the help menu for any command use `help <command-name>` in active debug mode. For example: _+help var+_
+Para visualizar o menu de ajuda de qualquer comando utilize `help <command-name>` durante o modo de depuração. Por exemplo: _+help var+_
 
-The next command to learn is one of the most useful: `list`. You can also abbreviate ruby-debug commands by supplying just enough letters to distinguish them from other commands, so you can also use +l+ for the +list+ command.
+O próximo comando que veremos é um dos mais úteis: `list`. Você também pode abreviar comandos do ruby-debug digitando somente as letras necessárias para distingüir o comando de outros comandos. Desta forma você pode, por exemplo, utilizar o +l+ para o comando +list+.
 
-This command shows you where you are in the code by printing 10 lines centered around the current line; the current line in this particular case is line 6 and is marked by +=>+.
+Este comando mostra onde você está no código imprimindo 10 linhas ao redor da linha atual; neste exemplo, a linha atual é a 6 e está marcada com um +=>+.
 
 ----------------------------------------------------------------------------
 (rdb:7) list
@@ -324,7 +324,7 @@ This command shows you where you are in the code by printing 10 lines centered a
    10        format.xml  { render :xml => @posts }
 ----------------------------------------------------------------------------
 
-If you repeat the +list+ command, this time using just `l`, the next ten lines of the file will be printed out.
+Se você repetir o comando +list+, desta vez utilizando somente o `l`, as próximas dez linhas do arquivo serão impressas.
 
 ----------------------------------------------------------------------------
 (rdb:7) l
@@ -341,9 +341,9 @@ If you repeat the +list+ command, this time using just `l`, the next ten lines o
    20        format.html # show.html.erb
 ----------------------------------------------------------------------------
 
-And so on until the end of the current file. When the end of file is reached, the +list+ command will start again from the beginning of the file and continue again up to the end, treating the file as a circular buffer.
+E assim por diante, até o fim do arquivo atual. Quando chegar ao final do arquivo, o comando +list+ irá continuar do começo do arquivo e seguir novamente até seu final, tratando o arquivo como um buffer cíclico.
 
-=== The Context
+=== O Contexto
 
 When you start debugging your application, you will be placed in different contexts as you go through the different parts of the stack.
 
