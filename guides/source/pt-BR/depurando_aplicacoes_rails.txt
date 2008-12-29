@@ -345,11 +345,11 @@ E assim por diante, até o fim do arquivo atual. Quando chegar ao final do arqui
 
 === O Contexto
 
-When you start debugging your application, you will be placed in different contexts as you go through the different parts of the stack.
+Enquanto você estiver depurando a sua aplicação, você será colocado em diferentes contextos quando passar por diferentes partes da pilha de execução.
 
-ruby-debug creates a content when a stopping point or an event is reached. The context has information about the suspended program which enables a debugger to inspect the frame stack, evaluate variables from the perspective of the debugged program, and contains information about the place where the debugged program is stopped.
+O ruby-debug cria conteúdo quando um ponto de parada é alcançado ou quando um evento ocorre. O contexto possui informações sobre o programa paralisado, o que permite ao depurador obter informações sobre a pilha de execução, verificar valores de variáveis na perspectiva do programa depurado, e contém informações sobre o local onde o programa sendo depurado foi paralisado.
 
-At any time you can call the `backtrace` command (or its alias `where`) to print the backtrace of the application. This can be very helpful to know how you got where you are. If you ever wondered about how you got somewhere in your code, then `backtrace` will supply the answer.
+A qualquer momento você pode chamar o comando `backtrace` (ou o seu atalho `where`) para imprimir o backtrace (rastros) de sua aplicação. Isto pode ser muito útil para descobrir como você chegou onde está agora. Se você em algum momento se perguntou como chegou a algum lugar em seu código, o comando `backtrace` lhe dará a resposta.
 
 ----------------------------------------------------------------------------
 (rdb:5) where
@@ -364,7 +364,7 @@ At any time you can call the `backtrace` command (or its alias `where`) to print
 ...
 ----------------------------------------------------------------------------
 
-You move anywhere you want in this trace (thus changing the context) by using the `frame _n_` command, where _n_ is the specified frame number.
+Você pode mover-se dentro dos rastros (alterando seu contexto) utilizando o comando `frame _n_`, onde _n_ é o número do frame desejado.
 
 ----------------------------------------------------------------------------
 (rdb:5) frame 2
@@ -372,21 +372,21 @@ You move anywhere you want in this trace (thus changing the context) by using th
        at line /PathTo/project/vendor/rails/actionpack/lib/action_controller/base.rb:1175
 ----------------------------------------------------------------------------
 
-The available variables are the same as if you were running the code line by line. After all, that's what debugging is.
+As variáveis disponíveis são as mesmas que você tem ao executar o código linha por linha. Afinal, isto é o que uma depuração significa.
 
-Moving up and down the stack frame: You can use `up [n]` (`u` for abbreviated) and `down [n]` commands in order to change the context _n_ frames up or down the stack respectively. _n_ defaults to one. Up in this case is towards higher-numbered stack frames, and down is towards lower-numbered stack frames.
+Movendo-se na pilha: Você pode utilizar os comandos `up [n]` (abreviação `u`) e `down [n]` para alterar o contexto para _n_ frames para cima ou para baixo, respectivamente. O padrão para _n_ é um. Para cima, neste caso, é em direção aos frames de número mais altos, e para baixo é em direção aos de número mais baixos.
 
 === Threads
 
-The debugger can list, stop, resume and switch between running threads by using the command `thread` (or the abbreviated `th`). This command has a handful of options:
+O depurador pode listar, parar, continuar e alterar entre threads sendo executadas utilizando o comando `thread` (ou sua abreviação `th`). Este comando possui as seguintes opções:
 
-* `thread` shows the current thread.
-* `thread list` is used to list all threads and their statuses. The plus + character and the number inTIPtes the current thread of execution.
-* `thread stop _n_` stop thread _n_.
-* `thread resume _n_` resumes thread _n_.
-* `thread switch _n_` switches the current thread context to _n_.
+* `thread` mostra a thread atual.
+* `thread list` é utilizado para listar todas as threads e seus estados. O caracter mais (+) e o número indicam a thread em execução.
+* `thread stop _n_` para a thread _n_.
+* `thread resume _n_` continua a thread _n_.
+* `thread switch _n_` altera o contexto atual para o da thread _n_.
 
-This command is very helpful, among other occasions, when you are debugging concurrent threads and need to verify that there are no race conditions in your code.
+Este comando é muito útil, dentre outras situações, para quando você estiver depurando threads concorrentes e você quiser verificar se existem disputas de condições em seu código.
 
 === Inspecting Variables
 
