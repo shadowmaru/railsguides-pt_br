@@ -461,20 +461,20 @@ Você também pode utilizar o comando `display` para observar variáveis. Esta �
 
 As variáveis dentro da lista de observações serão impressas com seus valores assim que você avançar na pilha de execução. Para parar a observação de uma variável, utilize `undisplay _n_`, onde _n_ é o número da variável (1 no último exemplo).
 
-=== Step by Step
+=== Passo a Passo
 
-Now you should know where you are in the running trace and be able to print the available variables. But lets continue and move on with the application execution.
+Você já deve se situar na pilha de execução e também deve ser capaz de imprimir os valores de variáveis. Agora, vamos continuar com a execução da aplicação.
 
-Use `step` (abbreviated `s`) to continue running your program until the next logical stopping point and return control to ruby-debug.
+Utilize o comando `step` (abreviação `s`) para continuar a execução de seu programa até o próximo ponto lógico de parada, quando o controle voltará ao ruby-debug.
 
 [TIP]
-You can also use `step+ _n_` and `step- _n_` to move forward or backward _n_ steps respectively.
+Você também pode utilizar `step+ _n_` e `step- _n_` para andar para frente ou para trás _n_ passos respectivamente.
 
-You may also use `next` which is similar to step, but function or method calls that appear within the line of code are executed without stopping. As with step, you may use plus sign to move _n_ steps.
+Você também pode utilizar o comando `next`, que é similar ao comando step, mas chamadas de funções ou métodos dentro da linha são executados sem paradas. Assim como o comando step, você pode utilizar sinais de mais para mover _n_ passos.
 
-The difference between `next` and `step` is that `step` stops at the next line of code executed, doing just a single step, while `next` moves to the next line without descending inside methods.
+A diferença entre `next` e `step` é que `step` para na próxima linha de código a ser executada, realizando somente um passo simples, enquanto `next` move para a próxima linha sem entrar em métodos.
 
-For example, consider this block of code with an included +debugger+ statement:
+Por exemplo, considere este bloco de código com um comando +debugger+:
 
 [source, ruby]
 ----------------------------------------------------------------------------
@@ -494,7 +494,7 @@ end
 ----------------------------------------------------------------------------
 
 [TIP]
-You can use ruby-debug while using script/console. Just remember to `require "ruby-debug"` before calling the `debugger` method.
+Você pode utilizar o ruby-debug enquanto estiver utilizando o script/console. Lembre-se apenas de fazer um `require "ruby-debug"` antes de chamar o método `debugger`.
 
 ----------------------------------------------------------------------------
 /PathTo/project $ script/console
@@ -508,7 +508,7 @@ Loading development environment (Rails 2.1.0)
 )
 ----------------------------------------------------------------------------
 
-With the code stopped, take a look around:
+Com o código paralisado, dê uma olhada:
 
 ----------------------------------------------------------------------------
 (rdb:1) list
@@ -523,7 +523,7 @@ With the code stopped, take a look around:
    13  end
 ----------------------------------------------------------------------------
 
-You are at the end of the line, but... was this line executed? You can inspect the instance variables.
+Você está no fim da linha, mas... será que esta linha já foi executada? Você pode inspecionar as variáveis de instância.
 
 ----------------------------------------------------------------------------
 (rdb:1) var instance
@@ -531,7 +531,7 @@ You are at the end of the line, but... was this line executed? You can inspect t
 @attributes_cache = {}
 ----------------------------------------------------------------------------
 
-+@recent_comments+ hasn't been defined yet, so it's clear that this line hasn't been executed yet. Use the +next+ command to move on in the code:
++@recent_comments+ ainda não foi definida, então fica claro que esta linha ainda não foi executada. Utilize o comando +next+ para avançar no código:
 
 ----------------------------------------------------------------------------
 (rdb:1) next
@@ -544,26 +544,26 @@ You are at the end of the line, but... was this line executed? You can inspect t
 @recent_comments = []
 ----------------------------------------------------------------------------
 
-Now you can see that the +@comments+ relationship was loaded and @recent_comments defined because the line was executed.
+Agora você pode ver que o relacionamento +@comments+ foi carregado e @recent_comments foi definido, porque a linha foi executada.
 
-If you want to go deeper into the stack trace you can move single `steps`, through your calling methods and into Rails code. This is one of the best ways to find bugs in your code, or perhaps in Ruby or Rails.
+Se você quiser ir mais a fundo na pilha de execução, você pode avançar com um `step` de cada vez, e aprofundar-se nas chamadas de seus métodos e no código do Rails. Esta é uma das melhores formas de descobrir bugs em seu código, ou no código do próprio Ruby on Rails.
 
 === Breakpoints
 
-A breakpoint makes your application stop whenever a certain point in the program is reached. The debugger shell is invoked in that line.
+Um breakpoint (ponto de parada) faz a sua aplicação parar quando um certo ponto do programa é alcançado. A interface do depurador é invocada a partir desta linha.
 
-You can add breakpoints dynamically with the command `break` (or just `b`). There are 3 possible ways of adding breakpoints manually:
+Você pode adicionar breakpoints dinamicamente com o comando `break` (ou somente `b`). Existem 3 formas de adicionar breakpoints manualmente:
 
-* `break line`: set breakpoint in the _line_ in the current source file.
-* `break file:line [if expression]`: set breakpoint in the _line_ number inside the _file_. If an _expression_ is given it must evaluated to _true_ to fire up the debugger.
-* `break class(.|\#)method [if expression]`: set breakpoint in _method_ (. and \# for class and instance method respectively) defined in _class_. The _expression_ works the same way as with file:line.
+* `break line`: coloca um breakpoint na linha de número _line_ do código fonte atual.
+* `break file:line [if expression]`: coloca um breakpoint na linha de número _line_ do arquivo _file_. Se existir uma _expressão_ ela deve se avaliada como _true_ para ativar o depurador.
+* `break class(.|\#)method [if expression]`: coloca um breakpoint no método _method_ (. e \# para classes e métodos de instância, respectivamente) definido na classe _class_. A _expressão_ funciona da mesma forma como em file:line.
 
 ----------------------------------------------------------------------------
 (rdb:5) break 10
 Breakpoint 1 file /PathTo/project/vendor/rails/actionpack/lib/action_controller/filters.rb, line 10
 ----------------------------------------------------------------------------
 
-Use `info breakpoints _n_` or `info break _n_` to list breakpoints. If you supply a number, it lists that breakpoint. Otherwise it lists all breakpoints.
+Utilize `info breakpoints _n_` ou `info break _n_` para listar breakpoints. Se você passar um número, ele listará o breakpoint correspondente ao número. Caso contrário, ele listará todos os breakpoints.
 
 ----------------------------------------------------------------------------
 (rdb:5) info breakpoints
@@ -571,7 +571,7 @@ Num Enb What
   1 y   at filters.rb:10
 ----------------------------------------------------------------------------
 
-To delete breakpoints: use the command `delete _n_` to remove the breakpoint number _n_. If no number is specified, it deletes all breakpoints that are currently active..
+Para remover breakpoints: utilize o comando `delete _n_` para remover o breakpoint de número _n_. Se nenhum número for passado, todos os breakpoints ativos serão removidos...
 
 ----------------------------------------------------------------------------
 (rdb:5) delete 1
@@ -579,10 +579,10 @@ To delete breakpoints: use the command `delete _n_` to remove the breakpoint num
 No breakpoints.
 ----------------------------------------------------------------------------
 
-You can also enable or disable breakpoints:
+Você também pode ativar ou desativar breakpoints:
 
-* `enable breakpoints`: allow a list _breakpoints_ or all of them if no list is specified, to stop your program. This is the default state when you create a breakpoint.
-* `disable breakpoints`: the _breakpoints_ will have no effect on your program.
+* `enable breakpoints`: permite que uma lista _breakpoints_, ou todos eles caso nenhuma lista seja mencionada, pararem o seu programa. Este é o estado inicial de um breakpoint quando você o cria.
+* `disable breakpoints`: a lista _breakpoints_ não terá nenhum efeito em seu programa.
 
 === Catching Exceptions
 
