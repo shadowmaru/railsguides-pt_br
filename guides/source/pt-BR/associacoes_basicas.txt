@@ -976,50 +976,49 @@ A opção +:order+ dita a ordem em que os objetos associados deverão ser retorn
 
 ===== +:primary_key+
 
-PAREI AQUI
-By convention, Rails guesses that the column used to hold the primary key of this model is +id+. You can override this and explicitly specify the primary key with the +:primary_key+ option.
+Por convenção, Rails adivinha que a coluna que irá armazenar a chave primária será deste model é +id+. Você pode sobreescrever isto e especificar a chave primária com a opção +:primary_key+ .
 
 ===== +:readonly+
 
-If you set the +:readonly+ option to +true+, then the associated object will be read-only when retrieved via the association.
+Se você definir a opção +:readonly+ para +true+, o objeto associado será exclusivamente para leitura quando for retornado pela associação.
 
 ===== +:select+
 
-The +:select+ option lets you override the SQL +SELECT+ clause that is used to retrieve data about the associated object. By default, Rails retrieves all columns.
+A opção +:select+ permite que você altere a claúsula SQL +SELECT+ que é usada para retornar os do objeto associado. Por padrão, Rails retorna todas as colunas.
 
 ===== +:source+
 
-The +:source+ option specifies the source association name for a +has_one :through+ association.
+A opção +:source+  específica o nome para fonte para uma associação +has_one :through+ .
 
 ===== +:source_type+
 
-The +:source_type+ option specifies the source association type for a +has_one :through+ association that proceeds through a polymorphic association.
+A opção +:source_type+ específica o tipo da fonte para a associação +has_one :through+ em uma associação polimórfica.
 
 ===== +:through+
 
-The +:through+ option specifies a join model through which to perform the query. +has_one :through+ associations are discussed in detail later in this guide.
+A opção +:through+ específica um model para a junção (join) para executar a query. Associações +has_one :through+ serão discutidas em detalhes mais adiante.
 
 ===== +:validate+
 
-If you set the +:validate+ option to +true+, then associated objects will be validated whenever you save this object. By default, this is +false+: associated objects will not be validated when this object is saved.
+Se você definir a opção +:validate+ para +true+, os objetos associados serão validados sempre que você salvar este objeto. Por padrão, ele é +false+: objetos associados não serão validados quando este objeto for salvo.
 
-==== When are Objects Saved?
+==== Quando Objetos São Salvos?
 
-When you assign an object to a +has_one+ association, that object is automatically saved (in order to update its foreign key). In addition, any object being replaced is also automatically saved, because its foreign key will change too.
+Quando você atribuir um objeto a uma associação +has_one+, este objeto é automaticamente salvo(para atualizar a chave estrangeira). Além disso, qualquer objeto que estiver sendo substituido também é salvo automaticamente, porque sua chave estrangeria também será alterada.
 
-If either of these saves fails due to validation errors, then the assignment statement returns +false+ and the assignment itself is cancelled.
+Se qualquer uma dessas gravações falhar devido a erros de validação, então a atribuição retornará +false+ e a próprpia atribuição é cancelada.
 
-If the parent object (the one declaring the +has_one+ association) is unsaved (that is, +new_record?+ returns +true+) then the child objects are not saved.
+Se o objeto pai (o que estiver declarando a associação +has_one+) não é salvo (isso é, +new_record?+ retorna +true+) então os objeto filhos não serão salvos.
 
-If you want to assign an object to a +has_one+ association without saving the object, use the +association.build+ method.
+Se você quiser atribuir um objeto para uma associação +has_one+ sem salvar o objeto, use o método +association.build+ .
 
-=== The has_many Association
+=== A associação has_many
 
-The +has_many+ association creates a one-to-many relationship with another model. In database terms, this association says that the other class will have a foreign key that refers to instances of this class.
+A asssociação +has_many+ cria uma relação um-para-muitos com outro model. Em termos de banco de dados, esta associação diz que a outra classe terá a chave estrangeira que referência a instância desta classe.
 
-==== Methods Added
+==== Métodos Adicionados
 
-When you declare a +has_many+ association, the declaring class automatically gains 13 methods related to the association:
+Quando você declara a  associação +has_many+, a classe declarante irá ganhar automaticamente 13 métodos relacionados a associação:
 
 * +_collection_(force_reload = false)+
 * +_collection_<<(object, ...)+
@@ -1035,7 +1034,7 @@ When you declare a +has_many+ association, the declaring class automatically gai
 * +_collection_.build(attributes = {}, ...)+
 * +_collection_.create(attributes = {})+
 
-In all of these methods, +_collection_+ is replaced with the symbol passed as the first argument to +has_many+, and +_collection\_singular_+ is replaced with the singularized version of that symbol.. For example, given the declaration:
+Em todos estes métodos, +_collection_+ é substituido pelo símbolo passado como primeiro argumento da +has_many+, e +_collection\_singular_+ é substituido pela versão no singular deste símbolo. Por exemplo, veja abaixo:
 
 [source, ruby]
 -------------------------------------------------------
@@ -1044,7 +1043,7 @@ class Customer < ActiveRecord::Base
 end
 -------------------------------------------------------
 
-Each instance of the customer model will have these methods:
+Cada instância do model customer terá os seguintes métodos:
 
 [source, ruby]
 -------------------------------------------------------
@@ -1065,7 +1064,7 @@ orders.create(attributes = {})
 
 ===== +_collection_(force_reload = false)+
 
-The +_collection_+ method returns an array of all of the associated objects. If there are no associated objects, it returns an empty array.
+O método +_collection_+ retorna um array com todos os objetos associados. Se não existir objeto associado, ele retorna um array vázio. 
 
 [source, ruby]
 -------------------------------------------------------
@@ -1074,7 +1073,7 @@ The +_collection_+ method returns an array of all of the associated objects. If 
 
 ===== +_collection_<<(object, ...)+
 
-The +_collection_<<+ method adds one or more objects to the collection by setting their foreign keys to the primary key of the calling model.
+O método +_collection_<<+ adiciona um ou mais objetos para a coleção, definindo suas chaves estrangeiras para a chave primária do model que o chamou.
 
 [source, ruby]
 -------------------------------------------------------
@@ -1083,23 +1082,22 @@ The +_collection_<<+ method adds one or more objects to the collection by settin
 
 ===== +_collection_.delete(object, ...)+
 
-The +_collection_.delete+ method removes one or more objects from the collection by setting their foreign keys to +NULL+.
+O método +_collection_.delete+ remove um ou mais objetos da coleção definindo suas chaves estrangeiras para +NULL+.
 
 [source, ruby]
 -------------------------------------------------------
 @customer.orders.delete(@order1)
 -------------------------------------------------------
 
-WARNING: Objects will be in addition destroyed if they're associated with +:dependent => :destroy+, and deleted if they're associated with +:dependent => :delete_all+.
-
+WARNING: Os objetos associados serão destruídos, se existir +:dependent => :destroy+, e excluídos se estiverem associados com +:dependent => :delete_all+.
 
 ===== +_collection_=objects+
 
-The +_collection_=+ method makes the collection contain only the supplied objects, by adding and deleting as appropriate.
+O método +_collection_=+ faz com que a coleção contenha apenas os objetos passados, adicionando ou removendo o que não interessa.
 
 ===== +_collection\_singular_\_ids+
 
-The +_collection\_singular_\_ids+ method returns an array of the ids of the objects in the collection.
+O método +_collection\_singular_\_ids+ retorna um array com os ids dos objetos da coleção.
 
 [source, ruby]
 -------------------------------------------------------
