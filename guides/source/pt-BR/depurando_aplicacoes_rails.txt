@@ -584,11 +584,11 @@ Você também pode ativar ou desativar breakpoints:
 * `enable breakpoints`: permite que uma lista _breakpoints_, ou todos eles caso nenhuma lista seja mencionada, pararem o seu programa. Este é o estado inicial de um breakpoint quando você o cria.
 * `disable breakpoints`: a lista _breakpoints_ não terá nenhum efeito em seu programa.
 
-=== Catching Exceptions
+=== Capturando Exceções
 
-The command `catch exception-name` (or just `cat exception-name`) can be used to intercept an exception of type _exception-name_ when there would otherwise be is no handler for it.
+O comando `catch nome-da-exceção` (ou somente `cat exception-name`) pode ser utilizado para interceptar uma exceção do tipo _nome-da-exceção_ quando não houver tratamento para a exceção.
 
-To list all active catchpoints use `catch`.
+Para listar os pontos de captura ativos utilize o comando `catch`.
 
 === Resuming Execution
 
