@@ -610,21 +610,21 @@ Para sair do depurador, utilize o comando `quit` (abreviação `q`), ou o seu al
 
 Uma saída simples tentará finalizar todas as threads correntes. Neste caso, seu servidor será finalizado e você deverá inicializá-lo novamente.
 
-=== Settings
+=== Configurações
 
-There are some settings that can be configured in ruby-debug to make it easier to debug your code. Here are a few of the available options:
+Existem algumas configurações que podem ajudar na depuração de seu código com o ruby-debug. Aqui estão algumas das opções disponíveis:
 
-* `set reload`: Reload source code when changed.
-* `set autolist`: Execute `list` command on every breakpoint.
-* `set listsize _n_`: Set number of source lines to list by default to _n_.
-* `set forcestep`: Make sure the `next` and `step` commands always move to a new line
+* `set reload`: Recarrega o código fonte quando houver alterações.
+* `set autolist`: Executa o comando `list` a cada breakpoint.
+* `set listsize _n_`: Configura o número de linhas do código fonte a serem mostradas para _n_ linhas.
+* `set forcestep`: Verifica se os comandos `next` e `step` sempre movem para uma nova linha.
 
-You can see the full list by using `help set`. Use `help set _subcommand_` to learn about a particular +set+ command.
+Você pode ver a lista completa com o comando `help set`. Utilize `help set _subcomando_` para aprender sobre as opções específicas de um comando.
 
 [TIP]
-You can include any number of these configuration lines inside a `.rdebugrc` file in your HOME directory. ruby-debug will read this file every time it is loaded. and configure itself accordingly.
+Você pode incluir estas configurações dentro de um arquivo `.rdebugrc` no seu diretório HOME. O ruby-debug irá ler este arquivo sempre que for carregado.
 
-Here's a good start for an `.rdebugrc`:
+Aqui temos um bom começo para um `.rdebugrc`:
 
 ----------------------------------------------------------------------------
 set autolist
