@@ -632,38 +632,38 @@ set forcestep
 set listsize 25
 ----------------------------------------------------------------------------
 
-== Debugging Memory Leaks
+== Depurando Estouros de Memória
 
-A Ruby application (on Rails or not), can leak memory - either in the Ruby code or at the C code level.
+Uma aplicação Ruby (seja ela Rails ou não), pode estourar a memória - seja no nível de código Ruby ou C.
 
-In this section, you will learn how to find and fix such leaks by using Bleak House and Valgrind debugging tools.
+Nesta seção, você aprenderá como fazer para encontrar e corrigir estouros utilizando as ferramentas de depuração Bleak House e Valgrind.
 
 === BleakHouse
 
-link:http://github.com/fauna/bleak_house/tree/master[BleakHouse] is a library for finding memory leaks.
+link:http://github.com/fauna/bleak_house/tree/master[BleakHouse] é uma biblioteca para encontrar estouros de memória.
 
-If a Ruby object does not go out of scope, the Ruby Garbage Collector won't sweep it since it is referenced somewhere. Leaks like this can grow slowly and your application will consume more and more memory, gradually affecting the overall system performance. This tool will help you find leaks on the Ruby heap.
+Se um objeto Ruby não ficar fora de escopo, o Ruby Garbage Collector não irá limpá-lo já que ele estará sendo referenciado em algum lugar. Estouros deste tipo podem crescer lentamente e sua aplicação irá consumir mais e mais memória, gradualmente afetando a performance geral do sistema. Esta ferramenta irá ajudá-lo a encontrar estouros na heap do Ruby.
 
-To install it run:
+Para instalá-lo, execute:
 
 ----------------------------------------------------------------------------
 sudo gem install bleak_house
 ----------------------------------------------------------------------------
 
-Then setup you application for profiling. Then add the following at the bottom of config/environment.rb:
+Agora você deve configurar sua aplicação para utilizá-lo. E então adicione o seguinte ao final do seu config/environment.rb:
 
 [source, ruby]
 ----------------------------------------------------------------------------
 require 'bleak_house' if ENV['BLEAK_HOUSE']
 ----------------------------------------------------------------------------
 
-Start a server instance with BleakHouse integration:
+Inicie uma instância do servidor integrado com o BleakHouse:
 
 ----------------------------------------------------------------------------
 RAILS_ENV=production BLEAK_HOUSE=1 ruby-bleak-house ./script/server
 ----------------------------------------------------------------------------
 
-Make sure to run a couple hundred requests to get better data samples, then press `CTRL-C`. The server will stop and Bleak House will produce a dumpfile in `/tmp`:
+Certifique-se de executar algumas centenas de requisições para ter uma amostra melhor de dados, e então digite `CTRL-C`. O servidor será finalizado e o Bleak House irá gerar uma saída em `/tmp`:
 
 ----------------------------------------------------------------------------
 ** BleakHouse: working...
@@ -671,7 +671,7 @@ Make sure to run a couple hundred requests to get better data samples, then pres
 ** Bleakhouse: run 'bleak /tmp/bleak.5979.0.dump' to analyze.
 ----------------------------------------------------------------------------
  
-To analyze it, just run the listed command. The top 20 leakiest lines will be listed: 
+Para analisá-lo, execute o comando listado. As 20 linhas com maior probabilidade de estouro serão listadas: 
 
 ----------------------------------------------------------------------------
   191691 total objects
@@ -688,17 +688,17 @@ To analyze it, just run the listed command. The top 20 leakiest lines will be li
   ...
 ----------------------------------------------------------------------------
 
-This way you can find where your application is leaking memory and fix it.
+Desta forma você pode descobrir onde a sua aplicação está com maior probabilidade de estourar memória e corrígi-la.
 
-If link:http://github.com/fauna/bleak_house/tree/master[BleakHouse] doesn't report any heap growth but you still have memory growth, you might have a broken C extension, or real leak in the interpreter. In that case, try using Valgrind to investigate further.
+Se o link:http://github.com/fauna/bleak_house/tree/master[BleakHouse] não apresentar nenhum crescimento na heap mas ainda assim você tiver aumento no uso de memória, você pode estar com uma extensão C quebrada, ou um estouro real no interpretador. Neste caso, tente utilizar o Valgrind para uma investigação mais a fundo.
 
 === Valgrind
 
-link:http://valgrind.org/[Valgrind] is a Linux-only application for detecting C-based memory leaks and race conditions.
+link:http://valgrind.org/[Valgrind] é uma aplicação para Linux para detectar estouros de memória e condições de disputa em programas C.
 
-There are Valgrind tools that can automatically detect many memory management and threading bugs, and profile your programs in detail. For example, a C extension in the interpreter calls `malloc()` but is doesn't properly call `free()`, this memory won't be available until the app terminates.
+Existem ferramentas Valgrind que podem detectar automaticamente bugs de gerenciamento de memória e de threads, e detalhar o perfil de seu programa. Por exemplo, uma extensão C no interpretador chama `malloc()` mas não chama `free()`, esta memória não ficará disponível até que a aplicação termine.
 
-For further information on how to install Valgrind and use with Ruby, refer to link:http://blog.evanweaver.com/articles/2008/02/05/valgrind-and-ruby/[Valgrind and Ruby] by Evan Weaver.
+Para mais informações de como instalar o Valgrind e utilizá-lo com Ruby, visite link:http://blog.evanweaver.com/articles/2008/02/05/valgrind-and-ruby/[Valgrind e Ruby] por Evan Weaver.
 
 == Plugins for Debugging
 
