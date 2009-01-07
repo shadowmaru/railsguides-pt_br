@@ -700,18 +700,18 @@ Existem ferramentas Valgrind que podem detectar automaticamente bugs de gerencia
 
 Para mais informações de como instalar o Valgrind e utilizá-lo com Ruby, visite link:http://blog.evanweaver.com/articles/2008/02/05/valgrind-and-ruby/[Valgrind e Ruby] por Evan Weaver.
 
-== Plugins for Debugging
+== Plugins para Depuração
 
-There are some Rails plugins to help you to find errors and debug your application. Here is a list of useful plugins for debugging:
+Existem alguns plugins para o Rails que podem auxiliá-lo a encontrar erros e depurar a sua aplicação. Aqui está uma lista de plugins que podem ser úteis para este propósito:
 
-* link:http://github.com/drnic/rails-footnotes/tree/master[Footnotes]: Every Rails page has footnotes that give request information and link back to your source via TextMate.
-* link:http://github.com/ntalbott/query_trace/tree/master[Query Trace]: Adds query origin tracing to your logs.
-* link:http://github.com/dan-manges/query_stats/tree/master[Query Stats]: A Rails plugin to track database queries. 
-* link:http://code.google.com/p/query-reviewer/[Query Reviewer]: This rails plugin not only runs "EXPLAIN" before each of your select queries in development, but provides a small DIV in the rendered output of each page with the summary of warnings for each query that it analyzed.
-* link:http://github.com/rails/exception_notification/tree/master[Exception Notifier]: Provides a mailer object and a default set of templates for sending email notifications when errors occur in a Rails application.
-* link:http://github.com/defunkt/exception_logger/tree/master[Exception Logger]: Logs your Rails exceptions in the database and provides a funky web interface to manage them.
+* link:http://github.com/drnic/rails-footnotes/tree/master[Footnotes]: Cada página no Rails recebe notas de rodapé com informações sobre a requisição e com atalhos para seu código fonte via TextMate.
+* link:http://github.com/ntalbott/query_trace/tree/master[Query Trace]: Adiciona aos logs o local onde consultas são geradas.
+* link:http://github.com/dan-manges/query_stats/tree/master[Query Stats]: Um plugin Rails para seguir suas consultas ao banco dados. 
+* link:http://code.google.com/p/query-reviewer/[Query Reviewer]: Este plugin Rails, além de executar o comando "EXPLAIN" antes de cada uma de suas consultas no ambiente de desenvolvimento, também provê uma pequena DIV renderizada na saída de cada página com um sumário de avisos para cada consulta analisada.
+* link:http://github.com/rails/exception_notification/tree/master[Exception Notifier]: Provê um objeto mailer e um conjunto padrão de templates para enviar notificações por email quando errors ocorrerem em uma aplicação Rails.
+* link:http://github.com/defunkt/exception_logger/tree/master[Exception Logger]: Loga exceções Rails no banco de dados e provê uma interface para gerenciá-las.
 
-== References
+== Referências
 
 * link:http://www.datanoise.com/ruby-debug[ruby-debug Homepage]
 * link:http://www.sitepoint.com/article/debug-rails-app-ruby-debug/[Article: Debugging a Rails application with ruby-debug]
@@ -724,7 +724,7 @@ There are some Rails plugins to help you to find errors and debug your applicati
 * link:http://wiki.rubyonrails.org/rails/pages/HowtoConfigureLogging[Ruby on Rails Wiki: How to Configure Logging]
 * link:http://blog.evanweaver.com/files/doc/fauna/bleak_house/files/README.html[Bleak House Documentation]
 
-== Changelog ==
+== Log de Alterações ==
 
 http://rails.lighthouseapp.com/projects/16213-rails-guides/tickets/5[Lighthouse ticket]
 
