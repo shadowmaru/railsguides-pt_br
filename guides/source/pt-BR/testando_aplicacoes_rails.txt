@@ -456,21 +456,21 @@ Você verá o uso de algumas dessas assertions no próximo capítulo.
 
 == Testes Funcionais Para Os Seus Controllers ==
 
-Em Rails, os testes de várias actions de um único controller são chamados de testes funcionais para aquele controller. Controllers tratam as requisições web para a sua aplicação e eventualmente respondem com uma view renderizada.
+Em Rails, os testes de várias actions de um único controller são chamados de testes funcionais. Controllers tratam as requisições web para a sua aplicação e eventualmente respondem com uma view renderizada.
 
-=== What to include in your Functional Tests ===
+=== O que incluir nos seus Testes Funcionais ===
 
-You should test for things such as:
+Você deve testar coisas como:
 
- * was the web request successful?
- * was the user redirected to the right page?
- * was the user successfully authenticated?
- * was the correct object stored in the response template?
- * was the appropriate message displayed to the user in the view
+ * o request foi bem sucedido?
+ * o usuário foi redirecionado para página correta?
+ * o usuário foi autenticado com sucesso?
+ * o objeto correto foi armazenado no response template?
+ * a mensagem apropriada foi exibida ao usuário na view?
 
-Now that we have used Rails scaffold generator for our +Post+ resource, it has already created the controller code and functional tests. You can take look at the file +posts_controller_test.rb+ in the +test/functional+ directory.
+Agora que nós usamos o Rails scaffold generator para nosso +Post+, ele já criou o código do controle e os testes funcionais. Você pode dar uma olhada no arquivo +posts_controller_test.rb+ do diretório +test/functional+.
 
-Let me take you through one such test, +test_should_get_index+ from the file +posts_controller_test.rb+.
+Deixe-me mostrar um teste, +test_should_get_index+ do arquivo +posts_controller_test.rb+.
 
 [source,ruby]
 --------------------------------------------------
@@ -481,32 +481,32 @@ def test_should_get_index
 end
 --------------------------------------------------
 
-In the +test_should_get_index+ test, Rails simulates a request on the action called index, making sure the request was successful and also ensuring that it assigns a valid +posts+ instance variable. 
+No teste +test_should_get_index+, o Rails simula um request na action chamada index, certificando-se de que o request foi bem sucedio e também garantindo que ele associou uma instância +posts+ válida.
 
-The +get+ method kicks off the web request and populates the results into the response. It accepts 4 arguments:
+O método +get+ faz o request e popula os resultados no response. Ele aceita 4 argumentos:
 
-* The action of the controller you are requesting. This can be in the form of a string or a symbol. 
-* An optional hash of request parameters to pass into the action (eg. query string parameters or post variables).
-* An optional hash of session variables to pass along with the request.
-* An optional hash of flash values.
+* A action do controller para o qual você está disparando o request. Pode ser na forma de uma string ou de um simbolo.
+* Um hash opcional de parâmetros do request para passar para a action (ex. parâmetros query string ou variáveis post).
+* Um hash opcional de variáveis de sessão para passar ao request.
+* Um hash opcional de valores flash.
 
-Example: Calling the +:show+ action, passing an +id+ of 12 as the +params+ and setting a +user_id+ of 5 in the session:
+Exemplo: Chamando a action +:show+, passando um +id+ 12 como +params+ e setando um +user_id+ 5 na sessão:
 
 [source,ruby]
 --------------------------------------------------
 get(:show, {'id' => "12"}, {'user_id' => 5})
 --------------------------------------------------
 
-Another example: Calling the +:view+ action, passing an +id+ of 12 as the +params+, this time with no session, but with a flash message.
+Outro exemplo: Chamando a action +:view+, passando um +id+ 12 como +params+, desta vez sem sessão, mas com uma mensagem flash.
 
 [source,ruby]
 --------------------------------------------------
 get(:view, {'id' => '12'}, nil, {'message' => 'booya!'})
 --------------------------------------------------
 
-NOTE: If you try running +test_should_create_post+ test from +posts_controller_test.rb+ it will fail on account of the newly added model level validation and rightly so.
+NOTE: Se você tentar rodar o teste +test_should_create_post+ pelo +posts_controller_test.rb+ ele vai falhar por conta do novo nível de validação adicionado ao model.
 
-Let us modify +test_should_create_post+ test in +posts_controller_test.rb+ so that all our test pass:
+Vamos modificar o teste +test_should_create_post+ em +posts_controller_test.rb+ para que nossos testes passem:
 
 [source,ruby]
 --------------------------------------------------
@@ -519,11 +519,11 @@ def test_should_create_post
 end
 --------------------------------------------------
 
-Now you can try running all the tests and they should pass.
+Agora você pode tentar rodar todos os testes e eles devem passar.
 
-=== Available Request Types for Functional Tests ===
+=== Tipos de Requisições Disponíveis para Testes Funcionais ===
 
-If you're familiar with the HTTP protocol, you'll know that +get+ is a type of request. There are 5 request types supported in Rails functional tests:
+Se você estiver familiarizado com o protocolo HTTP, você saberá que +get+ é um tipo de requisição. Há 5 tipos de requisições suportados no testes funcionais do Rails:
 
 * +get+
 * +post+
@@ -531,18 +531,18 @@ If you're familiar with the HTTP protocol, you'll know that +get+ is a type of r
 * +head+
 * +delete+
 
-All of request types are methods that you can use, however, you'll probably end up using the first two more often than the others.
+Todos estes tipos de requisições são métodos que você pode usar, entretanto, você provavelmente vai acabar usando os dois primeiros com mais freqüência que os outros.
 
-=== The 4 Hashes of the Apocalypse ===
+=== Os 4 Hashes do Apocalipse ===
 
-After a request has been made by using one of the 5 methods (+get+, +post+, etc.) and processed, you will have 4 Hash objects ready for use:
+Depois que uma requisição tiver sido realizada e processada usando um dos 5 métodos (+get+, +post+, etc.), você terá 4 objetos Hash prontos para usar:
 
-* +assigns+ - Any objects that are stored as instance variables in actions for use in views.
-* +cookies+ - Any cookies that are set.
-* +flash+ - Any objects living in the flash.
-* +session+ - Any object living in session variables.
+* +assigns+ - Quaisquer objetos que são armazenados como variáveis de instância em actions para uso nas views.
+* +cookies+ - Quaisquer cookies que tiverem sido setados.
+* +flash+ - Qualquer objeto vivendo na flash.
+* +session+ - Qualquer objeto vivendo em variáveis de sessão.
 
-As is the case with normal Hash objects, you can access the values by referencing the keys by string. You can also reference them by symbol name, except for +assigns+. For example:
+Como ocorre com objetos Hash convencionais, você pode acessar os valores referenciando as chaves por string. Você pode também referenciá-las pelo nome do símbolo, com exceção de +assigns+. Por exemplo:
 
 [source,ruby]
 --------------------------------------------------
@@ -550,21 +550,21 @@ As is the case with normal Hash objects, you can access the values by referencin
   session["shmession"]          session[:shmession]
   cookies["are_good_for_u"]     cookies[:are_good_for_u]
 
-# Because you can't use assigns[:something] for historical reasons:
+# Porque você não pode usar assigns[:something] por razões históricas:
   assigns["something"]          assigns(:something)
 --------------------------------------------------
 
-=== Instance Variables Available ===
+=== Variáveis de Instância Disponíveis ===
 
-You also have access to three instance variables in your functional tests:
+Você também tem acesso a três variáveis de instância nos seus testes funcionais:
 
-* +@controller+ - The controller processing the request
-* +@request+ - The request
-* +@response+ - The response
+* +@controller+ - O controller processando a requisição
+* +@request+ - O request
+* +@response+ - O response
 
-=== A Fuller Functional Test Example
+=== Um Exemplo Mais Completo de Teste Funcional
 
-Here's another example that uses +flash+, +assert_redirected_to+, and +assert_difference+:
+Aqui está outro exemplo que usa +flash+, +assert_redirected_to+, e +assert_difference+:
 
 [source,ruby]
 --------------------------------------------------
@@ -577,7 +577,7 @@ def test_should_create_post
 end
 --------------------------------------------------
 
-=== Testing Views ===
+=== Testando Views ===
 
 Testing the response to your request by asserting the presence of key HTML elements and their content is a useful way to test the views of your application. The +assert_select+ assertion allows you to do this by using a simple yet powerful syntax.
 
