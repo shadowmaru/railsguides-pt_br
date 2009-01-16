@@ -48,47 +48,45 @@ User.find(session[:user_id])
 
 Um id de sessão consiste em um hash criado a partir de uma string aleatória. A string aleatória é composta pelo horário atual, um número aleatório entre 0 e 1, o id do processo do interpretador Ruby (basicamente um número aleatório também) e uma string constante. Atualmente é realmente muito difícil quebrar ids de sessão do Rails usando força bruta. O algorítmo MD5 não é totalmente garantido, dado que teoricamente é possível criar dois textos de entrada diferentes que resultam em um mesmo hash MD5. Entretanto, até o momento isso não teve nenhum impacto na segurança do Rails.
 
-=== Session hijacking
+=== Sequestro de sessão
 
--- _Stealing a user's session id lets an attacker use the web application in the victim's name._
+-- _Roubar o id de sessão de um usuário permite que um atacante use a aplicação web se passando pelo usuário._
 
-Many web applications have an authentication system: a user provides a user name and password, the web application checks them and stores the corresponding user id in the session hash. From now on, the session is valid. On every request the application will load the user, identified by the user id in the session, without the need for new authentication. The session id in the cookie identifies the session.
+Muitas aplicações web possuem um sistema de autenticação: um usuário fornece um username e uma senha, a aplicação web verifica estes dados e carrega o respectivo id de usuário no hash de sessão. De agora em diante, a sessão é válida. A cada novo request a aplicação irá carregar o usuário, identificado pelo id de usuário na sessão, sem a necessidade de uma nova autenticação. O id de sessão no cookie identifica a sessão.
 
-Hence, the cookie serves as temporary authentication for the web application. Everyone who seizes a cookie from someone else, may use the web application as this user – with possibly severe consequences. Here are some ways to hijack a session, and their countermeasures:
+Desta forma, o cookie funciona como uma autenticação temporária para a aplicação web. Qualquer um que possua um cookie de outra pessoa pode utilizar a aplicação web como se fosse essa outra pessoa - possívelmente com consequências graves. Veja a seguir algumas formas de sequestrar a sessão e suas medidas preventivas:
 
-- Sniff the cookie in an insecure network. A wireless LAN can be an example of such a network. In an unencrypted wireless LAN it is especially easy to listen to the traffic of all connected clients. This is one more reason not to work from a coffee shop. For the web application builder this means to [,#fffcdb]#provide a secure connection over SSL#.
+- "Sniffar" o cookie em uma rede não segura. Uma rede LAN sem fios pode ser um exemplo de tal rede. Em uma rede LAN sem fios não encriptada é especialmente fácil escutar o tráfego de todos os clientes conectados. Esta é mais uma razão para não trabalhar a partir de uma cafeteria. Para o desenvolvedor de aplicações web, isso significa [,#fffcdb]#fornecer uma conexão segura através de SSL#.
 
-- Most people don't clear out the cookies after working at a public terminal. So if the last user didn't log out of a web application, you would be able to use it as this user. Provide the user with a [,#fffcdb]#log-out button# in the web application, and [,#fffcdb]#make it prominent#.
+- A maioria das pessoas não limpa seus cookies após trabalhar em um terminal público. Assim, se o último usuário não desfizer seu login na aplicação web, você poderá usar a aplicação como se fosse este usuário. Forneça ao usuário um botão [,#fffcdb]#Sair# e torne-o [,#fffcdb]#visível#.
 
-- Many cross-site scripting (XSS) exploits aim at obtaining the user's cookie. You'll read more about XSS later.
+- Vários ataques de cross-site scripting (XSS) focam-se em obter o cookie do usuário. Você lê-rá mais sobre XSS mais à frente neste guia.
 
-- Instead of stealing a cookie unknown to the attacker, he fixes a user's session identifier (in the cookie) known to him. Read more about this so-called session fixation later.
+- Ao invés de roubar um cookie desconhecido do atacante, ele fixa o identificador de sessão de um usuário conhecido (no cookie). Leia mais sobre esta forma de fixação de sessão mais à frente.
 
-The main objective of most attackers is to make money. The underground prices for stolen bank login accounts range from $10-$1000 (depending on the available amount of funds), $0.40-$20 for credit card numbers, $1-$8 for online auction site accounts and $4-$30 for email passwords, according to the http://eval.symantec.com/mktginfo/enterprise/white_papers/b-whitepaper_internet_security_threat_report_xiii_04-2008.en-us.pdf[Symantec Global Internet Security Threat Report].
+O objetivo principal da maioria dos atacantes é fazer dinheiro. No submundo, os preços para dados de autenticação bancários roubados variam entre US$ 10,00 e US$ 1000,00 (dependendo dos fundos disponíveis), de US$ 0,40 a US$ 20,00 para números de cartão de crédito, US$ 1,00 a US$ 8,00 para contas em sites de leilão online e de US$ 4,00 a US$ 30,00 para senhas de email, de acordo com o http://eval.symantec.com/mktginfo/enterprise/white_papers/b-whitepaper_internet_security_threat_report_xiii_04-2008.en-us.pdf[Relatório Global de Ameaças de Segurança na Internet da Symantec].
 
-=== Session guidelines
+=== Orientações sobre sessões
 
--- _Here are some general guidelines on sessions._
+-- _Aqui estão algumas orientações gerais sobre sessões._
 
-- [,#fffcdb]#Do not store large objects in a session#. Instead you should store them in the database and save their id in the session. This will eliminate synchronization headaches and it won't fill up your session storage space (depending on what session storage you chose, see below).
-This will also be a good idea, if you modify the structure of an object and old versions of it are still in some user's cookies. With server-side session storages you can clear out the sessions, but with client-side storages, this is hard to mitigate.
+- [,#fffcdb]#Não guarde objetos muito grandes em uma sessão#. Ao invés disso, você deve guardá-los no banco de dados e salvar apenas o id na sessão. Isso irá eliminar dores de cabeça com sincronização e não encherá o espaço de armazenamento da sessão (dependendo do tipo de mecanismo para armazenamento de sessão que você utilizar, veja mais abaixo). Com mecanismos de armazenamento do lado servidor você pode limpar as sessões, mas com mecanismo do lado cliente este é um problema difícil de eliminar.
 
-- [,#fffcdb]#Critical data should not be stored in session#. If the user clears his cookies or closes the browser, they will be lost. And with a client-side session storage, the user can read the data.
+- [,#fffcdb]#Não guarde dados críticos na sessão#. Se um usuário limpar seus cookies ou fechar seu navegador, estes dados serão perdidos. Com um mecanismo de armazenamento no lado cliente, o usuário pode ler estes dados.
 
+=== Mecanismos de armazenamento de sessão
 
-=== Session storage
+-- _O Rails fornece diversos mecanismos de armazenamento para os hashes de sessão. Os mais importantes são o ActiveRecordStore e o CookieStore._
 
--- _Rails provides several storage mechanisms for the session hashes. The most important are ActiveRecordStore and CookieStore._
+Existem diversos mecanismos para armazenamento de sessões, isto é, onde o Rails salva o hash de sessão e o id de sessão. A maioria das aplicações utiliza ActiveRecordStore (ou uma de suas variações) ao invés de armazenamento em arquivos, devido à razões de desempenho e manutenção. O ActiveRecordStore mantém o id de sessão e o hash em uma tabela no banco de dados, salvando e recuperando o hash a cada novo request.
 
-There are a number of session storages, i.e. where Rails saves the session hash and session id. Most real-live applications choose ActiveRecordStore (or one of its derivatives) over file storage due to performance and maintenance reasons. ActiveRecordStore keeps the session id and hash in a database table and saves and retrieves the hash on every request.
+O Rails 2 introduziu um novo mecanismo padrão para armazenamento de sessão, o CookieStore. O CookieStore salva o hash de sessão diretamente em um cookie no lado cliente. O servidor recupera o hash de sessão deste cookie e elimina a necessidade de um id de sessão. Isso aumenta em muito a velocidade da aplicação, mas é uma opção de armazenamento controversa e você levar em conta suas implicações com segurança:
 
-Rails 2 introduced a new default session storage, CookieStore. CookieStore saves the session hash directly in a cookie on the client-side. The server retrieves the session hash from the cookie and eliminates the need for a session id. That will greatly increase the speed of the application, but it is a controversial storage option and you have to think about the security implications of it:
+- Cookies possuem um limite de tamanho de apenas 4K. Isso não deve ser problema, uma vez que você não deve guardar grandes quantidades de dados em uma sessão, como descrito anteriormente. [,#fffcdb]#Normalmente não há problemas em guardar o id do usuário atual#.
 
-- Cookies imply a strict size limit of 4K. This is fine as you should not store large amounts of data in a session anyway, as described before. [,#fffcdb]#Storing the current user's database id in a session is usually ok#.
+- O cliente pode ver tudo o que você guardar na sessão, porque estes dados serão guardados em claro (na verdade codificados em base 64, logo não encriptados). Dessa forma, óbviamente, [,#fffcdb]#você não quer guardar nenhum segredo aqui#. Para prevenir adulterações na sessão, uma chave é calculada a partir da sessão e de uma palavra secreta no servidor e inserida no final do cookie.
 
-- The client can see everything you store in a session, because it is stored in clear-text (actually Base64-encoded, so not encrypted). So, of course, [,#fffcdb]#you don't want to store any secrets here#. To prevent session hash tampering, a digest is calculated from the session with a server-side secret and inserted into the end of the cookie.
-
-That means the security of this storage depends on this secret (and of the digest algorithm, which defaults to SHA512, which has not been compromised, yet). So [,#fffcdb]#don't use a trivial secret, i.e. a word from a dictionary, or one which is shorter than 30 characters#. Put the secret in your environment.rb:
+Isso significa que a segurança deste mecanismo depende desta palavra secreta (e do algorítmo de geração da chave, que por padrão é o SHA512, o qual *ainda* não foi quebrado). Logo, [,#fffcdb]#não use uma palavra secreta muito comum, ou seja, uma palavra de um dicionário ou uma que seja menor que 30 caracteres#. Coloque a palavra secreta em seu environment.rb:
 
 ....................................
 config.action_controller.session = {
@@ -97,65 +95,65 @@ config.action_controller.session = {
 }
 ....................................
 
-There are, however, derivatives of CookieStore which encrypt the session hash, so the client cannot see it.
+Existem, entretanto, variações do CookieStore que encriptam o hash de sessão, logo o cliente não pode vê-lo.
 
-=== Replay attacks for CookieStore sessions
+=== Ataques de replay para sessões em CookieStore
 
--- _Another sort of attack you have to be aware of when using CookieStore is the replay attack._
+-- _Outro tipo de ataque sobre o qual você deve estar alerta quando estiver usando CookieStore é o ataque de replay._
 
-It works like this:
+Funciona da seguinte maneira:
 
-- A user receives credits, the amount is stored in a session (which is bad idea, anyway, but we'll do this for demonstration purposes).
-- The user buys something.
-- His new, lower credit will be stored in the session.
-- The dark side of the user forces him to take the cookie from the first step (which he copied) and replace the current cookie in the browser.
-- The user has his credit back.
+- Um usuário recebe créditos, o valor é armazenado na sessão (o que é uma má idéia, de qualquer forma, mas nós iremos fazer isso para fins de demonstração).
+- O usuário compra algo.
+- Seu novo crédito, mais baixo, será armazenado na sessão.
+- O lado negro do usuário o força a pegar o cookie do primeiro passo (o qual ele copiou) e substituir o cookie atual no navegador.
+- O usuário tem seus créditos de volta.
 
-Including a nonce (a random value) in the session solves replay attacks. A nonce is valid only once, and the server has to keep track of all the valid nonces. It gets even more complicated if you have several application servers (mongrels). Storing nonces in a database table would defeat the entire purpose of CookieStore (avoiding accessing the database).
+Incluir um valor aleatório na sessão resolve o problema dos ataques de replay. Um valor aleatório é válido somente uma vez, e o servidor precisa ter controle sobre todos os valores aleatórios válidos. Isso se torna ainda mais complicado se você tiver diversos servidores de aplicação (mongrels). Guardar valores aleatórios em uma tabela no banco de dados seria contra todo o propósito do CookieStore (evitar acessar o banco de dados).
 
-The best [,#fffcdb]#solution against it is not to store this kind of data in a session, but in the database#. In this case store the credit in the database and the logged_in_user_id in the session.
+A melhor [,#fffcdb]#solução contra ataques de replay é não guardar este tipo de informação na sessão, mas sim no banco de dados#. Neste caso guarde os créditos no banco de dados o id do usuário atual na sessão.
 
-=== Session fixation
+=== Fixação de sessão
 
--- _Apart from stealing a user's session id, the attacker may fix a session id known to him. This is called session fixation._
+-- _Além de roubar o id de sessão do usuário, um atacante pode fixar um id de sessão conhecido. Isso é chamado de fixação de sessão._
 
 image::images/session_fixation.png[Session fixation]
 
-This attack focuses on fixing a user's session id known to the attacker, and forcing the user's browser into using this id. It is therefore not necessary for the attacker to steal the session id afterwards. Here is how this attack works:
+Este ataque foca em fixar o id de sessão de um usuário conhecido do atacante e forçar o navegador do usuário a utilizar este id. Dessa forma não é necessário que o atacante roube o id de sessão. Aqui está como este ataque funciona:
 
-. The attacker creates a valid session id: He loads the login page of the web application where he wants to fix the session, and takes the session id in the cookie from the response (see number 1 and 2 in the image).
+. O atacante cria um id de sessão válido: Ele carrega a página de login da aplicação web para a qual ele quer fixar a sessão e pega o id de sessão do cookie que vier na resposta (veja os números 1 e 2 na imagem).
 
-. He possibly maintains the session. Expiring sessions, for example every 20 minutes, greatly reduces the time-frame for attack. Therefore he accesses the web application from time to time in order to keep the session alive.
+. Ele possivelmente mantém a sessão. Sessões que expiram, por exemplo a cada 20 minutos, reduzem em muito o intervalo de tempo que pode ser utilizado para o ataque. Dessa forma ele precisa acessar a aplicação web de tempo em tempo para manter a sessão ativa.
 
-. Now the attacker will force the user's browser into using this session id (see number 3 in the image). As you may not change a cookie of another domain (because of the same origin policy), the attacker has to run a JavaScript from the domain of the target web application. Injecting the JavaScript code into the application by XSS accomplishes this attack. Here is an example: +<script> document.cookie="_session_id=16d5b78abb28e3d6206b60f22a03c8d9"; </script>+
-Read more about XSS and injection later on.
+. Agora o atacante forçará o navegador do usuário a utilizar este id de sessão (veja o número 3 na imagem). Como você não pode alterar um cookie de outro domínio (devido a política de mesma origem), o atacante deve executar um código JavaScript proveniente do domínio da aplicação web alvo. Injetar o código JavaScript na aplicação através de XSS torna este ataque possível. Aqui está um exemplo: +<script> document.cookie="_session_id=16d5b78abb28e3d6206b60f22a03c8d9"; </script>+
+Leia mais sobre XSS e injeção mais à frente.
 
-. The attacker lures the victim to the infected page with the JavaScript code. By viewing the page, the victim's browser will change the session id to the trap session id.
+. O atacante atrai a vítima até a página infectada com o código JavaScript. Por ter acessado a página, o navegador do usuário irá alterar o id da sessão para o id fixado pelo atacante.
 
-. As the new trap session is unused, the web application will require the user to authenticate.
+. Como a sessão fixada não foi utilizada, a aplicação web solicitará que o usuário se autentique.
 
-. From now on, the victim and the attacker will co-use the web application with the same session: The session became valid and the victim didn't notice the attack.
+. De agora em diante, a vítima e o atacante utilizarão a aplicação web com a mesma sessão: A sessão tornou-se válida e a vítima não notou o ataque.
 
-=== Session fixation – Countermeasures
+=== Fixação de sessão - Medidas preventivas
 
--- _One line of code will protect you from session fixation._
+-- _Uma linha de código o protegerá contra ataques de fixação de sessão._
 
-The most effective countermeasure is to [,#fffcdb]#issue a new session identifier# and declare the old one invalid after a successful login. That way, an attacker cannot use the fixed session identifier. This is a good countermeasure against session hijacking, as well. Here is how to create a new session in Rails:
+A medida preventiva mais eficiente é [,#fffcdb]#fornecer um novo identificador de sessão# e declarar o identificador anterior inválido logo após uma tentativa de autenticação com sucesso. Dessa forma, um atacante não pode usar o identificador da sessão fixada. Esta é também uma boa medida preventiva contra sequestro de sessão. Aqui está como criar uma nova sessão no Rails:
 
 [source, ruby]
 ----------------------------------------------------------------------------
 reset_session
 ----------------------------------------------------------------------------
 
-If you use the popular RestfulAuthentication plugin for user management, add reset_session to the SessionsController#create action. Note that this removes any value from the session, [,#fffcdb]#you have to transfer them to the new session#.
+Se você utiliza o popular plugin RestfulAuthentication para manutenção de usuários, adicione +reset_session+ à action SessionsController#create. Note que isso remove qualquer valor da sessão, [,#fffcdb]#você precisa transferi-los para a nova sessão#.
 
-Another countermeasure is to [,#fffcdb]#save user-specific properties in the session#, verify them every time a request comes in, and deny access, if the information does not match. Such properties could be the remote IP address or the user agent (the web browser name), though the latter is less user-specific. When saving the IP address, you have to bear in mind that there are Internet service providers or large organizations that put their users behind proxies. [,#fffcdb]#These might change over the course of a session#, so these users  will not be able to use your application, or only in a limited way.
+Outra medida preventiva é [,#fffcdb]#salvar propriedades específicas do usuário na sessão#, verificá-las a cada novo request, e negar acesso se a informação não bater.Tais propriedades poderiam ser o endereço de IP remoto ou o nome do agente (o nome do navegador), apesar do último ser menos específico do usuário. ao salvar o endereço IP, você deve ter em mente que existem provedores de serviços de Internet ou grandes organizações que colocam seus usuário atrás de proxies. [,#fffcdb]#Estes proxies podem mudar durante a duração de uma sessão, logo estes usuários não serão capazes de utilizar sua aplicação, ou apenas poderão usá-la de forma limitada.
 
-=== Session expiry
+=== Validade da sessão
 
--- _Sessions that never expire extend the time-frame for attacks such as cross-site reference forgery (CSRF), session hijacking and session fixation._
+-- _Sessões que nunca expiram aumentam o intervalo de tempo para ataques como cross site reference forgery (CSRF), sequestro de sessão ou fixação de sessão._
 
-One possibility is to set the expiry time-stamp of the cookie with the session id. However the client can edit cookies that are stored in the web browser so expiring sessions on the server is safer. Here is an example of how to [,#fffcdb]#expire sessions in a database table#. Call Session.sweep("20m") to expire sessions that were used longer than 20 minutes ago.
+Uma possibilidade é definir o time-stamp de validade do cookie com o id da sessão. Entretanto o usuário pode editar cookies que estão armazenados no navegador, logo expirar as sessões no servidor é mais seguro. Aqui está um exemplo de como [,#fffcdb]#expirar sessões em uma tabela no banco de dados#. Chame +Session.sweep("20m")+ para expirar sessões que fiquem mais de 20 minutos sem serem usadas.
 
 [source, ruby]
 ----------------------------------------------------------------------------
@@ -172,7 +170,7 @@ class Session < ActiveRecord::Base
  end
 ----------------------------------------------------------------------------
 
-The section about session fixation introduced the problem of maintained sessions. An attacker maintaining a session every five minutes can keep the session alive forever, although you are expiring sessions. A simple solution for this would be to add a created_at column to the sessions table. Now you can delete sessions that were created a long time ago. Use this line in the sweep method above:
+A seção sobre fixação dee sessão introduziu o problema de manutenção de sessões. Um atacante mantendo uma sessão a cada cinco minutos pode manter a sessão ativa para sempre, apesar de você estar expirando as sessões. Uma solução simples para isso seria adicionar uma coluna +created_at+ à tabela de sessões. Agora você pode apagar sessões que foram criadas há muito tempo atrás. Use essa linha no método +sweep+ acima:
 
 [source, ruby]
 ----------------------------------------------------------------------------
@@ -180,50 +178,52 @@ self.delete_all "updated_at < '#{time.to_s(:db)}' OR created_at < '#{2.days.ago.
 ----------------------------------------------------------------------------
 
 == Cross-Site Reference Forgery (CSRF)
--- _This attack method works by including malicious code or a link in a page that accesses a web application that the user is believed to have authenticated. If the session for that web application has not timed out, an attacker may execute unauthorized commands._
+-- _Este método de ataque funciona incluindo código malicioso ou um link em uma página que acessa uma aplicação web na qual acredita-se que o usuário tenha se autenticado. Se a sessão para essa aplicação web não tiver expirado, um atacante pode executar comandos não autorizados._
 
 image::images/csrf.png[CSRF]
 
-In the session chapter you have learned that most Rails applications use cookie-based sessions. Either they store the session id in the cookie and have a server-side session hash, or the entire session hash is on the client-side. In either case the browser will automatically send along the cookie on every request to a domain, if it can find a cookie for that domain. The controversial point is, that it will also send the cookie, if the request comes from a site of a different domain. Let's start with an example:
+No capítulo sobre sessões você aprendeu que a maioria das aplicações Rails utilizam sessões armazenadas em cookies. Ou elas guardam o id de sessão no cookie e possuem um hash de sessão do lado servidor, ou todo o hash de sessão fica do lado cliente. Em qualquer um dos casos o navegador enviará o cookie a um domínio a cada nova requisição, se ele for capaz de encontrar um cookie para aquele domínio. O ponto controverso é que ele também enviará o cookie se a requisição vier de um domínio diferente. Vamos começar com um exemplo:
 
-- Bob browses a message board and views a post from a hacker where there is a crafted HTML image element. The element references a command in Bob's project management application, rather than an image file.
+- Bob navega por um fórum de discussão e visualiza uma mensagem criada por um hacker onde existe um elemento HTML de imagem forjado. O elemento referencia um comando na aplicação de gerenciamento de projetos de Bob, ao invés de um arquivo de imagem.
 - +<img src="http://www.webapp.com/project/1/destroy">+
-- Bob's session at www.webapp.com is still alive, because he didn't log out a few minutes ago.
-- By viewing the post, the browser finds an image tag. It tries to load the suspected image from www.webapp.com. As explained before, it will also send along the cookie with the valid session id.
-- The web application at www.webapp.com verifies the user information in the corresponding session hash and destroys the project with the ID 1. It then returns a result page which is an unexpected result for the browser, so it will not display the image.
-- Bob doesn't notice the attack -- but a few days later he finds out that project number one is gone.
+- A sessão de Bob em www.webapp.com ainda está ativa, porque ele não fez seu logout alguns minutos atrás.
+- Por acessar a mensagem, o navegador encontra uma tag de imagem. Ele tenta carregar a imagem suspeita a partir de www.webapp.com. Como explicado anteriormente, ele também enviará o cookie com id de sessão válido.
+- A aplicação web em www.webapp.com verifica a informação do usuário no respectivo hash de sessão e destroy o projeto com ID 1. Ele então retorna a página com o resultado da operação, o que é um resultado inesperado para o navegador, logo ele não irá exibir a imagem.
+- Bob não percebe o ataque -- Mas alguns dias mais tarde ele percebe que o projeto número um se foi.
 
-It is important to notice that the actual crafted image or link doesn't necessarily have to be situated in the web application's domain, it can be anywhere – in a forum, blog post or email.
+É importante perceber que a imagem forjada ou link não precisam necessariamente estar situados no domínio da aplicação web, pode estar em qualquer lugar - em um fórum, post de blog ou email.
 
-CSRF appears very rarely in CVE (Common Vulnerabilities and Exposures) -- less than 0.1% in 2006 -- but it really is a 'sleeping giant' [Grossman]. This is in stark contrast to the results in my (and others) security contract work – [,#fffcdb]#CSRF is an important security issue#.
+O CSRF aparece muito raramente no CVE (Exposições e Vulnerabilidades Comuns) -- menos de 0.1% em 2006 -- mas é realmente um 'gigante adormecido' [Grossman]. Esses dados estão em forte contraste com os resultados no meu trabalho em relação à segurança (e também no de outros) - [,#fffcdb]#CSRF é um problema de segurança muito importante#.
 
-=== CSRF Countermeasures
+=== Medidas preventivas para o CSRF
 
--- _First, as is required by the W3C, use GET and POST appropriately. Secondly, a security token in non-GET requests will protect your application from CSRF._
+-- _Primeiramente, como é requerido pelo W3C, utilize POST e GET de forma correta. Além disso, um token de segurança em requesições que não sejam GET protegerá sua aplicação contra o CSRF._
 
-The HTTP protocol basically provides two main types of requests - GET and POST (and more, but they are not supported by most browsers). The World Wide Web Consortium (W3C) provides a checklist for choosing HTTP GET or POST:
+O protocólo HTTP fornece basicamente duas formas princípais de requisiçãi - GET e POST (e outros, mas estas não são fornecidas pela maioria dos navegadores). O World Wide Web Consortium (W3C) fornece um checklist para que se escolha entre GET ou POST:
 
-*Use GET if:*
+*Utilize GET se:*
 
-- The interaction is more [,#fffcdb]#like a question# (i.e., it is a safe operation such as a query, read operation, or lookup).
+- A interação for como [,#fffcdb]#uma pergunta# (ou seja, é uma operação segura, como uma pesquisa, operação de leitura, etc).
 
-*Use POST if:*
+*Utilize POST se:*
 
-- The interaction is more [,#fffcdb]#like an order#, or
-- The interaction [,#fffcdb]#changes the state# of the resource in a way that the user would perceive (e.g., a subscription to a service), or
-- The user is [,#fffcdb]#held accountable for the results# of the interaction.
+- A interação for como [,#fffcdb]#uma ordem#, ou
+- A interação [,#fffcdb]#altera o estado do recurso de uma forma que usuário perceberia (por exemplo, a assinatura de um serviço), ou 
+- O usuário [,#fffcdb]#deve se responsabilizar pelos resultados# da interação.
 
-If your web application is RESTful, you might be used to additional HTTP verbs, such as PUT or DELETE. Most of today‘s web browsers, however do not support them - only GET and POST. Rails uses a hidden +_method+ field to handle this barrier.
+Se a sua aplicação web for RESTful, você deve estar acostumado com os verbos HTTP adicionais, como PUT e DELETE. A maioria dos navegadores atuais, entretanto, não sabem como tratar tais verbos - apenas GET e POST. O Rails utiliza um campo oculto +_method+ para tratar esta limitação.
 
-[,#fffcdb]#The verify method in a controller can make sure that specific actions may not be used over GET#. Here is an example to verify the use of the transfer action over POST. If the action comes in using any other verb, it redirects to the list action.
+[,#fffcdb]#O método +verify+ em um controller pode certificar que actions específicas não possam ser utilizas através de GET#. Aqui está um exemplo para verificar o uso da action +transfer+ através de POST. Se a ação vier utilizando qualquer outro verbo, haverã um redirecionamento para a action +list+.
 
 .................................................................................
 verify :method => :post, :only => [:transfer], :redirect_to => {:action => :list}
 .................................................................................
 
-With this precaution, the attack from above will not work, because the browser sends a GET request for images, which will not be accepted by the web application.
+Com a adoção do padrão RESTful no Rails 2, a simples utilização de um mapeamento na forma +map.resources :your_resources+ no seu arquivo *routes.rb*, em conjunto com a correta utilização do conjunto de rotas dinamicamente gerado por essa linha de código, garante a utilização dos verbos corretos para cada tipo de ação sobre um recurso.
 
-But this was only the first step, because [,#fffcdb]#POST requests can be send automatically, too#. Here is an example for a link which displays www.harmless.com as destination in the browser's status bar. In fact it dynamically creates a new form that sends a POST request.
+Com essas precauções, o ataque citado acima não funcionará, porque o browser enviará uma requisição GET para imagens, a qual não será aceita pela aplicação web.
+
+Mas este foi apenas o primeiro passo, porque [,#fffcdb]#requests POST podem ser enviados automaticamente também#. Aqui está um exemplo de um link que exibe www.harmless.com como destino na barra de status do navegador. Na verdade esse cria um novo form dinamicamente que envia um request POST. 
 
 [source, html]
 ----------------------------------------------------------------------------
@@ -237,27 +237,27 @@ But this was only the first step, because [,#fffcdb]#POST requests can be send a
   return false;">To the harmless survey</a>
 ----------------------------------------------------------------------------
 
-Or the attacker places the code into the onmouseover event handler of an image:
+Ou um atacante o código no evento onmouseover de uma imagem:
 
 +<img src="http://www.harmless.com/img" width="400" height="400" onmouseover="..." />+
 
-There are many other possibilities, including Ajax to attack the victim in the background. The  [,#fffcdb]#solution to this is including a security token in non-GET requests# which check on the server-side. In Rails 2 or higher, this is a one-liner in the application controller:
+Existem muitas outras possibilidades, incluindo Ajax para atacar a vítima no background. A solução [,#fffcdb]# para este problema é incluir um token de segurança em requests que não sejam GET# que casem com o que está do lado servidor. No Rails 2 ou superior, precisamos de uma única linha de código no application controller:
 
 +protect_from_forgery :secret => "123456789012345678901234567890..."+
 
-This will automatically include a security token, calculated from the current session and the server-side secret, in all forms and Ajax requests generated by Rails. You won't need the secret, if you use CookieStorage as session storage. It will raise an ActionController::InvalidAuthenticityToken error, if the security token doesn't match what was expected.
+Isso incluirá automaticamente um token de segurança, calculado a partir da sessão atual e de uma palavra secreta do lado servidor, em todos os formulários e requests Ajax gerados pelo Rails. Você não precisará da palavra secreta se você utilizar CookiStorage como mecanismo de armazenamento de sessions. Se o token de segurança não for o esperado, será lançada uma exceção do tipo ActioController::InvalidAuthenticityToken
 
-Note that [,#fffcdb]#cross-site scripting (XSS) vulnerabilities bypass all CSRF protections#. XSS gives the attacker access to all elements on a page, so he can read the CSRF security token from a form or directly submit the form. Read more about XSS later.
+Perceba que [,#fffcdb]#vulnerabilidades de cross-site scripting (XSS) contornam todas as proteções contra CSRF#. XSS dá ao atacante acesso a todos os elementos em uma página, logo ele pode ler o token de segurança CSRF de um form ou enviar o form diretamente. Leia mais sobre XSS mais à frente.
 
-== Redirection and Files
+== Redirecionamento e Arquivos
 
-Another class of security vulnerabilities surrounds the use of redirection and files in web applications.
+Outra forma de vulnerabilidade de segurança envolve o uso de redirecionamento e arquivos em aplicações web.
 
-=== Redirection
+=== Redirecionamento
 
--- _Redirection in a web application is an underestimated cracker tool: Not only can the attacker forward the user to a trap web site, he may also create a self-contained attack._
+-- _Redirecionamento em um aplicação web é uma ferramenta craker subestimada: O atacante pode não apenas enviar o usuário para um website falso mas também criar um ataque auto contido._
 
-Whenever the user is allowed to pass (parts of) the URL for redirection, it is possibly vulnerable. The most obvious attack would be to redirect users to a fake web application which looks and feels exactly as the original one. This so-called phishing attack works by sending an unsuspicious link in an email to the users, injecting the link by XSS in the web application or putting the link into an external site. It is unsuspicious, because the link starts with the URL to the web application and the URL to the malicious site is hidden in the redirection parameter: http://www.example.com/site/redirect?to= www.attacker.com. Here is an example of a legacy action:
+Sempre que for possível que o usuário forneça (partes) da URL para redirecionamento, essa será uma possível vulnerabilidade. O ataque mais óbvio seria redirecionar usuários para uma aplicação web falsa que se pareça exatamente com a original. Esse pseudo ataque de phishing funciona enviando um link por email para os usuários, injetando o link por XSS na aplicação web ou colocando o link em um site externo. Isso não levanta suspeitas, porque o link começa com a URL da aplicação web e a URL do site malicioso está escondida no parâmetro de redirecionamento: http://www.example.com/site/redirect?to= www.attacker.com. Aqui está um exemplo de uma action 'legacy':
 
 [source, ruby]
 ----------------------------------------------------------------------------
@@ -266,27 +266,27 @@ def legacy
 end
 ----------------------------------------------------------------------------
 
-This will redirect the user to the main action if he tried to access a legacy action. The intention was to preserve the URL parameters to the legacy action and pass them to the main action. However, it can exploited by an attacker if he includes a host key in the URL:
+Isso irá redirecionat o usuário para a action 'main' se ele tentar acessar a action 'legacy'. A intenção foi preservar os parãmetros da URL para a action 'legacy' e passá-los para a action 'main'. Entretanto, isso pode ser explorado por um atacante caso ele inclua uma chave 'host' na URL
 
 +http://www.example.com/site/legacy?param1=xy&param2=23&host=www.attacker.com+
 
-If it is at the end of the URL it will hardly be noticed and redirects the user to the attacker.com host. A simple countermeasure would be to [,#fffcdb]#include only the expected parameters in a legacy action# (again a whitelist approach, as opposed to removing unexpected parameters). [,#fffcdb]#And if you redirect to an URL, check it with a whitelist or a regular expression#.
+Se este parâmetro estiver no final da URL ele dificilmente será percebido e fará com que o usuário seja redirecionado para o host attacker.com. Uma medida preventiva simples seria [,#fffcdb]#incluir apenas os parâmetros esperados na action 'legacy'# (novamente uma tática de whitelist, ao contrário de remover parâmetros inesperados). [,#fffcdb]#E se você redirecionar para uma URL, verifique-a com uma white list ou expressão regular#.
 
-==== Self-contained XSS
+==== XSS Auto-contido
 
-Another redirection and self-contained XSS attack works in Firefox and Opera by the use of the data protocol. This protocol displays its contents directly in the browser and can be anything from HTML or JavaScript to entire images:
+Outro ataque de redirecionamento e XSS auto-contido funciona no Firefox e no Opera, utilizando o protocolo de dados. Este protocolo exibe seu conteúdo diretamente no navegador e pode ser qualquer coisa, de HTML ou JavaScript a imagens:
 
 +data:text/html;base64,PHNjcmlwdD5hbGVydCgnWFNTJyk8L3NjcmlwdD4K+
 
-This example is a Base64 encoded JavaScript which displays a simple message box. In a redirection URL, an attacker could redirect to this URL with the malicious code in it. As a countermeasure, [,#fffcdb]#do not allow the user to supply (parts of) the URL to be redirected to#.
+Este exemplo é um JavaScript codificado em Base64 que exibe uma simples caixa de mensagem. Em uma URL de redirecionamento, um atacante poderia fazer um redirecionamento para essa URL com um código malicioso embutido. Como medida preventiva, [,#fffcdb]#não permita que o usuário forneça partes da URL (ou toda ela) para redirecionamento#.
 
-=== File uploads
+=== Uploads de Arquivos
 
--- _Make sure file uploads don't overwrite important files, and process media files asynchronously._
+-- _Certifique-se de que uploads de arquivos não sobrescrevem arquivos importantes e processe arquivos de media de forma assíncrona._
 
-Many web applications allow users to upload files. [,#fffcdb]#File names, which the user may choose (partly), should always be filtered# as an attacker could use a malicious file name to overwrite any file on the server. If you store file uploads at /var/www/uploads, and the user enters a file name like “../../../etc/passwd”, it may overwrite an important file. Of course, the Ruby interpreter would need the appropriate permissions to do so – one more reason to run web servers, database servers and other programs as a less privileged Unix user.
+Muitas aplicações web permitem que usuários façam upload de arquivos. [,#fffcdb]#Nomes de arquivos que o usuário possa (parcialmente) escolher, devem sempre ser filtrados#, uma vez que um atacante pode utilizar um nome de arquivo malicioso para sobrescrever qualquer arquivo no servidor. Se você armazenar os arquivos em /var/www/uploads, e o usuário fornecer um nome como "../../..-etc/passwd", isso pode sobrescrever um arquivo importante. Óbviamente o interpretador Ruby precisaria das permissões necessárias para fazer isso - uma razão a mais para executar web servers, servidores de bancos de dados e outros programas como um usuário Unix menos privilegiado.
 
-When filtering user input file names, [,#fffcdb]#don't try to remove malicious parts#. Think of a situation where the web application removes all “../” in a file name and an attacker uses a string such as “....//” - the result will be “../”. It is best to use a whitelist approach, which [,#fffcdb]#checks for the validity of a file name with a set of accepted characters#. This is opposed to a blacklist approach which attempts to remove not allowed characters. In case it isn't a valid file name, reject it (or replace not accepted characters), but don't remove them. Here is the file name sanitizer from the http://github.com/technoweenie/attachment_fu/tree/master[attachment_fu plugin]:
+Quando estiver filtrando os nomes de arquivo fornecidos pelos usuários, [,#fffcdb]#não tente remover as partes maliciosas#. Pense em uma situação onde a aplicação web remove todos os '../' de um nome de arquivo e um usuário utilize uma string como '....//' - o resultado seria não tente remover as partes maliciosas#. Pense em uma situação onde a aplicação web remove todos os '../' de um nome de arquivo e um usuário utilize uma string como '....//' - o resultado seria não tente remover as partes maliciosas#. Pense em uma situação onde a aplicação web remove todos os '../' de um nome de arquivo e um usuário utilize uma string como '....//' - o resultado seria '../'. É melhor utilizar uma tática de whitelist que tente remover caracteres não permitidos. Caso este não seja um nome de arquivo válido, rejeite-o (ou substitua caracteres não permitidos), mas não remova-os. Este é o sanitizador de nomes de arquivos do http://github.com/technoweenie/attachment_fu/tree/master[plugin attachment_fu]:
 
 [source, ruby]
 ----------------------------------------------------------------------------
@@ -302,20 +302,21 @@ def sanitize_filename(filename)
 end
 ----------------------------------------------------------------------------
 
-A significant disadvantage of synchronous processing of file uploads (as the attachment_fu plugin may do with images), is its [,#fffcdb]#vulnerability to denial-of-service attacks#. An attacker can synchronously start image file uploads from many computers which increases the server load and may eventually crash or stall the server.
+Uma desvantagem significativa de processar uploads de arquivos de forma síncrona (como o plugin attachment_fu pode fazer com imagens) [,#fffcdb]#é sua vulnerabilidade para ataques de denial-of-service#. Um atacante pode iniciar, de forma síncrona, uploads de arquivos a partir de vários computadores, o que aumentaria a carga no servidor e poderia eventualmente travá-lo. 
 
-The solution to this, is best to [,#fffcdb]#process media files asynchronously#: Save the media file and schedule a processing request in the database. A second process will handle the processing of the file in the background.
+A solução para isso é [,#fffcdb]#processar arquivos de media de forma assíncrona#: Salve o arquivo e agende um request para processamento no banco de dados. Um segundo processo cuidará do processamento do arquivo em background.
 
-=== Executable code in file uploads
+=== Código executável em uploads de arquivos
 
--- _Source code in uploaded files may be executed when placed in specific directories. Do not place file uploads in Rails /public directory if it is Apache's home directory._
+-- _Arquivo fonte em uploads de arquivos pode ser executado quando colocado em diretórios específicos. Não coloque file uploads na pasta '/public' da sua aplicação Rails se este for o diretório 'home' do Apache._
 
-The popular Apache web server has an option called DocumentRoot. This is the home directory of the web site, everything in this directory tree will be served by the web server. If there are files with a certain file name extension, the code in it will be executed when requested (might require some options to be set). Examples for this are PHP and CGI files. Now think of a situation where an attacker uploads a file “file.cgi” with code in it, which will be executed when someone downloads the file.
+O popular servidor web Apache possui uma opção chamada DocumentRoot. Este é o diretório 'home' do web site, tudo nesta árvore de diretórios será servido pelo servidor web. Caso existam arquivos com uma certa extensão, o código que estiver ali dentro será executado quando solicitado. Exemplos disso são arquivos PHP e CGI. Agora pense em uma situação onde um atacante envia um arquivo file.cgi com código dentro, o qual será executado quando alguém fizer download deste arquivo.
 
-[,#fffcdb]#If your Apache DocumentRoot points to Rails' /public directory, do not put file uploads in it#, store files at least one level downwards.
+[,#fffcdb]#Se o seu DocumentRoot do Apache apontar para a pasta 'public' da sua aplicação Rails, não coloque os arquivos recebidos ali, armazene os arquivos pelo menos um nível acima.
 
-=== File downloads
+=== Downloads de arquivos
 
+== PAREI AQUI
 -- _Make sure users cannot download arbitrary files._
 
 Just as you have to filter file names for uploads, you have to do so for downloads. The send_file() method sends files from the server to the client. If you use a file name, that the user entered, without filtering, any file can be downloaded:

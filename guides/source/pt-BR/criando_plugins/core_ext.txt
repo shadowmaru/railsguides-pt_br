@@ -1,0 +1,130 @@
+== Estendendo as classes básicas ==
+
+Esta seção irá explicar como adicionar um método na classe String que estará disponível em qualquer local
+da sua aplicação rails. Para isto iremos:
+
+ * Escrever testes para o comportamento desejado
+ * Criar e adicionar os arquivos corretos
+
+=== Criando os testes ===
+
+Neste exemplo você irá adicionar um método à classe String chamado `to_squawk`. Para começar, crie um novo arquivo de teste
+com algumas assertions:
+
+*vendor/plugins/yaffle/test/core_ext_test.rb*
+
+[source, ruby]
+--------------------------------------------------------
+require File.dirname(__FILE__) + '/test_helper.rb'
+
+class CoreExtTest < Test::Unit::TestCase
+  def test_to_squawk_prepends_the_word_squawk
+    assert_equal "squawk! Hello World", "Hello World".to_squawk
+  end
+end
+--------------------------------------------------------
+
+Entre no diretório do plugin e execute `rake test`:
+
+--------------------------------------------------------
+cd vendor/plugins/yaffle
+rake test
+--------------------------------------------------------
+
+O teste acima deve falhar com a mensagem:
+
+--------------------------------------------------------
+ 1) Error:
+test_to_squawk_prepends_the_word_squawk(CoreExtTest):
+NoMethodError: undefined method `to_squawk' for "Hello World":String
+    ./test/core_ext_test.rb:5:in `test_to_squawk_prepends_the_word_squawk'
+--------------------------------------------------------
+
+Ótimo - agora você está pronto para começar o desenvolvimento.
+
+=== Organize seus arquivos ===
+
+Um padrão comum para plugins do rails é preparar a estrutura de arquivos dessa maneira:
+
+--------------------------------------------------------
+|-- init.rb
+|-- lib
+|   |-- yaffle
+|   |   `-- core_ext.rb
+|   `-- yaffle.rb
+--------------------------------------------------------
+
+A primeira coisa que precisamos é adicionar um require para nosso arquivo 'lib/yaffle.rb' no 'init.rb':
+
+*vendor/plugins/yaffle/init.rb*
+
+[source, ruby]
+--------------------------------------------------------
+require 'yaffle'
+--------------------------------------------------------
+
+Depois, no 'lib/yaffle.rb' adicionamos um require para 'lib/core_ext.rb':
+
+*vendor/plugins/yaffle/lib/yaffle.rb*
+
+[source, ruby]
+--------------------------------------------------------
+require "yaffle/core_ext"
+--------------------------------------------------------
+
+Por fim, criar o arquivo 'core_ext.rb' e adicionar o método 'to_squawk':
+
+*vendor/plugins/yaffle/lib/yaffle/core_ext.rb*
+
+[source, ruby]
+--------------------------------------------------------
+String.class_eval do
+  def to_squawk
+    "squawk! #{self}".strip
+  end
+end
+--------------------------------------------------------
+
+Para testar que seu método faz o que ele diz que faz, execute os testes unitários com `rake` a partir do diretório do
+seu plugin. Para ver isto em ação, abra o console e execute o método:
+
+--------------------------------------------------------
+$ ./script/console
+>> "Hello World".to_squawk
+=> "squawk! Hello World"
+--------------------------------------------------------
+
+=== Usando o init.rb ===
+
+Quando o rails lê os plugins ele procura pelo arquivo init.rb. Entretanto, quando o plugin é inicializado, 'init.br' é
+chamado via `eval` (e não `require`), tendo então um comportamento diferente.
+
+Sobre certas cinscunstâncias se você reabrir classes ou módulos no `init.rb` você pode inadvertidamente criar uma nova
+classe, ao invés de reabrir uma classe existente. Uma alternativa melhor é reabrir a classe em um arquivo diferente, e
+usar um `require` para este arquivo no `init.rb`, como mostrado acima.
+
+Se você precisar reabrir uma classe no `init.rb` você pode usar `module_eval` ou `class_eval` para evitar estes problemas:
+
+*vendor/plugins/yaffle/init.rb*
+
+[source, ruby]
+---------------------------------------------------
+Hash.class_eval do
+  def is_a_special_hash?
+    true
+  end
+end
+---------------------------------------------------
+
+Outra maneira é definir explicitamente o top-level module space para todos os módulos e classes, como `::Hash`:
+
+*vendor/plugins/yaffle/init.rb*
+
+[source, ruby]
+---------------------------------------------------
+class ::Hash
+  def is_a_special_hash?
+    true
+  end
+end
+---------------------------------------------------
