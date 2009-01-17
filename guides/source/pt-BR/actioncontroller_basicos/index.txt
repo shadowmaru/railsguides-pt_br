@@ -13,7 +13,7 @@ Neste guia você aprenderá como os controllers funcionam e como eles se encaixa
 
 include::introducao.txt[]
 
-include::methods.txt[]
+include::metodos.txt[]
 
 include::params.txt[]
 

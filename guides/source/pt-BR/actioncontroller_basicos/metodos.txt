@@ -1,0 +1,39 @@
+== Métodos e Actions ==
+
+Um controller é uma classe Ruby que herda de ApplicationController e possui métodos como qualquer outra classe. Quando a sua aplicação recebe uma requisição, o roteamento determinará qual controller e action serão executados. O Rails então cria uma instância do controller e executa o método público que tenha o mesmo nome da action.
+
+[source, ruby]
+----------------------------------------------
+class ClientsController < ApplicationController
+
+  # Actions são métodos públicos
+  def new
+  end
+
+  # Métodos Action são responsáveis por gerar saídas
+  def edit
+  end
+
+# Métodos auxiliares são privados e não podem ser utilizados como Actions
+private
+
+  def foo
+  end
+
+end
+----------------------------------------------
+
+Não existe uma regra que diga que um método em um controller tem de ser uma action; eles podem ser também utilizados para outros propósitos, como filtros, que serão vistos mais tarde neste guia.
+
+Como um exemplo, se um usuário ir para `/clients/new` em sua aplicação para adicionar um novo cliente, o Rails irá criar uma instância de ClientsController e executará o método `new`. Perceba que o método em branco do exemplo acima funcionaria perfeitamente, porque o Rails por padrão renderiza a view `new.html.erb`, a não ser que o controller diga o contrário. O método `new` poderia disponibilizar para a view uma instância da variável `@client` criando um novo Cliente:   
+
+[source, ruby]
+----------------------------------------------
+def new
+  @client = Client.new
+end
+----------------------------------------------
+
+O link:../layouts_and_rendering.html[Guia de Layouts e renderização] explica isto com mais detalhes.
+
+ApplicationController herda de ActionController::Base, que define vários métodos auxiliares. Este guia cobrirá alguns deles, mas se você estiver curioso para saber o que mais existe, você pode vê-los todos na documentação API ou no próprio código fonte.
