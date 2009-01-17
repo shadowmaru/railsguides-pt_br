@@ -1,9 +1,9 @@
-== What Does a Controller do? ==
+== O que faz um Controller? ==
 
-Action Controller is the C in MVC. After routing has determined which controller to use for a request, your controller is responsible for making sense of the request and producing the appropriate output. Luckily, Action Controller does most of the groundwork for you and uses smart conventions to make this as straight-forward as possible.
+Action Controller é o C de MVC. Após o roteamento determinar qual controller será utilizado para uma requisição, o controller fica responsável por dar sentido a requisição e produzir uma saída apropriada. Por sorte, o Actio Controller faz a maior parte do trabalho pesado por você e utiliza convenções inteligentes para tornar este processo o mais direto possível.  
 
-For most conventional RESTful applications, the controller will receive the request (this is invisible to you as the developer), fetch or save data from a model and use a view to create HTML output. If your controller needs to do things a little differently, that's not a problem, this is just the most common way for a controller to work.
+Para a maioria das aplicações convencionais RESTful, o controller receberá a requisição (isto é invisível para você como desenvolvedor), resgatará ou salvará dados de um model e utilizará a view para criar uma saída HTML. Se o seu controller precisar fazer coisas um pouco diferentes, isto não é problema, esta é apenas a forma mais comum de funcionamento de um controller.   
 
-A controller can thus be thought of as a middle man between models and views. It makes the model data available to the view so it can display that data to the user, and it saves or updates data from the user to the model.
+Um controller pode ser pensado como um intermediário entre models e views. Ele torna dados do model disponíveis para que uma view possa apresentá-los ao usuário, e os salva ou atualiza conforme solicitado pelo usuário.
 
-NOTE: For more details on the routing process, see link:../routing_outside_in.html[Rails Routing from the Outside In].
+NOTA: Para mais detalhes sobre o processamento de rotas, veja o link:../roteamento_rails_de_fora_para_dentro[Roteamento Rails de Fora para Dentro]. 
