@@ -1,0 +1,40 @@
+Básico sobre Action Controller
+=======================
+
+Neste guia você aprenderá como os controllers funcionam e como eles se encaixam no ciclo de uma requisição em sua aplicação. Após ler este guia, você será capaz de:
+
+* Rastrear o fluxo de uma requisição em um controller
+* Entender por que e como armazenar dados na sessão ou em cookies
+* Trabalhar com filtros para executar código durante o processamento de uma requisição
+* Utilizar a funcionalidade de autenticação HTTP do Action Controller
+* Enviar dados diretamente ao navegador do usuário
+* Filtrar parâmetros sensíveis para que não apareçam no log da aplicação
+* Lidar com exceções que possam acontecer durante o processamento de uma requisição
+
+include::introducao.txt[]
+
+include::methods.txt[]
+
+include::params.txt[]
+
+include::session.txt[]
+
+include::cookies.txt[]
+
+include::filters.txt[]
+
+include::verification.txt[]
+
+include::csrf.txt[]
+
+include::request_response_objects.txt[]
+
+include::http_auth.txt[]
+
+include::streaming.txt[]
+
+include::parameter_filtering.txt[]
+
+include::rescue.txt[]
+
+include::changelog.txt[]
