@@ -15,7 +15,7 @@ include::introducao.txt[]
 
 include::metodos.txt[]
 
-include::params.txt[]
+include::parametros.txt[]
 
 include::session.txt[]
 
