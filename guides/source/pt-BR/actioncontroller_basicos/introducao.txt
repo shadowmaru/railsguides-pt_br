@@ -6,4 +6,4 @@ Para a maioria das aplicações convencionais RESTful, o controller receberá a 
 
 Um controller pode ser pensado como um intermediário entre models e views. Ele torna dados do model disponíveis para que uma view possa apresentá-los ao usuário, e os salva ou atualiza conforme solicitado pelo usuário.
 
-NOTA: Para mais detalhes sobre o processamento de rotas, veja o link:../roteamento_rails_de_fora_para_dentro[Roteamento Rails de Fora para Dentro]. 
+NOTE: Para mais detalhes sobre o processamento de rotas, veja o link:../roteamento_rails_de_fora_para_dentro[Roteamento Rails de Fora para Dentro]. 
