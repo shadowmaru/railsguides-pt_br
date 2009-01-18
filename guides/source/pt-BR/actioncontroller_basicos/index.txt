@@ -17,7 +17,7 @@ include::metodos.txt[]
 
 include::parametros.txt[]
 
-include::session.txt[]
+include::sessao.txt[]
 
 include::cookies.txt[]
 

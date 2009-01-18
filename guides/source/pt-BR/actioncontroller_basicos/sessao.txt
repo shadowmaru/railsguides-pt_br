@@ -1,15 +1,15 @@
-== Session ==
+== Sessão ==
 
-Your application has a session for each user in which you can store small amounts of data that will be persisted between requests. The session is only available in the controller and the view and can use one of a number of different storage mechanisms:
+Sua aplicação tem uma sessão para cada usuário onde você pode armazenar pequenas quantidades de dados que serão persistidos durante cada requisição. A sessão só fica disponível para o controller e a view e pode utilizar um de diferentes mecanismos de armazenamento:
 
- * CookieStore - Stores everything on the client.
- * DRbStore - Stores the data on a DRb server.
- * MemCacheStore - Stores the data in a memcache.
- * ActiveRecordStore - Stores the data in a database using Active Record.
+ * CookieStore - Armazena tudo no cliente.
+ * DRbStore - Armazena os dados dem um servidor DRb.
+ * MemCacheStore - Armazena os dados em um memcache.
+ * ActiveRecordStore - Armazena os dados em um banco de dados utilizando o Active Record.
 
-All session stores use a cookie - this is required and Rails does not allow any part of the session to be passed in any other way (e.g. you can't use the query string to pass a session ID) because of security concerns (it's easier to hijack a session when the ID is part of the URL).
+Todos os métodos utilizam um cookie - isto é obrigatório e o Rails não permite que qualquer parte da sessão seja passada de outra forma (por exemplo, você não pode utilizar parâmetros de requisição para passar o ID de uma session) por questão de segurança (é mais fácil interceptar e modificar uma sessão quando o ID faz parte da URL).
 
-Most stores use a cookie to store the session ID which is then used to look up the session data on the server. The default and recommended store, the CookieStore, does not store session data on the server, but in the cookie itself. The data is cryptographically signed to make it tamper-proof, but it is not encrypted, so anyone with access to it can read its contents but not edit it (Rails will not accept it if it has been edited). It can only store about 4kB of data - much less than the others - but this is usually enough. Storing large amounts of data is discouraged no matter which session store your application uses. You should especially avoid storing complex objects (anything other than basic Ruby objects, the most common example being model instances) in the session, as the server might not be able to reassemble them between requests, which will result in an error. The CookieStore has the added advantage that it does not require any setting up beforehand - Rails will generate a "secret key" which will be used to sign the cookie when you create the application.
+A maioria utiliza um cookie para armazenar o ID da sessão, que é então utilizado para procurar os dados da sessão no servidor. O método padrão e recomendado, o CookieStore, não armazena dados da sessão no servidor, mas sim no próprio cookie. Os dados são assinados criptograficamente para torná-los a prova de alterações, mas eles não são criptografados, então qualquer um com acesso ao cookie pode ler seu conteúdo, mas não editá-lo (o Rails não irá aceitá-lo se ele tiver sido editado). Ele só pode armazenar cerca de 4kB de dados - bem menos do que os outros métodos - mas isto geralmente é o suficiente. O armazenamento de grandes quantidades de dados não é recomendado, não importa qual o método de armazenamento de sessão a sua aplicação utilize. Você deve evitar principalmente armazenar objetos complexos (qualquer coisa diferente de objetos Ruby básicos, sendo o exemplo mais comum uma instância de um model) na sessão, já que o servidor pode não conseguir recuperá-los entre requisições, o que resultará em um erro. O armazenamento CookieStore tem a vantagem de não requerir qualquer configuração antes de ser utilizado - o Rails irá gerar uma "chave secreta" que será utilizada para assinar o cookie quando você criar a aplicação.
 
 Read more about session storage in the link:../security.html[Security Guide].
 
