@@ -64,7 +64,7 @@ Repare que o hash de parâmetros é na verdade uma instância de HashWithIndiffe
 
 === Parâmetros de Roteamento ===
 
-The `params` hash will always contain the `:controller` and `:action` keys, but you should use the methods `controller_name` and `action_name` instead to access these values. Any other parameters defined by the routing, such as `:id` will also be available. As an example, consider a listing of clients where the list can show either active or inactive clients. We can add a route which captures the `:status` parameter in a "pretty" URL:
+O hash `params` sempre conterá as chaves `:controller` e `:action`, mas você deve utilizar os métodos `controller_name` e `action_name` ao invés de acessar estes valores. Qualquer outro parâmetro definido pelo roteamento, como `:id`, também estará disponível. Como exemplo, considere uma lista de clientes onde a lista possa mostrar tanto os clientes ativos ou os inativos. Podemos adicionar uma rota que captura o parâmetro `:status` em uma URL mais legível:
 
 [source, ruby]
 ------------------------------------
@@ -73,16 +73,16 @@ map.connect "/clients/:status", :controller => "clients", :action => "index", :f
 # ...
 ------------------------------------
 
-In this case, when a user opens the URL `/clients/active`, `params[:status]` will be set to "active". When this route is used, `params[:foo]` will also be set to "bar" just like it was passed in the query string in the same way `params[:action]` will contain "index".
+Neste caso, quando um usuário abrir a URL `/clients/active`, `params[:status]` estará com o valor "active". Quando esta rota for utilizada, `params[:foo]` também estará com o valor "bar" exatamente como foi passado na configuração da rota, da mesma forma que `params[:action]` irá conter "index".
 
 === `default_url_options` ===
 
-You can set global default parameters that will be used when generating URLs with `default_url_options`. To do this, define a method with that name in your controller:
+Você pode ajustar parâmetros globais padrão que serão utilizados ao gerar URLs com `default_url_options`. Para fazê-lo, defina um método com este nome em seu controller:
 
 ------------------------------------
 class ApplicationController < ActionController::Base
 
-  #The options parameter is the hash passed in to +url_for+
+  #O parâmetro options é o hash que será passado para +url_for+
   def default_url_options(options)
     {:locale => I18n.locale}
   end
@@ -90,4 +90,4 @@ class ApplicationController < ActionController::Base
 end
 ------------------------------------
 
-These options will be used as a starting-point when generating, so it's possible they'll be overridden by +url_for+. Because this method is defined in the controller, you can define it on ApplicationController so it would be used for all URL generation, or you could define it on only one controller for all URLs generated there.
+Estas opções serão utilizadas como ponto de partida quando gerando, então é possível que eles sejam sobrescritos por +url_for+. Como este método é definido no controller, você pode definí-lo em ApplicationController e então ele será utilizado para a geração de todas as URLs, ou você pode definí-lo em apenas um controller para as URLs geradas nele.
