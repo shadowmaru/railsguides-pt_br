@@ -1,0 +1,48 @@
+Noções Básicas da Criação de Plugins para Rails
+===============================================
+
+Um plugin do Rails é uma extensão ou uma modificação do framework. Os plugins possibilitam:
+
+ * uma maneira dos desenvolvedores compartilharem e testarem novas idéias sem prejudicar a base do código, já estável
+ * uma arquitetura separada que permite que unidades de código possam ser corrigidas ou atualizadas segundo seu próprio cronograma de releases
+ * uma justificativa para os desenvolvedores do framework básico não precisarem incluir nele toda e qualquer nova funcionalidade que apareça
+
+Depois de ler este guia você estará apto a:
+ 
+ * Criar um plugin a partir do zero
+ * Escrever e executar testes para o plugin
+ * Armazenar models, views, controllers, helpers e até mesmo outros plugins nos seus plugins
+ * Criar generators
+ * Criar tasks do Rake customizadas no seu plugin
+ * Gerar documentação do RDoc para seu plugin
+ * Evitar erros comuns no 'init.rb'
+
+Este guia mostra como construir um plugin baseado em testes que irá:
+This guide describes how to build a test-driven plugin that will:
+
+ * Extender classes básicas do ruby, como Hash e String
+ * Adicionar métodos ao ActiveRecord::Base, na tradição dos plugins 'acts_as'
+ * Adicionar um helper para view que pode ser usado em templates erb
+ * Adicionar um novo generator que irá gerar uma migration
+ * Adicionar um comando generator customizado
+ * Um método route customizado que pode ser utilizado no routes.rb
+
+Para os propósitos deste guia, imagine por um momento que você é um ávido observador de pássaros. Seu pássaro favorito é o Yaffle (uma espécie de pica-pau), e você quer criar um plugin que permite a outros desenvolvedores compartilhar as maravilhas do Yaffle. Primeiramente, você precisa de uma preparação para começar o desenvolvimento.
+
+include::test_setup.txt[]
+
+include::core_ext.txt[]
+
+include::acts_as_yaffle.txt[]
+
+include::view_helper.txt[]
+
+include::migration_generator.txt[]
+
+include::custom_generator.txt[]
+
+include::custom_route.txt[]
+
+include::odds_and_ends.txt[]
+
+include::appendix.txt[]

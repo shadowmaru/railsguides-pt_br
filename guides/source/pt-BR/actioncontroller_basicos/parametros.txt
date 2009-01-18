@@ -1,0 +1,93 @@
+== Parâmetros ==
+
+Você provavelmente irá querer acessar dados enviados por um usuário ou outros parâmetros nas actions de seu controller. Existem dois tipos de parâmetros possíveis em uma aplicação web. O primeiro são parâmetros enviados como parte da URL, são chamados de parâmetros de requisição (query string parameters). Os parâmetros de requisição são todo o conteúdo após a "?" na URL. O segundo tipo de parâmetro normalmente é referenciado como dados de um POST. Esta informação geralmente vem de um formulário HTML que foi preenchido por um usuário. É chamado de dados de um POST porque eles só podem ser enviados como parte de uma requisição HTTP POST. O Rails não faz qualquer distinção entre parâmetros de requisição de parâmetros de POST, e ambos ficam disponíveis no hash `params` em seu controller.  
+
+[source, ruby]
+-------------------------------------
+class ClientsController < ActionController::Base
+
+  # Esta action utiliza parâmetros de requisição porque é executada por uma 
+  # requisição HTTP GET, mas isto não faz diferença na forma como os parâmetros 
+  # são acessados. A URL para esta action seria desta forma para acessar 
+  # clientes ativos: /clients?status=activated
+  def index
+    if params[:status] = "activated"
+      @clients = Client.activated
+    else
+      @clients = Client.unativated
+    end
+  end
+
+  # Esta action utiliza parâmetros POST. Eles geralmente vem de um formulário
+  # HTML submetido pelo usuário. A URL RESTful para esta requisição é
+  # "/clients", e os dados são enviados como parte do corpo da requisição.
+  def create
+    @client = Client.new(params[:client])
+    if @client.save
+      redirect_to @client
+    else
+      # Esta linha sobrescreve o comportamento padrão de renderização, que seria
+      # renderizar a view "create".
+      render :action => "new"
+    end
+  end
+
+end
+-------------------------------------
+
+=== Parâmetros em Hash e Array ===
+
+O hash de parâmetros não é limitado a chaves e valores unidimensionais. Ele pode conter arrays e outros hashes (aninhados). Para enviar um array de valores, concatene "[]" ao nome da chave:
+
+-------------------------------------
+GET /clients?ids[]=1&ids[]=2&ids[]=3
+-------------------------------------
+
+NOTE: A URL deste exemplo será codificada como "/clients?ids%5b%5d=1&ids%5b%5d=2&ids%5b%5b=3" já que [ e ] não são permitidos em URLs. Na maioria das vezes você não precisará preocupar-se com isso porque o navegador cuidará deste detalhe por você, e o Rails irá decodificá-lo quando recebê-lo, mas se você precisar enviar requisições para o servidor manualmente você deverá lembrar-se disto.
+
+O valor de `params[:ids]` será agora `["1", "2", "3"]`. Perceba que os valores de parâmetros são sempre strings; o Rails não tenta adivinhar ou converter os tipos.
+
+Para enviar um hash você deve inserir o nome da chave dentro dos colchetes:
+
+-------------------------------------
+<form action="/clients" method="post">
+  <input type="text" name="client[name]" value="Acme" />
+  <input type="text" name="client[phone]" value="12345" />
+  <input type="text" name="client[address][postcode]" value="12345" />
+  <input type="text" name="client[address][city]" value="Carrot City" />
+</form>
+-------------------------------------
+
+O valor de `params[:client]` quando este formulário for submetido será `{"name" => "Acme", "phone" => "12345", "address" => {"postcode" => "12345", "city" => "Carrot City"}}`. Repare no hash aninhado em `params[:client][:address]`.
+
+Repare que o hash de parâmetros é na verdade uma instância de HashWithIndifferentAccess do Active Support, que é uma subclasse de Hash que permite a você utilizar símbolos e strings como chaves.
+
+=== Parâmetros de Roteamento ===
+
+O hash `params` sempre conterá as chaves `:controller` e `:action`, mas você deve utilizar os métodos `controller_name` e `action_name` ao invés de acessar estes valores. Qualquer outro parâmetro definido pelo roteamento, como `:id`, também estará disponível. Como exemplo, considere uma lista de clientes onde a lista possa mostrar tanto os clientes ativos ou os inativos. Podemos adicionar uma rota que captura o parâmetro `:status` em uma URL mais legível:
+
+[source, ruby]
+------------------------------------
+# ...
+map.connect "/clients/:status", :controller => "clients", :action => "index", :foo => "bar"
+# ...
+------------------------------------
+
+Neste caso, quando um usuário abrir a URL `/clients/active`, `params[:status]` estará com o valor "active". Quando esta rota for utilizada, `params[:foo]` também estará com o valor "bar" exatamente como foi passado na configuração da rota, da mesma forma que `params[:action]` irá conter "index".
+
+=== `default_url_options` ===
+
+Você pode ajustar parâmetros globais padrão que serão utilizados ao gerar URLs com `default_url_options`. Para fazê-lo, defina um método com este nome em seu controller:
+
+------------------------------------
+class ApplicationController < ActionController::Base
+
+  #O parâmetro options é o hash que será passado para +url_for+
+  def default_url_options(options)
+    {:locale => I18n.locale}
+  end
+
+end
+------------------------------------
+
+Estas opções serão utilizadas como ponto de partida quando gerando, então é possível que eles sejam sobrescritos por +url_for+. Como este método é definido no controller, você pode definí-lo em ApplicationController e então ele será utilizado para a geração de todas as URLs, ou você pode definí-lo em apenas um controller para as URLs geradas nele.

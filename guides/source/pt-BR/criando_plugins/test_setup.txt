@@ -1,0 +1,226 @@
+== Preparação ==
+
+=== Criando a aplicação básica ===
+
+Os exemplos deste guia requerem que você tenha uma aplicação rails funcional. Para criar uma aplicação rails simples execute:
+
+------------------------------------------------
+gem install rails
+rails yaffle_guide
+cd yaffle_guide
+script/generate scaffold bird name:string
+rake db:migrate
+script/server
+------------------------------------------------
+
+Abra o endereço http://localhost:3000/birds no seu browser. Tenha certeza que a aplicação rails está funcionando antes de continuar.
+
+.Nota do editor:
+NOTE: Estas instruções irão funcionar para o sqlite3.  Para instruções mais detalhadas sobre como criar uma aplicação rails que utiliza outro banco de dados veja a documentação da API.
+
+=== Gerando o esqueleto do plugin ===
+
+O Rails vem com um gerador de plugin que cria um esqueleto básico de plugin. Informe o nome do plugin, em 'CamelCase' ou
+'under_scored', como argumento. Passe `\--with-generator` para também adicionar um gerador de exemplo.
+
+Um plugin será criado em 'vendor/plugins', incluindo um 'init.rb' e 'README', assim como diretórios 'lib', 'task', e 'test' padrões.
+
+Exemplos:
+----------------------------------------------
+./script/generate plugin yaffle
+./script/generate plugin yaffle --with-generator
+----------------------------------------------
+
+Para uma ajuda mais detalhada sobre o gerador de plugins, use o comando `./script/generate plugin`.
+
+Mais tarde iremos mostrar como trabalhar com os geradores automáticos, então vá em frente e gere seu plugin com
+a opção `\--with-generator` agora:
+
+----------------------------------------------
+./script/generate plugin yaffle --with-generator
+----------------------------------------------
+
+Você deverá obter o seguinte resultado:
+
+----------------------------------------------
+create  vendor/plugins/yaffle/lib
+create  vendor/plugins/yaffle/tasks
+create  vendor/plugins/yaffle/test
+create  vendor/plugins/yaffle/README
+create  vendor/plugins/yaffle/MIT-LICENSE
+create  vendor/plugins/yaffle/Rakefile
+create  vendor/plugins/yaffle/init.rb
+create  vendor/plugins/yaffle/install.rb
+create  vendor/plugins/yaffle/uninstall.rb
+create  vendor/plugins/yaffle/lib/yaffle.rb
+create  vendor/plugins/yaffle/tasks/yaffle_tasks.rake
+create  vendor/plugins/yaffle/test/core_ext_test.rb
+create  vendor/plugins/yaffle/generators
+create  vendor/plugins/yaffle/generators/yaffle
+create  vendor/plugins/yaffle/generators/yaffle/templates
+create  vendor/plugins/yaffle/generators/yaffle/yaffle_generator.rb
+create  vendor/plugins/yaffle/generators/yaffle/USAGE
+----------------------------------------------
+
+=== Preparando o plugin para os testes ===
+
+Neste guia você irá aprender como testar seu plugin com vários adaptadores diferentes usando o Active Record.
+Este guia não irá cobrir o uso de fixtures nos testes do plugin.
+
+Para preparar seu plugin para permitir que os testes sejam executados facilmente você precisa adicionar 3 arquivos:
+
+ * Um arquivo 'database.yml' com todas as suas strings de conexão.
+ * Um arquivo 'schema.rb' com todas as definições de suas tabelas.
+ * Um helper para teste que prepara o banco de dados antes de executar os testes.
+
+*vendor/plugins/yaffle/test/database.yml:*
+
+----------------------------------------------
+sqlite:
+  :adapter: sqlite
+  :dbfile: yaffle_plugin.sqlite.db
+
+sqlite3:
+  :adapter: sqlite3
+  :dbfile: yaffle_plugin.sqlite3.db
+
+postgresql:
+  :adapter: postgresql
+  :username: postgres
+  :password: postgres
+  :database: yaffle_plugin_test
+  :min_messages: ERROR
+
+mysql:
+  :adapter: mysql
+  :host: localhost
+  :username: rails
+  :password:
+  :database: yaffle_plugin_test
+----------------------------------------------
+
+Para este guia você irá precisar de 2 tabelas/models, Hickwalls and Wickwalls, então adicione o seguinte:
+
+*vendor/plugins/yaffle/test/schema.rb:*
+
+[source, ruby]
+----------------------------------------------
+ActiveRecord::Schema.define(:version => 0) do
+  create_table :hickwalls, :force => true do |t|
+    t.string :name
+    t.string :last_squawk
+    t.datetime :last_squawked_at
+  end
+  create_table :wickwalls, :force => true do |t|
+    t.string :name
+    t.string :last_tweet
+    t.datetime :last_tweeted_at
+  end
+end
+----------------------------------------------
+
+*vendor/plugins/yaffle/test/test_helper.rb:*
+
+[source, ruby]
+----------------------------------------------
+ENV['RAILS_ENV'] = 'test'
+ENV['RAILS_ROOT'] ||= File.dirname(__FILE__) + '/../../../..'
+
+require 'test/unit'
+require File.expand_path(File.join(ENV['RAILS_ROOT'], 'config/environment.rb'))
+
+config = YAML::load(IO.read(File.dirname(__FILE__) + '/database.yml'))
+ActiveRecord::Base.logger = Logger.new(File.dirname(__FILE__) + "/debug.log")
+
+db_adapter = ENV['DB']
+
+db_adapter ||=
+  begin
+    require 'rubygems'
+    require 'sqlite'
+    'sqlite'
+  rescue MissingSourceFile
+    begin
+      require 'sqlite3'
+      'sqlite3'
+    rescue MissingSourceFile
+    end
+  end
+
+if db_adapter.nil?
+  raise "No DB Adapter selected. Pass the DB= option to pick one, or install Sqlite or Sqlite3."
+end
+
+ActiveRecord::Base.establish_connection(config[db_adapter])
+
+load(File.dirname(__FILE__) + "/schema.rb")
+
+require File.dirname(__FILE__) + '/../init.rb'
+----------------------------------------------
+
+=== Executar os testes do plugin ===
+
+Depois de ter preparado estes arquivos, você pode escrever seu primeiro teste para ter certeza que seu setup de testes
+para os plugins estão corretos. Por default, o rails gera um arquivo em 'vendor/plugins/yaffle/test/yaffle_test.rb'
+com um teste simples. Mude o conteúdo deste arquivo para:
+
+*vendor/plugins/yaffle/test/yaffle_test.rb:*
+
+[source, ruby]
+----------------------------------------------
+require File.dirname(__FILE__) + '/test_helper.rb'
+
+class YaffleTest < Test::Unit::TestCase
+  
+  class Hickwall < ActiveRecord::Base
+  end
+
+  class Wickwall < ActiveRecord::Base
+  end
+  
+  def test_schema_has_loaded_correctly
+    assert_equal [], Hickwall.all
+    assert_equal [], Wickwall.all
+  end
+  
+end
+----------------------------------------------
+
+Para executar o teste, vá para o diretório do plugin e rode o `rake`:
+
+----------------------------------------------
+cd vendor/plugins/yaffle
+rake
+----------------------------------------------
+
+Você deverá ver uma saída do tipo:
+
+----------------------------------------------
+/opt/local/bin/ruby -Ilib:lib "/opt/local/lib/ruby/gems/1.8/gems/rake-0.8.3/lib/rake/rake_test_loader.rb" "test/yaffle_test.rb" 
+-- create_table(:hickwalls, {:force=>true})
+   -> 0.0220s
+-- create_table(:wickwalls, {:force=>true})
+   -> 0.0077s
+-- initialize_schema_migrations_table()
+   -> 0.0007s
+-- assume_migrated_upto_version(0)
+   -> 0.0007s
+Loaded suite /opt/local/lib/ruby/gems/1.8/gems/rake-0.8.3/lib/rake/rake_test_loader
+Started
+.
+Finished in 0.002236 seconds.
+
+1 test, 1 assertion, 0 failures, 0 errors
+----------------------------------------------
+
+Por default o setup acima executa seus testes usando o sqlite ou sqlite3. Para executar os testes usando outra string de
+conexão especificada no database.yml, informe a variável DB para o rake:
+
+----------------------------------------------
+rake DB=sqlite
+rake DB=sqlite3
+rake DB=mysql
+rake DB=postgresql
+----------------------------------------------
+
+Agora você está pronto para testar seu plugin!
