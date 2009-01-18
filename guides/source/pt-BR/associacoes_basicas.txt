@@ -289,7 +289,7 @@ Você deve usar +has_many :through+ se você precisar de validações, callbacks
 
 === Associações polimórficas
 
-Um pouco mais avançado é o twist em _associações polimórficas_. Com associações Polimórficas, um modelo pode pertencer a mais de um modelo, em uma única associação. Por exemplo, imagine que você possa ter um modelo foto que pertence a um empregado ou ao modelo produto. Veja como isso poderia ser declarada:
+Um pouco mais avançado é o twist em _associações polimórficas. Com associações Polimórficas, um modelo pode pertencer a mais de um modelo, em uma única associação. Por exemplo, imagine que você possa ter um modelo foto que pertence a um empregado ou ao modelo produto. Veja como isso poderia ser declarada:
 
 [source, ruby]
 -------------------------------------------------------
@@ -392,11 +392,11 @@ customer.orders(true).empty?    # desconsidera a copia do cache e faz a busca no
 
 === Evitando colisões com nomes
 
-Você não é livre para usar qualquer nome para suas associações. Porque criando uma associação é criado um método com este nom no model, é uma péssima idéia usar um nome de associação que já foi usado para um método de instância para +ActiveRecord::Base+ . O método de associação iria sobrescrever o método inicial e quebrar as coisas. Então, +attributes+ ou +connection+ são nomes impróprios para associações.
+Você não é livre para usar qualquer nome para suas associações. Porque criando uma associação é criado um método com este nome do model, é uma péssima idéia usar um nome de associação que já foi usado para um método de instância para +ActiveRecord::Base+ . O método de associação iria sobrescrever o método inicial e quebrar as coisas. Então, +attributes+ ou +connection+ são nomes impróprios para associações.
 
 === Atualizando o schema
 
-Associações são extremamente uteis, mas não são mágicas. Você é responsável por manter seu esquema do banco de dados sincronizado com suas associações. Na prática, isto significa duas coisas. Primeiro, você deve criar as chaves estrangeiras apropriadas:
+Associações são extremamente úteis, mas não são mágicas. Você é responsável por manter seu esquema do banco de dados sincronizado com suas associações. Na prática, isto significa duas coisas. Primeiro, você deve criar as chaves estrangeiras apropriadas:
 
 [source, ruby]
 -------------------------------------------------------
@@ -426,7 +426,7 @@ end
 
 Se você criar alguma associação depois que você tiver construído o respectivo model, você precisa se lembrar de criar um migradtion +add_column+ para prover a chave estrangeira adequada.
 
-Segundo, se você criar uma associação +has_and_belongs_to_many+ , você precisa explicitamnete criar uma tabela para o join. A menos que o nome da tabela para o join seja explicitamnente especificada usando a opção +:join_table+ , Active Record cria o nome usando uma ordem léxica de acordo com os nomes das classes. Então uma associação entre os modelos customer e order irá gerar uma tabela para a junção com o nome "customers_orders" porque o "c" é superior ao "o" no ordenamento léxico.
+Segundo, se você criar uma associação +has_and_belongs_to_many+ , você precisa explicitamente criar uma tabela para o join. A menos que o nome da tabela para o join seja explicitamente especificada usando a opção +:join_table+ , Active Record cria o nome usando uma ordem léxica de acordo com os nomes das classes. Então uma associação entre os modelos customer e order irá gerar uma tabela para a junção com o nome "customers_orders" porque o "c" é superior ao "o" no ordenamento léxico.
 
 WARNING: A precedência entre nomes de modelos é calcular usando o operado +<+ para +String+. O que significa que as strings são de tamanhos diferentes, e a string é menor quando comparada com outra com tamanho menor, então a string maior será considerada com maior precedência léxica que a menor. Por exemplo, seria de se esperar que as tabelas "paper_boxes" e "papers" iriam gerar uma tabela de associação com o "papers_paper_boxes" por causa do tamanho de "paper_boxes", mas de fato o nome da tabela de associação será "paper_boxes_papers".
 
@@ -480,7 +480,7 @@ module MyApplication
 end
 -------------------------------------------------------
 
-Isto irá funcinar, porque tanto a classe +Supplier+ quanto a classe +Account+ são definidas com o mesmo escopo. Mas o código abaixo não funcionará, porque +Supplier+ e +Account+ são definidos em escopos diferentes:
+Isto irá funcionar, porque tanto a classe +Supplier+ quanto a classe +Account+ são definidas com o mesmo escopo. Mas o código abaixo não funcionará, porque +Supplier+ e +Account+ são definidos em escopos diferentes:
 
 [source, ruby]
 -------------------------------------------------------
@@ -536,7 +536,7 @@ Quando você declara uma associação +belongs_to+, a classe que declara automat
 * +build___association__(attributes = {})+
 * +create___association__(attributes = {})+
 
-Em todos estes métodos, +_association_+ é substituido pelo símbolo passado como primeiro argumento ao +belongs_to+. Por exemplo:
+Em todos estes métodos, +_association_+ é substituído pelo símbolo passado como primeiro argumento ao +belongs_to+. Por exemplo:
 
 [source, ruby]
 -------------------------------------------------------
@@ -565,7 +565,7 @@ O método +_association_+ returna o objeto associado, se existir. Se nenhum obje
 @customer = @order.customer
 -------------------------------------------------------
 
-Se o objeto associado já tiver sido buscado no banco de dados para este objeto, a versão cachead será retornada. Para substituir esse comportamenteo (e force o banco de dados a ler), passe +true+ para o argumento +force_reload+ .
+Se o objeto associado já tiver sido buscado no banco de dados para este objeto, a versão cacheda será retornada. Para substituir esse comportamento (e force o banco de dados a ler), passe +true+ para o argumento +force_reload+ .
 
 ===== +_association_=(associate)+
 
@@ -607,7 +607,7 @@ O método +create__\_association__+ retorna um novo objeto do tipo associado. Es
 
 ==== Opções para +belongs_to+
 
-Em muitas situações, você pode usar o comportamento padrão do +belongs_to+ sem nenhuma customização. Mas apesar da enfâse que o Rails faz em convenção sobre customização, você poder alterar este comportamento de várias formas. Esta sessão cobre as opções que você pode passar quando criar uma associação +belongs_to+ . Por exemplo, uma associação com várias opções pode parecer com isto:
+Em muitas situações, você pode usar o comportamento padrão do +belongs_to+ sem nenhuma customização. Mas apesar da ênfase que o Rails faz em convenção sobre customização, você poder alterar este comportamento de várias formas. Esta sessão cobre as opções que você pode passar quando criar uma associação +belongs_to+ . Por exemplo, uma associação com várias opções pode parecer com isto:
 
 [source, ruby]
 -------------------------------------------------------
@@ -647,7 +647,7 @@ end
 
 ===== +:conditions+
 
-Opção +:conditions+ deixa você especificar as condições que o objeto associado precisa cumprir ( na sintaxe usada por uma claúsula SQL +WHERE+ ).
+Opção +:conditions+ deixa você especificar as condições que o objeto associado precisa cumprir ( na sintaxe usada por uma cláusula SQL +WHERE+ ).
 
 [source, ruby]
 -------------------------------------------------------
@@ -764,7 +764,7 @@ Se você definir a opção +:readonly+ para +true+, então o objeto associado se
 
 ===== +:select+
 
-A opção +:select+ permite que você sobrescreva a claúsula SQL +SELECT+ que é usada para retornar dados sobre o objeto associado. Por padrão, Rails retorna todas as colunas.
+A opção +:select+ permite que você sobrescreva a cláusula SQL +SELECT+ que é usada para retornar dados sobre o objeto associado. Por padrão, Rails retorna todas as colunas.
 
 TIP: Se você definir a opção +:select+ em uma associação +belongs_to+ , você também deve definir a +foreign_key+ para garantir resultados corretos.
 
@@ -774,7 +774,7 @@ Se você definir a opção +:validate+ para +true+, então os objetos associados
 
 ==== Quando Objetos são Gravados?
 
-Atribuir um objeto a uma associação +belongs_to+ _não_ o grava automaticamente. Isto não grava cadao objeto associado. 
+Atribuir um objeto a uma associação +belongs_to+ _não_ o grava automaticamente. Isto não grava cada objeto associado. 
 
 === Associação has_one
 
@@ -782,7 +782,7 @@ A associação +has_one+ cria uma relação um-para-um com outro model. Se trata
 
 ==== Métodos Adicionados pelo +has_one+
 
-Quando você declara a associação +has_one+, a classe declarante autmaticamente ganha cinco métodos relacionados a associação:
+Quando você declara a associação +has_one+, a classe declarante automaticamente ganha cinco métodos relacionados a associação:
 
 * +_association_(force_reload = false)+
 * +_association_=(associate)+
@@ -790,7 +790,7 @@ Quando você declara a associação +has_one+, a classe declarante autmaticament
 * +build___association__(attributes = {})+
 * +create___association__(attributes = {})+
 
-Em todos estes métodos, +_association_+ são substituidos pelo símbolo passado como o primeiro arugmento do método +has_one+ . Por exemplo,  a declaração abaixo:
+Em todos estes métodos, +_association_+ são substituídos pelo símbolo passado como o primeiro argumento do método +has_one+ . Por exemplo,  a declaração abaixo:
 
 [source, ruby]
 -------------------------------------------------------
@@ -819,7 +819,7 @@ O método +_association_+ retorna o objeto associado, se houver algum. Se nenhum
 @account = @supplier.account
 -------------------------------------------------------
 
-Se o objeto associado já tiver sido buscado do banco de dados para este objeto (@supplier), a versão cacheada será retornada. Para sobrescrever este comportamenteo ( e força a leitura do banco de dados), passe +true+ para o argumento +force_reload+ . 
+Se o objeto associado já tiver sido buscado do banco de dados para este objeto (@supplier), a versão cacheada será retornada. Para sobrescrever este comportamento ( e força a leitura do banco de dados), passe +true+ para o argumento +force_reload+ . 
 
 ===== +_association_=(associate)+
 
@@ -852,8 +852,7 @@ O método +build__\_association__+  retorna um novo objeto do tipo associado. Es
 
 ===== +create___association__(attributes = {})+
 
-O método +create__\_association__+ retorna um novo objeto do tipo associado. Este objeto será instanciado a partir do atributos passados, 
-The +create__\_association__+ method returns a new object of the associated type. This object will be instantiated from the passed attributes, e será associado através de sua chave estrangeira. Porém, o objeto associado _será_ gravado ( assumindo que ele passe por todas as validações).
+O método +create__\_association__+ retorna um novo objeto do tipo associado. Este objeto será instanciado a partir do atributos passados, e será associado através de sua chave estrangeira. Porém, o objeto associado _será_ gravado ( assumindo que ele passe por todas as validações).
 
 [source, ruby]
 -------------------------------------------------------
@@ -862,7 +861,7 @@ The +create__\_association__+ method returns a new object of the associated type
 
 ==== Options for +has_one+
 
-Em várias situações, você pode usar o comportamento padrão do +has_one+ sem nenhuma customização. Apesar da ênfase do Rails em conveção sobre customização, você pode alterar este comportamento de várias formas. Esta seção cobre as opções que você pode passar quando criar um associação +has_one+. Por exemplo, uma associação com várias opções pode parecer com isto:
+Em várias situações, você pode usar o comportamento padrão do +has_one+ sem nenhuma customização. Apesar da ênfase do Rails em convenção sobre customização, você pode alterar este comportamento de várias formas. Esta seção cobre as opções que você pode passar quando criar um associação +has_one+. Por exemplo, uma associação com várias opções pode parecer com isto:
 
 [source, ruby]
 -------------------------------------------------------
@@ -910,7 +909,7 @@ end
 
 ===== +:conditions+
 
-A opção +:conditions+ permiti que você especifique as condições que o objeto associado deve satisfazer ( a sintaxe é usada por uma claúsula SQL +WHERE+ ).
+A opção +:conditions+ permiti que você especifique as condições que o objeto associado deve satisfazer ( a sintaxe é usada por uma cláusula SQL +WHERE+ ).
 
 [source, ruby]
 -------------------------------------------------------
@@ -921,11 +920,11 @@ end
 
 ===== +:dependent+
 
-Se você definir a opção +:dependent+ para +:destroy+, ao apagar este objeto irá chamar o método destroy no objeto associado para apaga-lo também. Se você definir a opção +:dependent+ para +:delete+, então apagando este objeto irá excluir o objeto associado _sem_ chamar o método +destroy+. Se você definir a opção +:dependent+ to +:nullify+, ao excluir este objeto irá definir a chave estrangeira do objeto associado para +NULL+. 
+Se você definir a opção +:dependent+ para +:destroy+, ao apagar este objeto irá chamar o método destroy no objeto associado para apagá-lo também. Se você definir a opção +:dependent+ para +:delete+, então apagando este objeto irá excluir o objeto associado _sem_ chamar o método +destroy+. Se você definir a opção +:dependent+ to +:nullify+, ao excluir este objeto irá definir a chave estrangeira do objeto associado para +NULL+. 
 
 ===== +:foreign_key+
 
-Por convenção, Rails adivinha que a coluna usada para guardar a chave estrangeira no outro modelo é o nome do modelo com o sufixo +_id+ adicionada. A opção  +:foreign_key+ permit que você defina o nome da chave estrangeira diretamente:
+Por convenção, Rails adivinha que a coluna usada para guardar a chave estrangeira no outro modelo é o nome do modelo com o sufixo +_id+ adicionada. A opção  +:foreign_key+ permite que você defina o nome da chave estrangeira diretamente:
 
 [source, ruby]
 -------------------------------------------------------
@@ -938,7 +937,7 @@ TIP: Em nenhum caso, Rails irá criar a coluna da chave estrangeira para você. 
 
 ===== +:include+
 
-Você pode usar a opção :include para especificar uma associação de segunda orger que deve ser pré carregada (eager-loaded) quando a associação for usar. Por exemplo, considere os modelos abaixo:
+Você pode usar a opção :include para especificar uma associação de segunda ordem que deve ser pré carregada (eager-loaded) quando a associação for usar. Por exemplo, considere os modelos abaixo:
 
 [source, ruby]
 -------------------------------------------------------
@@ -954,7 +953,7 @@ class Representative < ActiveRecord::Base
 end
 -------------------------------------------------------
 
-Se você frequentemente buscar representantes( representatives ) a partir de fornecedores( suppliers, ex.: +@supplier.account.representative+ ), então você pode fazer seu código se tornar mais eficiente, incluindo representantes (representatives) na associação de fornecedores ( suppliers ) para contas ( accounts ):
+Se você freqüentemente buscar representantes( representatives ) a partir de fornecedores( suppliers, ex.: +@supplier.account.representative+ ), então você pode fazer seu código se tornar mais eficiente, incluindo representantes (representatives) na associação de fornecedores ( suppliers ) para contas ( accounts ):
 
 [source, ruby]
 -------------------------------------------------------
@@ -972,11 +971,11 @@ end
 
 ===== +:order+
 
-A opção +:order+ dita a ordem em que os objetos associados deverão ser retornados (em uma sintaxe usada por uma claúsula SQL +ORDER BY+). Mas como é uma associação +has_one+ vai retornar apenas um objeto, esta opção não é necesária.
+A opção +:order+ dita a ordem em que os objetos associados deverão ser retornados (em uma sintaxe usada por uma cláusula SQL +ORDER BY+). Mas como é uma associação +has_one+ vai retornar apenas um objeto, esta opção não é necessária.
 
 ===== +:primary_key+
 
-Por convenção, Rails adivinha que a coluna que irá armazenar a chave primária será deste model é +id+. Você pode sobreescrever isto e especificar a chave primária com a opção +:primary_key+ .
+Por convenção, Rails adivinha que a coluna que irá armazenar a chave primária será deste model é +id+. Você pode sobrescrever isto e especificar a chave primária com a opção +:primary_key+ .
 
 ===== +:readonly+
 
@@ -984,7 +983,7 @@ Se você definir a opção +:readonly+ para +true+, o objeto associado será exc
 
 ===== +:select+
 
-A opção +:select+ permite que você altere a claúsula SQL +SELECT+ que é usada para retornar os do objeto associado. Por padrão, Rails retorna todas as colunas.
+A opção +:select+ permite que você altere a cláusula SQL +SELECT+ que é usada para retornar os do objeto associado. Por padrão, Rails retorna todas as colunas.
 
 ===== +:source+
 
@@ -1004,9 +1003,9 @@ Se você definir a opção +:validate+ para +true+, os objetos associados serão
 
 ==== Quando Objetos São Salvos?
 
-Quando você atribuir um objeto a uma associação +has_one+, este objeto é automaticamente salvo(para atualizar a chave estrangeira). Além disso, qualquer objeto que estiver sendo substituido também é salvo automaticamente, porque sua chave estrangeria também será alterada.
+Quando você atribuir um objeto a uma associação +has_one+, este objeto é automaticamente salvo(para atualizar a chave estrangeira). Além disso, qualquer objeto que estiver sendo substituído também é salvo automaticamente, porque sua chave estrangeira também será alterada.
 
-Se qualquer uma dessas gravações falhar devido a erros de validação, então a atribuição retornará +false+ e a próprpia atribuição é cancelada.
+Se qualquer uma dessas gravações falhar devido a erros de validação, então a atribuição retornará +false+ e a própria atribuição é cancelada.
 
 Se o objeto pai (o que estiver declarando a associação +has_one+) não é salvo (isso é, +new_record?+ retorna +true+) então os objeto filhos não serão salvos.
 
@@ -1014,7 +1013,7 @@ Se você quiser atribuir um objeto para uma associação +has_one+ sem salvar o 
 
 === A associação has_many
 
-A asssociação +has_many+ cria uma relação um-para-muitos com outro model. Em termos de banco de dados, esta associação diz que a outra classe terá a chave estrangeira que referência a instância desta classe.
+A associação +has_many+ cria uma relação um-para-muitos com outro model. Em termos de banco de dados, esta associação diz que a outra classe terá a chave estrangeira que referência a instância desta classe.
 
 ==== Métodos Adicionados
 
@@ -1034,7 +1033,7 @@ Quando você declara a  associação +has_many+, a classe declarante irá ganhar
 * +_collection_.build(attributes = {}, ...)+
 * +_collection_.create(attributes = {})+
 
-Em todos estes métodos, +_collection_+ é substituido pelo símbolo passado como primeiro argumento da +has_many+, e +_collection\_singular_+ é substituido pela versão no singular deste símbolo. Por exemplo, veja abaixo:
+Em todos estes métodos, +_collection_+ é substituído pelo símbolo passado como primeiro argumento da +has_many+, e +_collection\_singular_+ é substituído pela versão no singular deste símbolo. Por exemplo, veja abaixo:
 
 [source, ruby]
 -------------------------------------------------------
@@ -1064,7 +1063,7 @@ orders.create(attributes = {})
 
 ===== +_collection_(force_reload = false)+
 
-O método +_collection_+ retorna um array com todos os objetos associados. Se não existir objeto associado, ele retorna um array vázio. 
+O método +_collection_+ retorna um array com todos os objetos associados. Se não existir objeto associado, ele retorna um array vazio. 
 
 [source, ruby]
 -------------------------------------------------------
@@ -1106,11 +1105,11 @@ O método +_collection\_singular_\_ids+ retorna um array com os ids dos objetos 
 
 ===== +__collection\_singular_\_ids=ids+
 
-O método +__collection\_singular_\_ids=+ faz com que a coleção contenha apenas apenas os objetos identifcados pela chave primária passada, adicionando e apagando o que não interessa.
+O método +__collection\_singular_\_ids=+ faz com que a coleção contenha apenas os objetos identificados pela chave primária passada, adicionando e apagando o que não interessa.
 
 ===== +_collection_.clear+
 
-O método +_collection_.clear+ remove todos os objetos da coleção. Isto destroi os objetos associados se estiverem associados com a opção +:dependent => :destroy+, ou apagando-os direto do banco de dados caso seja definido +:dependent => :delete_all+, caso contrário suas chaves estrangeiras serão definidas para +NULL+.
+O método +_collection_.clear+ remove todos os objetos da coleção. Isto destrói os objetos associados se estiverem associados com a opção +:dependent => :destroy+, ou apagando-os direto do banco de dados caso seja definido +:dependent => :delete_all+, caso contrário suas chaves estrangeiras serão definidas para +NULL+.
 
 ===== +_collection_.empty?+
 
@@ -1213,7 +1212,7 @@ Definindo a opção +:as+ indica que essa será uma associação polimórfica, c
 
 ===== +:class_name+
 
-Se o nome do outro model não pouder ser descoberto pelo nome da associação, você pode usar +:class_name+ para prover o nome do monel. Por exemplo, se um cliente (customer) possui muitos pedidos (orders), mas o nome atual do model que contém pedidos é +Transaction+, você vai definir as coisas desta forma:
+Se o nome do outro model não puder ser descoberto pelo nome da associação, você pode usar +:class_name+ para prover o nome do model. Por exemplo, se um cliente (customer) possui muitos pedidos (orders), mas o nome atual do model que contém pedidos é +Transaction+, você vai definir as coisas desta forma:
 
 [source, ruby]
 -------------------------------------------------------
@@ -1224,7 +1223,7 @@ end
 
 ===== +:conditions+
 
-A opção +:conditions+ permite que especifique as condições que a associação precisa atender ( na sintaxe usada por uma claúsula SQL +WHERE+).
+A opção +:conditions+ permite que especifique as condições que a associação precisa atender ( na sintaxe usada por uma cláusula SQL +WHERE+).
 
 [source, ruby]
 -------------------------------------------------------
@@ -1248,11 +1247,11 @@ Se você usa +:conditions+ no estilo hash, então a criação do registro atrav�
 
 Normalmente o Rails gera automaticamente o SQL apropriado para contar os membros de uma associação. Com a opção +:counter_sql+, você pode especificar o comando SQL para fazer o "count" da sua forma.
 
-NOTE: Se você especificar +:finder_sql+ mas não definir +:counter_sql+, então o SQL para contador será gerado substituindo +SELECT COUNT(*) FROM+ para a claúsula +SELECT ... FROM+ da sua declaração do +:finder_sql+.
+NOTE: Se você especificar +:finder_sql+ mas não definir +:counter_sql+, então o SQL para contador será gerado substituindo +SELECT COUNT(*) FROM+ para a cláusula +SELECT ... FROM+ da sua declaração do +:finder_sql+.
 
 ===== +:dependent+
 
-Se você definir a opção +:dependent+ para +:destroy+, apagando este objeto irá chamar o método destroy de cada objeto associado para apaga-lo. Se você definir +:dependent+ para +:delete_all+, então apagar este objeto irá excluir os objetos associados _sem_ chamar o método +destroy+
+Se você definir a opção +:dependent+ para +:destroy+, apagando este objeto irá chamar o método destroy de cada objeto associado para apagá-lo. Se você definir +:dependent+ para +:delete_all+, então apagar este objeto irá excluir os objetos associados _sem_ chamar o método +destroy+
 
 NOTE: Esta opção é ignorada quando você utiliza a opção +:through+ na associação.
 
@@ -1262,11 +1261,11 @@ A opção +:extend+ especifica o nome de um módulo para extender a association 
 
 ===== +:finder_sql+
 
-Normalmente o Rails gera automaticamente o SQL apropriado para buscar os membros da associação. Com a opção +:finder_sql+, você pode especificar a claúsula SQL para busca-los. Se esta busca dos membros associados requer um SQL multi-table complexo, esta opção pode ser útil.
+Normalmente o Rails gera automaticamente o SQL apropriado para buscar os membros da associação. Com a opção +:finder_sql+, você pode especificar a cláusula SQL para busca-los. Se esta busca dos membros associados requer um SQL multi-table complexo, esta opção pode ser útil.
 
 ===== +:foreign_key+
 
-Por conveção, Rails descobre que a coluna usada para armazenar a chave estrangeira em outro model é o nome deste model com o sufixo +_id+ adicionado. A opção +:foreign_key+ permite que você defina o nome da chave estrangeria diretamente.
+Por convenção, Rails descobre que a coluna usada para armazenar a chave estrangeira em outro model é o nome deste model com o sufixo +_id+ adicionado. A opção +:foreign_key+ permite que você defina o nome da chave estrangeira diretamente.
 
 [source, ruby]
 -------------------------------------------------------
@@ -1275,11 +1274,11 @@ class Customer < ActiveRecord::Base
 end
 -------------------------------------------------------
 
-TIP: Em nenhum caso, Rails vai gerar as colunas para a chave estrangeria automaticamente para você. Você precisa defini-las explicitamente em seus migrations.
+TIP: Em nenhum caso, Rails vai gerar as colunas para a chave estrangeira automaticamente para você. Você precisa defini-las explicitamente em seus migrations.
 
 ===== +:group+
 
-A opção +:group+ passa o nome de um atributo que será usado para agrupar o resultado, usando uma claúsula +GROUP BY+ no SQL.
+A opção +:group+ passa o nome de um atributo que será usado para agrupar o resultado, usando uma cláusula +GROUP BY+ no SQL.
 
 [source, ruby]
 -------------------------------------------------------
@@ -1306,7 +1305,7 @@ class LineItem < ActiveRecord::Base
 end
 -------------------------------------------------------
 
-Se você frequentemente retorna line items diretamente de customers (+@customer.orders.line_items+), então você pode fazer seu código um pouco mais eficiente incluindo line item na associação de customers para orders:
+Se você freqüentemente retorna line items diretamente de customers (+@customer.orders.line_items+), então você pode fazer seu código um pouco mais eficiente incluindo line item na associação de customers para orders:
 
 [source, ruby]
 -------------------------------------------------------
@@ -1339,7 +1338,7 @@ A opção +:offset+ permite que você especifique de onde a busca dos objetos as
 
 ===== +:order+
 
-A opção +:order+ dita a ordem que cada objeto associado deve ser retornado ( gerando uma claúsula SQL +ORDER BY+).
+A opção +:order+ dita a ordem que cada objeto associado deve ser retornado ( gerando uma cláusula SQL +ORDER BY+).
 
 [source, ruby]
 -------------------------------------------------------
@@ -1350,7 +1349,7 @@ end
 
 ===== +:primary_key+
 
-Por convenção, o Rails descobre que a coluno que armazenará a chave primária deste model é +id+. Você sobreescrever isso e especificar a chave primária com a opção +:primary_key+.
+Por convenção, o Rails descobre que a coluna que armazenará a chave primária deste model é +id+. Você sobrescrever isso e especificar a chave primária com a opção +:primary_key+.
 
 ===== +:readonly+
 
@@ -1358,7 +1357,7 @@ Se você definir a opção +:readonly+ para +true+, os objetos associados serão
 
 ===== +:select+
 
-A opção +:select+ permite que você sobreescreva a claúsula SQL +SELECT+ que será usada para retornar os objetos associados. Por padrão, Rails retorna todas as colunas.
+A opção +:select+ permite que você sobrescreva a cláusula SQL +SELECT+ que será usada para retornar os objetos associados. Por padrão, Rails retorna todas as colunas.
 
 WARNING: Se você especificar seu próprio +:select+, não se esqueça de incluir a chave primária e chave estrangeira do model associado. Se você não o fizer, Rails irás disparar um erro.
 
@@ -1384,7 +1383,7 @@ Se você definir a opção +:validate+ para +false+, então os objetos associado
 
 ==== Quando os Objetos são Salvos?
 
-Quando você atribui um objeto a uma associação +has_many+, este objeto é automaticamente salvo ( para atualizar sua chave estrangeria ). Se você atribuir múltiplos objetos em uma única declaração, então todos são salvos.
+Quando você atribui um objeto a uma associação +has_many+, este objeto é automaticamente salvo ( para atualizar sua chave estrangeira ). Se você atribuir múltiplos objetos em uma única declaração, então todos são salvos.
 
 Se alguma dessas gravações falhar por error de validação, então a declaração de atribuição retornará +false+ e a atribuição será cancelada.
 
@@ -1414,7 +1413,7 @@ Quando você declara uma associação +has_and_belongs_to_many+, a classe que de
 * +_collection_.build(attributes = {})+
 * +_collection_.create(attributes = {})+
 
-Em todos estes métodos, +_collection_+ é substituido pelo símbolo passado como primeiro argumento do +has_many+, e +_collection_\_singular+ é substituido pela versão no singular do símbolo. Por exemplo, a declaração abaixo:
+Em todos estes métodos, +_collection_+ é substituído pelo símbolo passado como primeiro argumento do +has_many+, e +_collection_\_singular+ é substituído pela versão no singular do símbolo. Por exemplo, a declaração abaixo:
 
 [source, ruby]
 -------------------------------------------------------
@@ -1446,7 +1445,7 @@ assemblies.create(attributes = {})
 
 Se a tabela auxiliar para a junção de uma associação +has_and_belongs_to_many+ possui alguma coluna além das duas chaves estrangeiras, estas colunas serão adicionadas como atributos no registros retornados pela associação. Registros retornados com atributos adicionais serão sempre somente-leitura(read-only), porque o Rails não pode salvar alterações nestes atributos.
 
-WARNING: O uso de atributos extra em uma tabela de junção em uma associação +has_and_belongs_to_many+ foi deprecado. Se você precisa deste tipo de comportamente complexo em uma tabela que une dois models em uma relação many-to-many(muitos para muitos), você deve usar uma associação +has_many :through+ ao invés de +has_and_belongs_to_many+.
+WARNING: O uso de atributos extra em uma tabela de junção em uma associação +has_and_belongs_to_many+ foi deprecado. Se você precisa deste tipo de comportamento complexo em uma tabela que une dois models em uma relação many-to-many(muitos para muitos), você deve usar uma associação +has_many :through+ ao invés de +has_and_belongs_to_many+.
 
 ===== +_collection_(force_reload = false)+
 
@@ -1470,7 +1469,7 @@ NOTE: Este método é uma alias para +_collection_.concat+ e +_collection_.push+
 
 ===== +_collection_.delete(object, ...)+
 
-O método +_collection_.delete+ remove um ou mais objetos da coleção apagando registros da tabela de junção. Não destroi os objetos.
+O método +_collection_.delete+ remove um ou mais objetos da coleção apagando registros da tabela de junção. Não destrói os objetos.
 
 [source, ruby]
 -------------------------------------------------------
@@ -1498,7 +1497,7 @@ O método +_collection\_singular_\_ids=+ faz com que a coleção contenha apenas
 
 ===== +_collection_.clear+
 
-O método +_collection_.clear+ remove cada objeto da coleção através da exclusão das linhas na tabela de junção. Isso não destroi os objetos associados.
+O método +_collection_.clear+ remove cada objeto da coleção através da exclusão das linhas na tabela de junção. Isso não destrói os objetos associados.
 
 ===== +_collection_.empty?+
 
@@ -1616,7 +1615,7 @@ end
 
 ===== +:conditions+
 
-A opção +:conditions+ permiti especificar a condição que o objeto associado deve atender ( na sintaxe usada por uma claúsula SQL +WHERE+ ).
+A opção +:conditions+ permiti especificar a condição que o objeto associado deve atender ( na sintaxe usada por uma cláusula SQL +WHERE+ ).
 
 [source, ruby]
 -------------------------------------------------------
@@ -1634,25 +1633,25 @@ class Parts < ActiveRecord::Base
 end
 -------------------------------------------------------
 
-Se você utlizar +:conditions+ no estilo hash, então a criação dos registos pela associação será automaticamente escopada usando o hash. Neste casa, usando +@parts.assemblies.create+ ou +@parts.assemblies.build+ irá criar registros onde a coluna de criação conterá o valor "Seattle".
+Se você utilizar +:conditions+ no estilo hash, então a criação dos registros pela associação será automaticamente escopada usando o hash. Neste casa, usando +@parts.assemblies.create+ ou +@parts.assemblies.build+ irá criar registros onde a coluna de criação conterá o valor "Seattle".
 
 ===== +:counter_sql+
 
 Normalmente o Rails gera automaticamente o SQL apropriado para contar os membros da associação. Com a opção +:counter_sql+, você pode especificar o SQL para fazer a contagem.
 
-NOTE: Se você especificar +:finder_sql+ mas não +:counter_sql+, o SQL contador será gerado substituindo +SELECT COUNT(*) FROM+ para a claúsula +SELECT ... FROM+ para a declaração do seu +:finder_sql+.
+NOTE: Se você especificar +:finder_sql+ mas não +:counter_sql+, o SQL contador será gerado substituindo +SELECT COUNT(*) FROM+ para a cláusula +SELECT ... FROM+ para a declaração do seu +:finder_sql+.
 
 ===== +:delete_sql+
 
-Normalmente Rails gera automaticamente o SQL apropriado ppara remover as ligaçõe entre as classes associadas. Com a opção +:delete_sql+, você pode especificar uma claúsula SQL para excluir da sua forma.
+Normalmente Rails gera automaticamente o SQL apropriado para remover as ligações entre as classes associadas. Com a opção +:delete_sql+, você pode especificar uma cláusula SQL para excluir da sua forma.
 
 ===== +:extend+
 
-A opção +:extend+ especifica um módulo para extender o proxy de associação. Extensão de associações serão discutidas com mais detalhes neste guia.
+A opção +:extend+ especifica um módulo para estender o proxy de associação. Extensão de associações serão discutidas com mais detalhes neste guia.
 
 ===== +:finder_sql+
 
-Normalmente Rails gera automaticamete o SQL apropriado para buscar os membros da associação. Com a opção +:finder_sql+, você pode especificar sua própria claúsula SQL para buscar os registros. Se a busca dos objetos requer um SQL complexo em um hierarquia multi-table, então esta opção pode ser necessária.
+Normalmente Rails gera automaticamente o SQL apropriado para buscar os membros da associação. Com a opção +:finder_sql+, você pode especificar sua própria cláusula SQL para buscar os registros. Se a busca dos objetos requer um SQL complexo em um hierarquia multi-table, então esta opção pode ser necessária.
 
 ===== +:foreign_key+
 
@@ -1668,7 +1667,7 @@ end
 
 ===== +:group+
 
-A opção +:group+ informa o nome de um atributo que será usado para agrupar os resultados, usando uma claúsula +GROUP BY+ em um SQL.
+A opção +:group+ informa o nome de um atributo que será usado para agrupar os resultados, usando uma cláusula +GROUP BY+ em um SQL.
 
 [source, ruby]
 -------------------------------------------------------
@@ -1687,7 +1686,7 @@ Normalmente o Rails gera automaticamente o SQL apropriado para criar a associaç
 
 ===== +:join_table+
 
-Se o nome padrão da tabela de junção, baseada em ordem léxica, não é o que você deseja, então é possível usar a opção +:join_table+ para sobreescrever este comportamento.
+Se o nome padrão da tabela de junção, baseada em ordem léxica, não é o que você deseja, então é possível usar a opção +:join_table+ para sobrescrever este comportamento.
 
 ===== +:limit+
 
@@ -1706,7 +1705,7 @@ A opção +:offset+ permite que você especifique de onde a busca dos objetos as
 
 ===== +:order+
 
-A opção +:order+ dita a ordem que cada objeto associado deve ser retornado ( gerando uma claúsula SQL +ORDER BY+).
+A opção +:order+ dita a ordem que cada objeto associado deve ser retornado ( gerando uma cláusula SQL +ORDER BY+).
 
 [source, ruby]
 -------------------------------------------------------
@@ -1721,7 +1720,7 @@ Se você definir a opção +:readonly+ para +true+, os objetos associados serão
 
 ===== +:select+
 
-A opção +:select+ permite que você sobreescreva a claúsula SQL +SELECT+ que será usada para retornar os objetos associados. Por padrão, Rails retorna todas as colunas.
+A opção +:select+ permite que você sobrescreva a cláusula SQL +SELECT+ que será usada para retornar os objetos associados. Por padrão, Rails retorna todas as colunas.
 
 ===== +:uniq+
 
@@ -1737,7 +1736,7 @@ Quando você atribuir um objeto a uma associação +has_and_belongs_to_many+, es
 
 Se uma das gravações falhar durante o processo de validações, então a atribuição retornará +false+ e a atribuição em si, será cancelada.
 
-Se o objeto pai( o que estiver declarando a associação +has_and_belongs_to_many+) não for salvo (ou seja, +new_record?+ retorna +true+) então os filhos também não serão salvos quando forem adicionados. Todos os membros não salvos na associação serão automcaticamente salvos quando o pai for salvo.
+Se o objeto pai( o que estiver declarando a associação +has_and_belongs_to_many+) não for salvo (ou seja, +new_record?+ retorna +true+) então os filhos também não serão salvos quando forem adicionados. Todos os membros não salvos na associação serão automaticamente salvos quando o pai for salvo.
 
 Se você quiser atribuir um objeto a uma associação +has_and_belongs_to_many+ sem salvar o objeto, use o método +_collection_.build+.
 
@@ -1788,7 +1787,7 @@ Se +before_add+ disparar uma exceção, o objeto não será adicionado a coleç�
 
 === Extensões de Associação
 
-Você não está limitado as funcionalidades que o Rails automicaticamente constrói nos objetos de um association proxy. Você pode extender estes objetos através de módulos anônimos, adicionando novos finders, creators ou outros métodos. Por exemplo:
+Você não está limitado as funcionalidades que o Rails automaticamente constrói nos objetos de um association proxy. Você pode estender estes objetos através de módulos anônimos, adicionando novos finders, creators ou outros métodos. Por exemplo:
 
 [source, ruby]
 -------------------------------------------------------
