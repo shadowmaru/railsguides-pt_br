@@ -11,19 +11,19 @@ Todos os métodos utilizam um cookie - isto é obrigatório e o Rails não permi
 
 A maioria utiliza um cookie para armazenar o ID da sessão, que é então utilizado para procurar os dados da sessão no servidor. O método padrão e recomendado, o CookieStore, não armazena dados da sessão no servidor, mas sim no próprio cookie. Os dados são assinados criptograficamente para torná-los a prova de alterações, mas eles não são criptografados, então qualquer um com acesso ao cookie pode ler seu conteúdo, mas não editá-lo (o Rails não irá aceitá-lo se ele tiver sido editado). Ele só pode armazenar cerca de 4kB de dados - bem menos do que os outros métodos - mas isto geralmente é o suficiente. O armazenamento de grandes quantidades de dados não é recomendado, não importa qual o método de armazenamento de sessão a sua aplicação utilize. Você deve evitar principalmente armazenar objetos complexos (qualquer coisa diferente de objetos Ruby básicos, sendo o exemplo mais comum uma instância de um model) na sessão, já que o servidor pode não conseguir recuperá-los entre requisições, o que resultará em um erro. O armazenamento CookieStore tem a vantagem de não requerir qualquer configuração antes de ser utilizado - o Rails irá gerar uma "chave secreta" que será utilizada para assinar o cookie quando você criar a aplicação.
 
-Read more about session storage in the link:../security.html[Security Guide].
+Leia mais sobre armazenamento de sessão no link:../seguranca.html[Guia de Seguranca].
 
-If you need a different session storage mechanism, you can change it in the `config/environment.rb` file:
+Se você precisar de um mecanismo de armazenamento de sessão diferente, você pode alterá-lo no arquivo `config/environment.rb`:
 
 [source, ruby]
 ------------------------------------------
-# Set to one of [:active_record_store, :drb_store, :mem_cache_store, :cookie_store]
+# Escolha um dentre [:active_record_store, :drb_store, :mem_cache_store, :cookie_store]
 config.action_controller.session_store = :active_record_store
 ------------------------------------------
 
-=== Disabling the Session ===
+=== Desabilitando a Sessão ===
 
-Sometimes you don't need a session. In this case, you can turn it off to avoid the unnecessary overhead. To do this, use the `session` class method in your controller:
+Algumas vezes você pode não precisar de uma sessão. Neste caso, você pode desligá-la para evitar desperdícios de recursos. Para fazê-lo, utilize o método de classe `session` em seu controller:
 
 [source, ruby]
 ------------------------------------------
@@ -32,18 +32,18 @@ class ApplicationController < ActionController::Base
 end
 ------------------------------------------
 
-You can also turn the session on or off for a single controller:
+Você também pode desligar a sessão em um controller específico:
 
 [source, ruby]
 ------------------------------------------
-# The session is turned off by default in ApplicationController, but we
-# want to turn it on for log in/out.
+# A sessão é desligada por padrão no ApplicationController, mas nós queremos
+# ligá-la para entrar/sair do sistema.
 class LoginsController < ActionController::Base
   session :on
 end
 ------------------------------------------
 
-Or even for specified actions:
+Ou até mesmo para actions específicas:
 
 [source, ruby]
 ------------------------------------------
@@ -52,13 +52,13 @@ class ProductsController < ActionController::Base
 end
 ------------------------------------------
 
-=== Accessing the Session ===
+=== Acessando a Sessão ===
 
-In your controller you can access the session through the `session` instance method.
+Em seu controller, você pode acessar a sessão através do método de instância `session`.
 
-NOTE: There are two `session` methods, the class and the instance method. The class method which is described above is used to turn the session on and off while the instance method described below is used to access session values.
+NOTE: Existem dois métodos `session`, o método de classe e o método de instância. O método de classe descrito acima é utilizado para ligar e desligar a sessão, enquanto o método de instância é utilizado é utilizado para acessar os valores da sessão.
 
-Session values are stored using key/value pairs like a hash:
+Valores são armazenados na sessão utilizando pares de chaves/valores como um hash:
 
 [source, ruby]
 ------------------------------------------
@@ -66,9 +66,9 @@ class ApplicationController < ActionController::Base
 
 private
 
-  # Finds the User with the ID stored in the session with the key :current_user_id
-  # This is a common way to handle user login in a Rails application; logging in sets the
-  # session value and logging out removes it.
+  # Encontra o User com o ID armazenado na sessão com a chave :current_user_id
+  # Esta é uma forma comum de lidar com login de usuários em uma aplicação Rails;
+  # Durante o login o valor é armazenado, e no logout ele é removido.
   def current_user
     @_current_user ||= session[:current_user_id] && User.find(session[:current_user_id])
   end
@@ -76,16 +76,16 @@ private
 end
 ------------------------------------------
 
-To store something in the session, just assign it to the key like a hash:
+Para armazenar algo na sessão, simplesmente atribua uma chave acomo um hash:
 
 [source, ruby]
 ------------------------------------------
 class LoginsController < ApplicationController
 
-  # "Create" a login, aka "log the user in"
+  # "Cria" um login, ou seja, "loga o usuário"
   def create
     if user = User.authenticate(params[:username, params[:password])
-      # Save the user ID in the session so it can be used in subsequent requests
+      # Registra o ID do usuário na sessão para que possa ser recuperado durante outras requisições
       session[:current_user_id] = user.id
       redirect_to root_url
     end
@@ -94,15 +94,15 @@ class LoginsController < ApplicationController
 end
 ------------------------------------------
 
-To remove something from the session, assign that key to be `nil`:
+Para remover algo da sessão, atribua o valor `nil` para a chave:
 
 [source, ruby]
 ------------------------------------------
 class LoginsController < ApplicationController
 
-  # "Delete" a login, aka "log the user out"
+  # "Apaga" um login, ou seja, "desloga o usuário"
   def destroy
-    # Remove the user id from the session
+    # Remove o id do usuário da sessão
     session[:current_user_id] = nil
     redirect_to root_url
   end
@@ -110,11 +110,11 @@ class LoginsController < ApplicationController
 end
 ------------------------------------------
 
-To reset the entire session, use `reset_session`.
+Para reiniciar a sessão inteira, utilize `reset_session`.
 
-=== The flash ===
+=== O flash ===
 
-The flash is a special part of the session which is cleared with each request. This means that values stored there will only be available in the next request, which is useful for storing error messages etc. It is accessed in much the same way as the session, like a hash. Let's use the act of logging out as an example. The controller can send a message which will be displayed to the user on the next request:
+O flash é uma parte especial da sessão que é limpa entre cada requisição. Isto significa que valores armazenados nele só ficarão disponíveis durante a próxima requisição, o que é útil para armazenar mensagens de erro, etc. Ele é acessado igual a sessão, como um hash. Vamos utilizar o ato de logout como exemplo. O controller pode enviar uma mensagem que será apresentada ao usuário na próxima requisição:
 
 [source, ruby]
 ------------------------------------------
@@ -122,14 +122,14 @@ class LoginsController < ApplicationController
 
   def destroy
     session[:current_user_id] = nil
-    flash[:notice] = "You have successfully logged out"
+    flash[:notice] = "Você saiu do sistema"
     redirect_to root_url
   end
 
 end
 ------------------------------------------
 
-The `destroy` action redirects to the application's `root_url`, where the message will be displayed. Note that it's entirely up to the next action to decide what, if anything, it will do with what the previous action put in the flash. It's conventional to display eventual errors or notices from the flash in the application's layout:
+A action `destroy` redireciona a aplicação para `root_url`, onde a mensagem será apresentada. Repare que fica a cargo da próxima action o que fazer com o que a action anterior colocou no flash. É normal apresentar erros ou informações a partir do flash no layout da aplicação:
 
 ------------------------------------------
 <html>
@@ -146,19 +146,19 @@ The `destroy` action redirects to the application's `root_url`, where the messag
 </html>
 ------------------------------------------
 
-This way, if an action sets an error or a notice message, the layout will display it automatically.
+Desta forma, se uma action atribuir uma mensagem de erro ou de informação no flash, o layout irá apresentá-la automaticamente.
 
-If you want a flash value to be carried over to another request, use the `keep` method:
+Se você quiser que um valor no flash seja mantido para outra requisição, utilize o método `keep`:
 
 [source, ruby]
 ------------------------------------------
 class MainController < ApplicationController
 
-  # Let's say this action corresponds to root_url, but you want all requests here to be redirected to
-  # UsersController#index. If an action sets the flash and redirects here, the values would normally be
-  # lost when another redirect happens, but you can use keep to make it persist for another request.
+  # Digamos que este método corresponda a root_url, mas você quer que todas as requisições aqui sejam redirecionadas para
+  # UsersController#index. Se uma action atribuir um valor ao flash e redirecionar aqui, os valores normalmente serão perdidos
+  # quando outro redirecionamento acontecer, mas você pode utilizar o método keep para persistí-lo por requisições.
   def index
-    flash.keep # Will persist all flash values. You can also use a key to keep only that value: flash.keep(:notice)
+    flash.keep # Irá persistir todos os valores em flash. Você também pode utilizar uma chave para manter somente um determinado valor: flash.keep(:notice)
     redirect_to users_url
   end
 
@@ -167,7 +167,7 @@ end
 
 ==== +flash.now+ ====
 
-By default, adding values to the flash will make them available to the next request, but sometimes you may want to access those values in the same request. For example, if the `create` action fails to save a resource and you render the `new` template directly, that's not going to result in a new request, but you may still want to display a message using the flash. To do this, you can use `flash.now` in the same way you use the normal `flash`:
+Por padrão, adicionar valores ao flash irá torná-los disponíveis durante a próxima requisição, mas algumas vezes você pode querer acessar estes valores nesta mesma requisição. Por exemplo, se a action `create` falha em salvar um recurso e você renderizar o template `new` diretamente, isto não irá resultar em uma nova requisição, mas você pode ainda querer mostrar uma mensagem utilizando o flash. Para fazê-lo, você pode utilizar `flash.now` da mesma forma que utiliza o `flash`:
 
 [source, ruby]
 ------------------------------------------
@@ -178,7 +178,7 @@ class ClientsController < ApplicationController
     if @client.save
       # ...
     else
-      flash.now[:error] = "Could not save client"
+      flash.now[:error] = "Não foi possível salvar o cliente"
       render :action => "new"
     end
   end
