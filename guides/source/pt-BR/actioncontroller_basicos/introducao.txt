@@ -1,0 +1,9 @@
+== O que faz um Controller? ==
+
+Action Controller é o C de MVC. Após o roteamento determinar qual controller será utilizado para uma requisição, o controller fica responsável por dar sentido a requisição e produzir uma saída apropriada. Por sorte, o Actio Controller faz a maior parte do trabalho pesado por você e utiliza convenções inteligentes para tornar este processo o mais direto possível.  
+
+Para a maioria das aplicações convencionais RESTful, o controller receberá a requisição (isto é invisível para você como desenvolvedor), resgatará ou salvará dados de um model e utilizará a view para criar uma saída HTML. Se o seu controller precisar fazer coisas um pouco diferentes, isto não é problema, esta é apenas a forma mais comum de funcionamento de um controller.   
+
+Um controller pode ser pensado como um intermediário entre models e views. Ele torna dados do model disponíveis para que uma view possa apresentá-los ao usuário, e os salva ou atualiza conforme solicitado pelo usuário.
+
+NOTE: Para mais detalhes sobre o processamento de rotas, veja o link:../roteamento_rails_de_fora_para_dentro[Roteamento Rails de Fora para Dentro]. 
