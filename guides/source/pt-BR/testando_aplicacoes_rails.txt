@@ -659,32 +659,32 @@ class UserFlowsTest < ActionController::IntegrationTest
 end
 --------------------------------------------------
 
-Testes de integração herdam de +ActionController::IntegrationTest+. Isto faz com que estejam disponíveis helpers adicionais para serem usados nos seus testes de integração. Você também precisa incluir explicitamente as fixtures para que elas estejam disponíveis para o teste.
+Testes de integração herdam de +ActionController::IntegrationTest+. Isto faz com que helpers adicionais estejam disponíveis para serem usados nos seus testes de integração. Você também precisa incluir explicitamente as fixtures para que elas estejam disponíveis para o teste.
 
 === Helpers Disponíveis para testes de Integração ===
 
-In addition to the standard testing helpers, there are some additional helpers available to integration tests:
+Adicionalmente aos helpers padrão, há alguns outros disponíveis para os testes de integração:
 
 [grid="all"]
 `----------------------------------------------------------------------------------`-------------------------------------------------------
-Helper                                                                             Purpose
+Helper                                                                             Objetivo
 ------------------------------------------------------------------------------------------------------------------------------------------
-+https?+                                                                           Returns +true+ if the session is mimicking a secure HTTPS request.
-+https!+                                                                           Allows you to mimic a secure HTTPS request.
-+host!+                                                                            Allows you to set the host name to use in the next request.
-+redirect?+                                                                        Returns +true+ if the last request was a redirect.
-+follow_redirect!+                                                                 Follows a single redirect response.
-+request_via_redirect(http_method, path, [parameters], [headers])+                 Allows you to make an HTTP request and follow any subsequent redirects.
-+post_via_redirect(path, [parameters], [headers])+                                 Allows you to make an HTTP POST request and follow any subsequent redirects.
-+get_via_redirect(path, [parameters], [headers])+                                  Allows you to make an HTTP GET request and follow any subsequent redirects.
-+put_via_redirect(path, [parameters], [headers])+                                  Allows you to make an HTTP PUT request and follow any subsequent redirects.
-+delete_via_redirect(path, [parameters], [headers])+                               Allows you to make an HTTP DELETE request and follow any subsequent redirects.
-+open_session+                                                                     Opens a new session instance.
++https?+                                                                           Retorna +true+ se a sessão está simulando uma requisição segura HTTPS.
++https!+                                                                           Permite que você simule uma requisição segura HTTPS.
++host!+                                                                            Permite que você configure o nome  do host para usar na próxima requisição.
++redirect?+                                                                        Retorna +true+ se a última requisição foi um redirecionamento.
++follow_redirect!+                                                                 Segue um simples redirect response.
++request_via_redirect(http_method, path, [parameters], [headers])+                 Permite que você faça uma requisição HTTP e siga qualquer redirecionamento subseqüente.
++post_via_redirect(path, [parameters], [headers])+                                 Permite que você faça uma requisição HTTP POST e siga qualquer redirecionamento subseqüente.
++get_via_redirect(path, [parameters], [headers])+                                  Permite que você faça uma requisição HTTP GET e siga qualquer redirecionamento subseqüente.
++put_via_redirect(path, [parameters], [headers])+                                  Permite que você faça uma requisição HTTP PUT e siga qualquer redirecionamento subseqüente.
++delete_via_redirect(path, [parameters], [headers])+                               Permite que você faça uma requisição HTTP DELETE e siga qualquer redirecionamento subseqüente.
++open_session+                                                                     Abre uma nova instância de sessão.
 ------------------------------------------------------------------------------------------------------------------------------------------
 
-=== Integration Testing Examples === 
+=== Exemplos de Testes de Integração === 
 
-A simple integration test that exercises multiple controllers:
+Um simples teste de integração que exercita múltiplos controllers:
 
 [source,ruby]
 --------------------------------------------------
@@ -711,9 +711,9 @@ class UserFlowsTest < ActionController::IntegrationTest
 end
 --------------------------------------------------
 
-As you can see the integration test involves multiple controllers and exercises the entire stack from database to dispatcher. In addition you can have multiple session instances open simultaneously in a test and extend those instances with assertion methods to create a very powerful testing DSL (domain-specific language) just for your application.
+Como você pode ver, o teste de integração envolve múltiplos controllers e exercita toda a pilha desde a base de dados até o envio. Além disto, você pode ter múltiplas sessões abertas simultâneamente em um teste e estender estas instâncias com métodos de asserção para criar uma poderosa DSL (linguagem específica de domínio) de testes exclusiva para a sua aplicação. 
 
-Here's an example of multiple sessions and custom DSL in an integration test
+Aqui está um exemplo de múltiplas sessões e DSL customizada em um teste de integração
 
 [source,ruby]
 --------------------------------------------------
@@ -764,25 +764,25 @@ class UserFlowsTest < ActionController::IntegrationTest
 end
 --------------------------------------------------
 
-== Rake Tasks for Running your Tests ==
+== Tarefas Rake Para Rodar Testes ==
 
-You don't need to set up and run your tests by hand on a test-by-test basis. Rails comes with a number of rake tasks to help in testing. The table below lists all rake tasks that come along in the default Rakefile when you initiate a Rail project.
+Você não precisa configurar e rodar os seus testes um a um manualmente. O Rails vem com muitas tarefas rake para te ajudar a testar. A tabela abaixo lista todas as tarefas rake existentes por padrão no arquivo Rakefile quando você inicia um projeto Rails.
 
 [grid="all"]
 --------------------------------`----------------------------------------------------
-Tasks                           Description
+Tasks                           Descrição
 ------------------------------------------------------------------------------------
-+rake test+                     Runs all unit, functional and integration tests. You can also simply run +rake+ as the _test_ target is the default.
-+rake test:units+               Runs all the unit tests from +test/unit+
-+rake test:functionals+         Runs all the functional tests from +test/functional+
-+rake test:integration+         Runs all the integration tests from +test/integration+
-+rake test:recent+              Tests recent changes
-+rake test:uncommitted+         Runs all the tests which are uncommitted. Only supports Subversion
-+rake test:plugins+             Run all the plugin tests from +vendor/plugins/*/**/test+ (or specify with +PLUGIN=_name_+)
++rake test+                     Roda todos os testes unitários, funcionais e de integração. Você também pode simplesmente rodar +rake+ pois o target _test_ é padrão.
++rake test:units+               Roda todos os testes unitários de +test/unit+
++rake test:functionals+         Roda todos os testes funcionais de +test/functional+
++rake test:integration+         Roda todos os testes de integração de +test/integration+
++rake test:recent+              Testa as mudanças recentes
++rake test:uncommitted+         Roda todos os testes que não foram comitados. Só suporta Subversion
++rake test:plugins+             Roda todos os testes de plugins de +vendor/plugins/*/**/test+ (ou de modo específico com +PLUGIN=_name_+)
 ------------------------------------------------------------------------------------
 
 
-== Brief Note About Test::Unit ==
+== Breve Nota Sobre Test::Unit ==
 
 Ruby ships with a boat load of libraries. One little gem of a library is +Test::Unit+, a framework for unit testing in Ruby. All the basic assertions discussed above are actually defined in +Test::Unit::Assertions+. The class +ActiveSupport::TestCase+ which we have been using in our unit and functional tests extends +Test::Unit::TestCase+ that it is how we can use all the basic assertions in our tests.
 
