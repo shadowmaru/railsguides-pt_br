@@ -8,3 +8,11 @@ Daniel Lopes é parceiro da empresa http://www.areacriacoes.com.br[Area Criaçõ
 falando sobre Ruby on Rails, Flex, Javascript, Flash e assuntos relacionados a web e design.
 Trabalha como desenvolvedor Rails/Flex/Js/Flash e webdesigner além de ser instrutor dos curso de Adobe Flex e RubyOnRails na E-genial (www.egenial.com.br).
 ***********************************************************
+.Adolfo Sousa
+[[adolfosousa]]
+***********************************************************
+Diariamente desenvolvo sistemas web utilizando a plataforma Java. Atualmente trabalho para a Locaweb desenvolvendo produtos para área de Telecomunicações da empresa.
+Tenho dedicado parte do meu tempo ao estudo da linguagem Ruby e do framework Ruby on Rails.
+Interesso-me por linguagens de programação, desenvolvimento guiado por testes, metodologias de desenvolvimento de software e novas formas de simplificar tudo o que me cerca.
+Também escrevo no http://www.adolfosousa.com.br/blog[meu blog].
+***********************************************************

@@ -462,7 +462,7 @@ Em Rails, os testes de várias actions de um único controller são chamados de 
 
 Você deve testar coisas como:
 
- * o request foi bem sucedido?
+ * a requisição foi bem sucedida?
  * o usuário foi redirecionado para página correta?
  * o usuário foi autenticado com sucesso?
  * o objeto correto foi armazenado no response template?
@@ -579,24 +579,24 @@ end
 
 === Testando Views ===
 
-Testing the response to your request by asserting the presence of key HTML elements and their content is a useful way to test the views of your application. The +assert_select+ assertion allows you to do this by using a simple yet powerful syntax.
+Testar a resposta da sua requisição validando a presença de elementos HTML e o seu conteúdo é um modo útil de testar as views da sua aplicação. A asserção +assert_select+ permite que você faça isso usando um simples e poderosa sintaxe.
 
-NOTE: You may find references to +assert_tag+ in other documentation, but this is now deprecated in favor of +assert_select+.
+NOTE: Você pode encontrar referencias a +assert_tag+ em outra documentação, mas agora ela está deprecada em favor de +assert_select+.
 
-There are two forms of +assert_select+:
+Há duas formas de +assert_select+:
 
-+assert_select(selector, [equality], [message])`+ ensures that the equality condition is met on the selected elements through the selector. The selector may be a CSS selector expression (String), an expression with substitution values, or an +HTML::Selector+ object.
++assert_select(selector, [equality], [message])`+ garante que a condição de igualdade é atingida nos elementos capturados pelo selector. O selector pode ser um seletor CSS (String), uma expressão com valores para substituição, ou um objeto +HTML::Selector+.
 
-+assert_select(element, selector, [equality], [message])+ ensures that the equality condition is met on all the selected elements through the selector starting from the _element_ (instance of +HTML::Node+) and its descendants.
++assert_select(element, selector, [equality], [message])+ garante que a condição de igualdade é atingida em todos os elementos atingidos pelo selector começando pelo _element_ (instância de +HTML::Node+) e seus descendentes.
 
-For example, you could verify the contents on the title element in your response with:
+Por exemplo, você poderia verificar o conteúdo no elemento title do seu response com:
 
 [source,ruby]
 --------------------------------------------------
 assert_select 'title', "Welcome to Rails Testing Guide"
 --------------------------------------------------
 
-You can also use nested +assert_select+ blocks. In this case the inner +assert_select+ will run the assertion on each element selected by the outer `assert_select` block:
+Você também pode usar blocos +assert_select+ aninhados. Neste caso, o +assert_select+ interno irá rodar a asserção em cada elemento selecionado pelo bloco `assert_select` externo:
 
 [source,ruby]
 --------------------------------------------------
@@ -605,23 +605,23 @@ assert_select 'ul.navigation' do
 end
 --------------------------------------------------
 
-The +assert_select+ assertion is quite powerful. For more advanced usage, refer to its link:http://api.rubyonrails.com/classes/ActionController/Assertions/SelectorAssertions.html#M000749[documentation].
+A asserção +assert_select+ é muito poderosa. Para um uso mais avançado, visite  link:http://api.rubyonrails.com/classes/ActionController/Assertions/SelectorAssertions.html#M000749[documentation].
 
-==== Additional View-based Assertions ====
+==== Asserções Adicionais Baseadas na View ====
 
-There are more assertions that are primarily used in testing views:
+Há mais asserções que são mais usadas para testar views: 
 
 [grid="all"]
 `----------------------------------------------------------------------------------`-------------------------------------------------------
-Assertion                                                                          Purpose
+Asserção                                                                           Objetivo
 ------------------------------------------------------------------------------------------------------------------------------------------
-+assert_select_email+                                                              Allows you to make assertions on the body of an e-mail. 
-+assert_select_rjs+                                                                Allows you to make assertions on RJS response. +assert_select_rjs+ has variants which allow you to narrow down on the updated element or even a particular operation on an element.
-+assert_select_encoded+                                                            Allows you to make assertions on encoded HTML. It does this by un-encoding the contents of each element and then calling the block with all the un-encoded elements.
-+css_select(selector)+  or +css_select(element, selector)+                         Returns an array of all the elements selected by the _selector_. In the second variant it first matches the base _element_ and tries to match the _selector_ expression on any of its children. If there are no matches both variants return an empty array.
++assert_select_email+                                                              Permite que você faça asserções no corpo de um e-mail. 
++assert_select_rjs+                                                                Permite que você faça asserções em um response RJS. +assert_select_rjs+ tem variações que permitem a você apontar para o elemento atualizado ou até mesmo realizar uma operação em um elemento.
++assert_select_encoded+                                                            Permite que você faça asserções em um HTML codificado. Ele faz isso descodificando os conteúdos de cada elemento e chamando o bloco com todos os elementos descodificados.
++css_select(selector)+  ou +css_select(element, selector)+                         Retorna um array de todos os elementos selecionados pelo _selector_. Na segunda variação, ele primeiro encontra o _element_ base e tenta casar a expressão do _selector_ com qualquer um dos seus filhos. Se não existirem correspondências, as duas variantes retornam um array vazio.
 ------------------------------------------------------------------------------------------------------------------------------------------
 
-Here's an example of using +assert_select_email+:
+Aqui está um exemplo de uso do +assert_select_email+:
 
 [source,ruby]
 --------------------------------------------------
@@ -630,11 +630,11 @@ assert_select_email do
 end
 --------------------------------------------------
 
-== Integration Testing ==
+== Testes de Integração ==
 
-Integration tests are used to test the interaction among any number of controllers. They are generally used to test important work flows within your application. 
+Testes de integração são usados para testar a interação entre qualquer número de controllers. Eles são geralmente usados para testar importantes fluxos de trabalho da sua aplicação.
 
-Unlike Unit and Functional tests, integration tests have to be explicitly created under the 'test/integration' folder within your application. Rails provides a generator to create an integration test skeleton for you. 
+Diferentemente dos testes Unitários e Funcionais, testes de integração devem ser explicitamente criados dentro da pasta 'test/integration' na sua aplicação. O Rails provê um gerador para criar um esqueleto do teste de integração.
 
 [source, shell]
 --------------------------------------------------
@@ -643,7 +643,7 @@ $ script/generate integration_test user_flows
       create  test/integration/user_flows_test.rb
 --------------------------------------------------
 
-Here's what a freshly-generated integration test looks like:
+Um teste de integração recém-criado se parece com isso:
 
 [source,ruby]
 --------------------------------------------------
@@ -659,32 +659,32 @@ class UserFlowsTest < ActionController::IntegrationTest
 end
 --------------------------------------------------
 
-Integration tests inherit from +ActionController::IntegrationTest+. This makes available some additional helpers to use in your integration tests. Also you need to explicitly include the fixtures to be made available to the test. 
+Testes de integração herdam de +ActionController::IntegrationTest+. Isto faz com que helpers adicionais estejam disponíveis para serem usados nos seus testes de integração. Você também precisa incluir explicitamente as fixtures para que elas estejam disponíveis para o teste.
 
-=== Helpers Available for Integration tests ===
+=== Helpers Disponíveis para testes de Integração ===
 
-In addition to the standard testing helpers, there are some additional helpers available to integration tests:
+Adicionalmente aos helpers padrão, há alguns outros disponíveis para os testes de integração:
 
 [grid="all"]
 `----------------------------------------------------------------------------------`-------------------------------------------------------
-Helper                                                                             Purpose
+Helper                                                                             Objetivo
 ------------------------------------------------------------------------------------------------------------------------------------------
-+https?+                                                                           Returns +true+ if the session is mimicking a secure HTTPS request.
-+https!+                                                                           Allows you to mimic a secure HTTPS request.
-+host!+                                                                            Allows you to set the host name to use in the next request.
-+redirect?+                                                                        Returns +true+ if the last request was a redirect.
-+follow_redirect!+                                                                 Follows a single redirect response.
-+request_via_redirect(http_method, path, [parameters], [headers])+                 Allows you to make an HTTP request and follow any subsequent redirects.
-+post_via_redirect(path, [parameters], [headers])+                                 Allows you to make an HTTP POST request and follow any subsequent redirects.
-+get_via_redirect(path, [parameters], [headers])+                                  Allows you to make an HTTP GET request and follow any subsequent redirects.
-+put_via_redirect(path, [parameters], [headers])+                                  Allows you to make an HTTP PUT request and follow any subsequent redirects.
-+delete_via_redirect(path, [parameters], [headers])+                               Allows you to make an HTTP DELETE request and follow any subsequent redirects.
-+open_session+                                                                     Opens a new session instance.
++https?+                                                                           Retorna +true+ se a sessão está simulando uma requisição segura HTTPS.
++https!+                                                                           Permite que você simule uma requisição segura HTTPS.
++host!+                                                                            Permite que você configure o nome  do host para usar na próxima requisição.
++redirect?+                                                                        Retorna +true+ se a última requisição foi um redirecionamento.
++follow_redirect!+                                                                 Segue um simples redirect response.
++request_via_redirect(http_method, path, [parameters], [headers])+                 Permite que você faça uma requisição HTTP e siga qualquer redirecionamento subseqüente.
++post_via_redirect(path, [parameters], [headers])+                                 Permite que você faça uma requisição HTTP POST e siga qualquer redirecionamento subseqüente.
++get_via_redirect(path, [parameters], [headers])+                                  Permite que você faça uma requisição HTTP GET e siga qualquer redirecionamento subseqüente.
++put_via_redirect(path, [parameters], [headers])+                                  Permite que você faça uma requisição HTTP PUT e siga qualquer redirecionamento subseqüente.
++delete_via_redirect(path, [parameters], [headers])+                               Permite que você faça uma requisição HTTP DELETE e siga qualquer redirecionamento subseqüente.
++open_session+                                                                     Abre uma nova instância de sessão.
 ------------------------------------------------------------------------------------------------------------------------------------------
 
-=== Integration Testing Examples === 
+=== Exemplos de Testes de Integração === 
 
-A simple integration test that exercises multiple controllers:
+Um simples teste de integração que exercita múltiplos controllers:
 
 [source,ruby]
 --------------------------------------------------
@@ -711,9 +711,9 @@ class UserFlowsTest < ActionController::IntegrationTest
 end
 --------------------------------------------------
 
-As you can see the integration test involves multiple controllers and exercises the entire stack from database to dispatcher. In addition you can have multiple session instances open simultaneously in a test and extend those instances with assertion methods to create a very powerful testing DSL (domain-specific language) just for your application.
+Como você pode ver, o teste de integração envolve múltiplos controllers e exercita toda a pilha desde a base de dados até o envio. Além disto, você pode ter múltiplas sessões abertas simultâneamente em um teste e estender estas instâncias com métodos de asserção para criar uma poderosa DSL (linguagem específica de domínio) de testes exclusiva para a sua aplicação. 
 
-Here's an example of multiple sessions and custom DSL in an integration test
+Aqui está um exemplo de múltiplas sessões e DSL customizada em um teste de integração
 
 [source,ruby]
 --------------------------------------------------
@@ -764,25 +764,25 @@ class UserFlowsTest < ActionController::IntegrationTest
 end
 --------------------------------------------------
 
-== Rake Tasks for Running your Tests ==
+== Tarefas Rake Para Rodar Testes ==
 
-You don't need to set up and run your tests by hand on a test-by-test basis. Rails comes with a number of rake tasks to help in testing. The table below lists all rake tasks that come along in the default Rakefile when you initiate a Rail project.
+Você não precisa configurar e rodar os seus testes um a um manualmente. O Rails vem com muitas tarefas rake para te ajudar a testar. A tabela abaixo lista todas as tarefas rake existentes por padrão no arquivo Rakefile quando você inicia um projeto Rails.
 
 [grid="all"]
 --------------------------------`----------------------------------------------------
-Tasks                           Description
+Tasks                           Descrição
 ------------------------------------------------------------------------------------
-+rake test+                     Runs all unit, functional and integration tests. You can also simply run +rake+ as the _test_ target is the default.
-+rake test:units+               Runs all the unit tests from +test/unit+
-+rake test:functionals+         Runs all the functional tests from +test/functional+
-+rake test:integration+         Runs all the integration tests from +test/integration+
-+rake test:recent+              Tests recent changes
-+rake test:uncommitted+         Runs all the tests which are uncommitted. Only supports Subversion
-+rake test:plugins+             Run all the plugin tests from +vendor/plugins/*/**/test+ (or specify with +PLUGIN=_name_+)
++rake test+                     Roda todos os testes unitários, funcionais e de integração. Você também pode simplesmente rodar +rake+ pois o target _test_ é padrão.
++rake test:units+               Roda todos os testes unitários de +test/unit+
++rake test:functionals+         Roda todos os testes funcionais de +test/functional+
++rake test:integration+         Roda todos os testes de integração de +test/integration+
++rake test:recent+              Testa as mudanças recentes
++rake test:uncommitted+         Roda todos os testes que não foram comitados. Só suporta Subversion
++rake test:plugins+             Roda todos os testes de plugins de +vendor/plugins/*/**/test+ (ou de modo específico com +PLUGIN=_name_+)
 ------------------------------------------------------------------------------------
 
 
-== Brief Note About Test::Unit ==
+== Breve Nota Sobre Test::Unit ==
 
 Ruby ships with a boat load of libraries. One little gem of a library is +Test::Unit+, a framework for unit testing in Ruby. All the basic assertions discussed above are actually defined in +Test::Unit::Assertions+. The class +ActiveSupport::TestCase+ which we have been using in our unit and functional tests extends +Test::Unit::TestCase+ that it is how we can use all the basic assertions in our tests.
 
