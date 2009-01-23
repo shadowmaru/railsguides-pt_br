@@ -784,11 +784,12 @@ Tasks                           Descrição
 
 == Breve Nota Sobre Test::Unit ==
 
-Ruby ships with a boat load of libraries. One little gem of a library is +Test::Unit+, a framework for unit testing in Ruby. All the basic assertions discussed above are actually defined in +Test::Unit::Assertions+. The class +ActiveSupport::TestCase+ which we have been using in our unit and functional tests extends +Test::Unit::TestCase+ that it is how we can use all the basic assertions in our tests.
+O Ruby contém um grande número de bibliotecas. Uma pequena gem de uma bibliotea é a +Test::Unit+, um framework para testes unitários em Ruby. Todas as asserções básicas discutidas anteriormente são na verdade em +Test::Unit::Assertions+. A classe +ActiveSupport::TestCase+ que nós estamos usando em nossos testes unitários e funcionais estendem  +Test::Unit::TestCase+. É desta forma que nós podemos usar todas as asserções básicas em nossos testes.
 
 NOTE: For more information on +Test::Unit+, refer to link:http://ruby-doc.org/stdlib/libdoc/test/unit/rdoc/[test/unit Documentation]
+NOTE: Para mais informações a respeito de +Test::Unit+, visite link:http://ruby-doc.org/stdlib/libdoc/test/unit/rdoc/[test/unit Documentation]
 
-== Setup and Teardown ==
+== Setup e Teardown ==
 
 If you would like to run a block of code before the start of each test and another block of code after the end of each test you have two special callbacks for your rescue. Let's take note of this by looking at an example for our functional test in +Posts+ controller:
 
