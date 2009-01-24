@@ -892,25 +892,25 @@ end
 
 Testar classes que enviam emails (mailers) requer algumas ferramentas específicas.
 
-=== Mantendo  Keeping the Postman in Check ===
+=== Mantendo o 'Carteiro' Checado ===
 
-Your +ActionMailer+ classes -- like every other part of your Rails application -- should be tested to ensure that it is working as expected.
+Suas classes +ActionMailer+ -- como todas as outras partes da sua aplicação Rails -- devem ser testadas para garantir que estão funcionando como o esperado.
 
-The goals of testing your +ActionMailer+ classes are to ensure that:
+Os objetivos de testar as suas classes +ActionMailer+ são para garantir que:
 
-* emails are being processed (created and sent)
-* the email content is correct (subject, sender, body, etc)
-* the right emails are being sent at the right times
+* emails estão sendo processados (criados e enviados)
+* o conteúdo dos emails está correto (assunto, remetente, corpo, etc)
+* os emails corretos estão sendo enviados nos momentos certos
 
-==== From All Sides ====
+==== De Todos os Lados ====
 
-There are two aspects of testing your mailer, the unit tests and the functional tests. In the unit tests, you run the mailer in isolation with tightly controlled inputs and compare the output to a knownvalue (a fixture -- yay! more fixtures!). In the functional tests you don't so much test the minute details produced by the mailer Instead we test that our controllers and models are using the mailer in the right way. You test to prove that the right email was sent at the right time.
+Há dois aspectos a serem analisados ao testar o seu mailer, os testes unitários e os testes funcionais. Nos testes unitários, você roda o mailer isoladamente com entradas muito bem controladas e compara a saída com um valor conhecido (uma fixture --yay! mais fixtures!). Nos testes funcionais, você não testa somente os detalhes produzidos pelo mailer. Ao contrário, você nós testamos que nossos controllers e models estão usando o mailer da maneira correta. Você testa para provar que o email correto foi enviado na hora correta.
 
-=== Unit Testing ===
+=== Testes Unitários ===
 
-In order to test that your mailer is working as expected, you can use unit tests to compare the actual results of the mailer with pre-written examples of what should be produced.
+Com o objetivo de testar que o seu mailer está trabalhando como esperado, você pode usar testes unitários para comparar os resultados gerados pelo mailer com exemplos, escritos previamente, do que deveria ser produzido.
 
-==== Revenge of the Fixtures ====
+==== Vingança das Fixtures ====
 
 For the purposes of unit testing a mailer, fixtures are used to provide an example of how the output _should_ look. Because these are example emails, and not Active Record data like the other fixtures, they are kept in their own subdirectory apart from the other fixtures. The name of the directory within +test/fixtures+ directly corresponds to the name of the mailer. So, for a mailer named +UserMailer+, the fixtures should reside in +test/fixtures/user_mailer+ directory.
 
