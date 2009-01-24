@@ -1,5 +1,5 @@
 Básico sobre Action Controller
-=======================
+=============================
 
 Neste guia você aprenderá como os controllers funcionam e como eles se encaixam no ciclo de uma requisição em sua aplicação. Após ler este guia, você será capaz de:
 

@@ -12,7 +12,7 @@ task :guias do
 
   ignore = ['..', 'icons', 'images', 'templates', 'stylesheets']
   ignore << 'active_record_basics.txt'
-  ignore << '.gitigore'
+  ignore << '.gitignore'
 
   indexless = ['index.txt', 'authors.txt']
 
