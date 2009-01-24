@@ -1,0 +1,40 @@
+== Verificações ==
+
+Verificações servem para garantir que um determinado critério seja verificado para permitir que um controller ou uma action sejam executados. Elas podem especificar que uma determinada chave (ou várias chaves na forma de um array) deva estar presente nos hashes `params`, `session` ou `flash`, ou que um determinado método HTTP seja utilizado, ou que a requisição tenha sido feito utilizando XMLHTTPRequest (Ajax). A action padrão realizada quando os critérios não são atendidos é renderizar uma resposta 400 Bad Request, mas você pode personalizar isto especificando um redirecionamento de URL ou renderizando algo específico, e você também pode adicionar mensagens flash e cabeçalhos HTTP a resposta. Na link:http://api.rubyonrails.org/classes/ActionController/Verification/ClassMethods.html[documentação da API] este recurso está descrito como "essencialmente um tipo especial de before_filter".
+
+Aqui temos um exemplo de utilização de verificação para ter certeza de que o usuário passou um usuário e senha para efetuar login:
+
+[source, ruby]
+---------------------------------------
+class LoginsController < ApplicationController
+
+  verify :params => [:username, :password],
+         :render => {:action => "new"},
+         :add_flash => {:error => "Usuário e senha são necessários para efetuar login"}
+
+  def create
+    @user = User.authenticate(params[:username], params[:password])
+    if @user
+      flash[:notice] = "Você entrou no sistema"
+      redirect_to root_url
+    else
+      render :action => "new"
+    end
+  end
+
+end
+---------------------------------------
+
+Agora a action `create` não será executada a não ser que os parâmetros "username" e "password" estejam presentes, e se eles não estiverem, uma mensagem de erro será adicionada ao flash, e a action "new" será renderizada. Mas existe algo importante faltando na verificação acima: ela será utilizada para *qualquer* action do LoginsController, o que não queremos. Você pode limitar a quais actions a verificação será utilizada com as opções `:only` e `:except`, iguais a um filtro:
+
+[source, ruby]
+---------------------------------------
+class LoginsController < ApplicationController
+
+  verify :params => [:username, :password],
+         :render => {:action => "new"},
+         :add_flash => {:error => "Usuário e senha são necessários para efetuar login"},
+         :only => :create # Utilizar esta verificação somente para a action "create"
+
+end
+---------------------------------------
