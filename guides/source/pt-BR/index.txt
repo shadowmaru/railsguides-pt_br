@@ -28,23 +28,23 @@ Tudo que você precisa saber para instalar o Rails e criar sua primeira aplicaç
 Este guia cobre como você pode usar as migrações do Active Record para alterar seu banco de dados de uma forma organizada e estruturada.
 ***********************************************************
 
-.link:activerecord_validations_callbacks.html[Active Record Validations and Callbacks]
+.link:activerecord_validations_callbacks.html[Validações e Callbacks do Active Record]
 ***********************************************************
 CAUTION: link:http://rails.lighthouseapp.com/projects/16213/tickets/26[Lighthouse Ticket]
 
-This guide covers how you can use Active Record validations and callbacks.
+Este guia cobre como você pode usar as validações e callbacks do Active Record.
 ***********************************************************
 
-.link:associacoes_basicas.html[Active Record Associations]
+.link:associacoes_basicas.html[Associações do Active Record]
 ***********************************************************
 Este guia cobre todas as associações disponíveis pelo Active Record.
 ***********************************************************
 
-.link:active_record_querying.html[Active Record Query Interface]
+.link:active_record_querying.html[Interface de Query do Active Record]
 ***********************************************************
 CAUTION: link:http://rails.lighthouseapp.com/projects/16213/tickets/16[Lighthouse Ticket]
 
-This guide covers the database query interface provided by Active Record.
+Este guia cobre como o Active Record trabalha com querys no banco de dados.
 ***********************************************************
 
 ++++++++++++++++++++++++++++++++++++++
@@ -53,95 +53,94 @@ This guide covers the database query interface provided by Active Record.
 
 .link:layouts_and_rendering.html[Layouts and Rendering in Rails]
 ***********************************************************
-This guide covers the basic layout features of Action Controller and Action View,
-including rendering and redirecting, using +content_for+ blocks, and working
-with partials.
+Este guia cobre o básico dos recursos de layout do Action Controller e Action View,
+incluindo renderização e redirecionamento, usando blocos +content_for+, e trabalhando
+com partials.
 ***********************************************************
 
-.link:form_helpers.html[Action View Form Helpers]
+.link:form_helpers.html[Form Helpers do Action View]
 ***********************************************************
 CAUTION: link:http://rails.lighthouseapp.com/projects/16213/tickets/1[Lighthouse Ticket]
 
-Guide to using built in Form helpers.
+Guia para utilização dos Form helpers do Rails.
 ***********************************************************
 
 ++++++++++++++++++++++++++++++++++++++
 <h2>Controllers</h2>
 ++++++++++++++++++++++++++++++++++++++
 
-.link:routing_outside_in.html[Rails Routing from the Outside In]
+.link:roteamento_rails_de_fora_para_dentro.html[Roteamento de Fora para Dentro no Rails]
 ***********************************************************
-This guide covers the user-facing features of Rails routing. If you want to 
-understand how to use routing in your own Rails applications, start here.
+Este guia cobre as maravilhas do sistema de roteamento do Rails. Se você quer entender
+como usar as rotas em suas aplicações Rails, comece por aqui.
 ***********************************************************
 
 .link:actioncontroller_basicos.html[Básico sobre Action Controller]
 ***********************************************************
-This guide covers how controllers work and how they fit into the request cycle in your application. It includes sessions, filters, and cookies, data streaming, and dealing with exceptions raised by a request, among other topics.
+Este guia cobre como os controllers funcionam e como eles estão inseridos no ciclo de requisições de seu aplicativo. Incluindo sessions, filtros, e cookies, streaming de dados, e trabalhando com exceções levantadas por requisições, entre outros tópicos.
 ***********************************************************
 
 .link:caching_with_rails.html[Rails Caching]
 ***********************************************************
 CAUTION: link:http://rails.lighthouseapp.com/projects/16213/tickets/10[Lighthouse Ticket]
 
-This guide covers the three types of caching that Rails provides by default.
+Este guia cobre os três tipos de caching que o Rails provê por padrão.
 ***********************************************************
 
 ++++++++++++++++++++++++++++++++++++++
-<h2>Digging Deeper</h2>
+<h2>Aprofundando</h2>
 ++++++++++++++++++++++++++++++++++++++
 
-.link:testing_rails_applications.html[Testing Rails Applications]
+.link:testando_aplicacoes_rails.html[Testando Aplicações Rails]
 ***********************************************************
 CAUTION: link:http://rails.lighthouseapp.com/projects/16213/tickets/8[Lighthouse Ticket]
 
-This is a rather comprehensive guide to doing both unit and functional tests
-in Rails. It covers everything from ``What is a test?'' to the testing APIs.
-Enjoy.
+Este é um guia para a compreenção da prática de testes unitários e funcionais
+no Rails. Ele cobre tudo desde "O que são testes?" até a as APIs de testes.
+Aproveite.
 ***********************************************************
 
-.link:security.html[Securing Rails Applications]
+.link:seguranca.html[Segurança em Aplicações Rails]
 ***********************************************************
-This guide describes common security problems in web applications and how to
-avoid them with Rails.
-***********************************************************
-
-.link:debugging_rails_applications.html[Debugging Rails Applications]
-***********************************************************
-This guide describes how to debug Rails applications. It covers the different
-ways of achieving this and how to understand what is happening "behind the scenes"
-of your code.
+Este guia descreve problemas de segurança comuns em aplicações web e como evita-los
+com Rails.
 ***********************************************************
 
-.link:performance_testing.html[Performance Testing Rails Applications]
+.link:depurando_aplicacoes_rails.html[Depurando Aplicações Rails]
 ***********************************************************
-This guide covers ways to benchmark and profile your Rails application.
-***********************************************************
-
-.link:creating_plugins.html[The Basics of Creating Rails Plugins]
-***********************************************************
-This guide covers how to build a plugin to extend the functionality of Rails.
+Este guia descreve como depurar aplicações Rails. Ele cobre diferentes formas
+de faze-lo e como entender o que está acontecendo "nos bastidores" do seu código.
 ***********************************************************
 
-.link:i18n.html[The Rails Internationalization API]
+.link:performance_testing.html[Testando Performance em Aplicações Rails]
+***********************************************************
+Este guia cobre formas de medir a performance de sua aplicação Rails.
+***********************************************************
+
+.link:criando_plugins.html[O Básico da Criação de Plugins]
+***********************************************************
+Este guia cobre como criar plugins para estender as funcionalidades do Rails.
+***********************************************************
+
+.link:i18n.html[API de Internacionalização do Rails]
 ***********************************************************
 CAUTION: link:http://rails.lighthouseapp.com/projects/16213/tickets/23[Lighthouse ticket]
 
-This guide introduces you to the basic concepts and features of the Rails I18n API and shows you how to localize your application.
+Este guia introduz os conceitos básicos e recursos da API Rails I18n e mostrar como localizar sua aplicação.
 ***********************************************************
 
-.link:configuring.html[Configuring Rails Applications]
+.link:configuring.html[Configurando Aplicações Rails]
 ***********************************************************
-This guide covers the basic configuration settings for a Rails application.
+Este guia cobre as opções básicas de configuração para uma aplicação Rails.
 ***********************************************************
 
 .link:command_line.html[Rails Command Line Tools and Rake tasks]
 ***********************************************************
-This guide covers the command line tools and rake tasks provided by Rails.
+Este guia cobre as ferramentas de linha de comando e tarefas rake disponibilizadas pelo Rails.
 ***********************************************************
 
-Authors who have contributed to complete guides are listed link:authors.html[here].
+Autores que contribuiram para completar estes guias estão link:authors.html[aqui].
 
 Tradutores que contribuiram para traduzir os guias acima encontram-se link:translators.html[aqui].
 
-This work is licensed under a link:http://creativecommons.org/licenses/by-nc-sa/3.0/[Creative Commons Attribution-Noncommercial-Share Alike 3.0  License]
+Este trabalho está licenciado sobre link:http://creativecommons.org/licenses/by-nc-sa/3.0/[Creative Commons Attribution-Noncommercial-Share Alike 3.0  License]
