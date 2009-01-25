@@ -912,13 +912,13 @@ Com o objetivo de testar que o seu mailer está trabalhando como esperado, você
 
 ==== Vingança das Fixtures ====
 
-For the purposes of unit testing a mailer, fixtures are used to provide an example of how the output _should_ look. Because these are example emails, and not Active Record data like the other fixtures, they are kept in their own subdirectory apart from the other fixtures. The name of the directory within +test/fixtures+ directly corresponds to the name of the mailer. So, for a mailer named +UserMailer+, the fixtures should reside in +test/fixtures/user_mailer+ directory.
+Para o propósito de testar unitariamente um mailer, fixtures são usadas para nos dar um exemplo de como a saída _deve_ ser. Como esses são emails de exemplo, e não dados do Active Record como as outras fixtures, eles são mantidos em seus próprios subdiretórios, separados das outras fixtures. O nome do diretório em +test/fixtures+ corresponde ao nome do mailer. Então, para o mailer de nome +UserMailer+, as fixtures devem ficar no diretório +test/fixtures/user_mailer+.
 
-When you generated your mailer, the generator creates stub fixtures for each of the mailers actions. If you didn't use the generator you'll have to make those files yourself. 
+Quando você gerou o seu mailer, o gerador criou stub fixtures para cada uma das suas actions mailers. Se você não usou o gerador, você mesmo terá que gerar esses arquivos.
 
-==== The Basic Test case ====
+==== O Caso de Teste Básico ====
 
-Here's a unit test to test a mailer named +UserMailer+ whose action +invite+ is used to send an invitation to a friend. It is an adapted version of the base test created by the generator for an +invite+ action.
+Aqui está um teste unitário para testar um mailer chamado +UserMailer+ cuja action +invite+ é usada para enviar um convite para um amigo. É uma versão adaptada o teste básico criado pelo gerador para um action +invite+.
 
 [source, ruby]
 -------------------------------------------------
@@ -939,9 +939,9 @@ class UserMailerTest < ActionMailer::TestCase
 end
 -------------------------------------------------
 
-In this test, +@expected+ is an instance of +TMail::Mail+ that you can use in your tests. It is defined in +ActionMailer::TestCase+. The test above uses +@expected+ to construct an email, which it then asserts with email created by the custom mailer. The +invite+ fixture is the body of the email and is used as the sample content to assert against. The helper +read_fixture+ is used to read in the content from this file.
+Neste teste, +@expected+ é uma instância de +TMail::Mail+ que você pode usar nos seus testes. Ela é definida em +ActionMailer::TestCase+. O teste acima usa +@expected+ para construir um email, que então compara com o email criado pelo mailer customizado. A fixture +invite+ é o corpo do email e é usada como uma amostra de conteúdo para ser comparada. O helper +read_fixture+ é usado para ler o conteúdo deste arquivo.
 
-Here's the content of the +invite+ fixture:
+Aqui está o conteúdo da fixture +invite+:
 
 -------------------------------------------------
 Hi friend@example.com,
