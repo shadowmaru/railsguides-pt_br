@@ -13,11 +13,11 @@ Este guia não vai te ensinar a escrever uma aplicação Rails; ele parte do pri
 
  * Rails facilita muito este trabalho. Ele começa produzindo o código-base de teste em segundo plano enquanto você está criando os seus models e controllers.
  * Rodando os seus testes você é capaz de garantir que o seu código atende às funcionalidades desejadas mesmo depois de algumas importantes refatorações.
- * Eles também podem simular requests para que você teste as respostas da sua aplicação sem ter que fazer isso pelo seu browser.
+ * Eles também podem simular requisições para que você teste as respostas da sua aplicação sem ter que fazer isso pelo browser.
 
 == Introdução aos Testes ==
 
-O suporte a testes está presente no Rails desde o seu início. Isso não foi algo do tipo "opa! vamos fazer o suporte a testes porque isso é novidade e legal".  Quase toda aplicação Rails interage muito com uma base de dados - e, como resultado, os seus testes também  precisarão de uma base de dados para interagir. Para escrever testes eficientes, você vai precisar entender como configurar e popular esta base com amostras de dados.
+O suporte a testes está presente no Rails desde o seu início. Isso não foi algo do tipo "opa! vamos fazer o suporte a testes porque isso é uma novidade legal".  Quase toda aplicação Rails interage muito com uma base de dados - e, como resultado, os seus testes também  precisarão de uma base de dados para interagir. Para escrever testes eficientes, você vai precisar entender como configurar e popular esta base com amostras de dados.
 
 === Os 3 Ambientes ===
 
@@ -31,7 +31,7 @@ Um lugar em que você vai encontrar esta distinção é no arquivo +config/datab
 
 Isto permite que você configure e interaja com os dados de testes sem qualquer perigo de que os seus testes alterem dados do seu ambiente de produção.
 
-Por exemplo, suponha que você precise testar o seu novo +apague_este_usuario_e_tudo_associado_a_ele+ método. Você não gostaria de rodar isto num ambiente em que não faça diferença destruir ou não dados?
+Por exemplo, suponha que você precise testar o seu novo método +apague_este_usuario_e_tudo_associado_a_ele+. Você não gostaria de rodar isto num ambiente em que não faça diferença destruir ou não dados?
 
 Quando você acaba destruindo a sua base de teste (e isto vai acontecer), você pode reconstruí-la do zero de acordo com as especificações definidas nela mesma. Você pode fazer isso rodando +rake db:test:prepare+.
 
@@ -54,9 +54,9 @@ Para ter bons testes, você precisará configurar dados de testes. No Rails, ist
 
 ==== O Que São Fixtures? ====
 
-_Fixtures_ é um nome bonito para amostra de dados. Fixtures permitem que você configure a sua base de dados de teste com informações pré-definidas antes de rodar os seus testes. São independentes de banco de dados e assumem um dos dois formatos: *YAML* ou *CSV*. Neste guia nós vamos usar o *YAML*, que é o formato preferido.
+_Fixtures_ é um nome bonito para amostra de dados. As fixtures permitem que você configure a sua base de dados de teste com informações pré-definidas antes de rodar os seus testes. São independentes de banco de dados e assumem um dos dois formatos: *YAML* ou *CSV*. Neste guia nós vamos usar o *YAML*, que é o formato preferido.
 
-Você encontrará fixtures no seu diretório +test/fixtures+. Quando você roda +script/generate model+ para criar um novo model, fixture stubs serão criados e colocados neste diretórico automaticamente.
+Você encontrará fixtures no seu diretório +test/fixtures+. Quando você roda +script/generate model+ para criar um novo model, fixture stubs serão criadas e colocadas neste diretórico automaticamente.
 
 ==== YAML ====
 
