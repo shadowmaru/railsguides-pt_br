@@ -13,11 +13,11 @@ Este guia não vai te ensinar a escrever uma aplicação Rails; ele parte do pri
 
  * Rails facilita muito este trabalho. Ele começa produzindo o código-base de teste em segundo plano enquanto você está criando os seus models e controllers.
  * Rodando os seus testes você é capaz de garantir que o seu código atende às funcionalidades desejadas mesmo depois de algumas importantes refatorações.
- * Eles também podem simular requests para que você teste as respostas da sua aplicação sem ter que fazer isso pelo seu browser.
+ * Eles também podem simular requisições para que você teste as respostas da sua aplicação sem ter que fazer isso pelo browser.
 
 == Introdução aos Testes ==
 
-O suporte a testes está presente no Rails desde o seu início. Isso não foi algo do tipo "opa! vamos fazer o suporte a testes porque isso é novidade e legal".  Quase toda aplicação Rails interage muito com uma base de dados - e, como resultado, os seus testes também  precisarão de uma base de dados para interagir. Para escrever testes eficientes, você vai precisar entender como configurar e popular esta base com amostras de dados.
+O suporte a testes está presente no Rails desde o seu início. Isso não foi algo do tipo "opa! vamos fazer o suporte a testes porque isso é uma novidade legal".  Quase toda aplicação Rails interage muito com uma base de dados - e, como resultado, os seus testes também  precisarão de uma base de dados para interagir. Para escrever testes eficientes, você vai precisar entender como configurar e popular esta base com amostras de dados.
 
 === Os 3 Ambientes ===
 
@@ -31,7 +31,7 @@ Um lugar em que você vai encontrar esta distinção é no arquivo +config/datab
 
 Isto permite que você configure e interaja com os dados de testes sem qualquer perigo de que os seus testes alterem dados do seu ambiente de produção.
 
-Por exemplo, suponha que você precise testar o seu novo +apague_este_usuario_e_tudo_associado_a_ele+ método. Você não gostaria de rodar isto num ambiente em que não faça diferença destruir ou não dados?
+Por exemplo, suponha que você precise testar o seu novo método +apague_este_usuario_e_tudo_associado_a_ele+. Você não gostaria de rodar isto num ambiente em que não faça diferença destruir ou não dados?
 
 Quando você acaba destruindo a sua base de teste (e isto vai acontecer), você pode reconstruí-la do zero de acordo com as especificações definidas nela mesma. Você pode fazer isso rodando +rake db:test:prepare+.
 
@@ -54,9 +54,9 @@ Para ter bons testes, você precisará configurar dados de testes. No Rails, ist
 
 ==== O Que São Fixtures? ====
 
-_Fixtures_ é um nome bonito para amostra de dados. Fixtures permitem que você configure a sua base de dados de teste com informações pré-definidas antes de rodar os seus testes. São independentes de banco de dados e assumem um dos dois formatos: *YAML* ou *CSV*. Neste guia nós vamos usar o *YAML*, que é o formato preferido.
+_Fixtures_ é um nome bonito para amostra de dados. As fixtures permitem que você configure a sua base de dados de teste com informações pré-definidas antes de rodar os seus testes. São independentes de banco de dados e assumem um dos dois formatos: *YAML* ou *CSV*. Neste guia nós vamos usar o *YAML*, que é o formato preferido.
 
-Você encontrará fixtures no seu diretório +test/fixtures+. Quando você roda +script/generate model+ para criar um novo model, fixture stubs serão criados e colocados neste diretórico automaticamente.
+Você encontrará fixtures no seu diretório +test/fixtures+. Quando você roda +script/generate model+ para criar um novo model, fixture stubs serão criadas e colocadas neste diretórico automaticamente.
 
 ==== YAML ====
 
@@ -659,32 +659,32 @@ class UserFlowsTest < ActionController::IntegrationTest
 end
 --------------------------------------------------
 
-Testes de integração herdam de +ActionController::IntegrationTest+. Isto faz com que estejam disponíveis helpers adicionais para serem usados nos seus testes de integração. Você também precisa incluir explicitamente as fixtures para que elas estejam disponíveis para o teste.
+Testes de integração herdam de +ActionController::IntegrationTest+. Isto faz com que helpers adicionais estejam disponíveis para serem usados nos seus testes de integração. Você também precisa incluir explicitamente as fixtures para que elas estejam disponíveis para o teste.
 
 === Helpers Disponíveis para testes de Integração ===
 
-In addition to the standard testing helpers, there are some additional helpers available to integration tests:
+Adicionalmente aos helpers padrão, há alguns outros disponíveis para os testes de integração:
 
 [grid="all"]
 `----------------------------------------------------------------------------------`-------------------------------------------------------
-Helper                                                                             Purpose
+Helper                                                                             Objetivo
 ------------------------------------------------------------------------------------------------------------------------------------------
-+https?+                                                                           Returns +true+ if the session is mimicking a secure HTTPS request.
-+https!+                                                                           Allows you to mimic a secure HTTPS request.
-+host!+                                                                            Allows you to set the host name to use in the next request.
-+redirect?+                                                                        Returns +true+ if the last request was a redirect.
-+follow_redirect!+                                                                 Follows a single redirect response.
-+request_via_redirect(http_method, path, [parameters], [headers])+                 Allows you to make an HTTP request and follow any subsequent redirects.
-+post_via_redirect(path, [parameters], [headers])+                                 Allows you to make an HTTP POST request and follow any subsequent redirects.
-+get_via_redirect(path, [parameters], [headers])+                                  Allows you to make an HTTP GET request and follow any subsequent redirects.
-+put_via_redirect(path, [parameters], [headers])+                                  Allows you to make an HTTP PUT request and follow any subsequent redirects.
-+delete_via_redirect(path, [parameters], [headers])+                               Allows you to make an HTTP DELETE request and follow any subsequent redirects.
-+open_session+                                                                     Opens a new session instance.
++https?+                                                                           Retorna +true+ se a sessão está simulando uma requisição segura HTTPS.
++https!+                                                                           Permite que você simule uma requisição segura HTTPS.
++host!+                                                                            Permite que você configure o nome  do host para usar na próxima requisição.
++redirect?+                                                                        Retorna +true+ se a última requisição foi um redirecionamento.
++follow_redirect!+                                                                 Segue um simples redirect response.
++request_via_redirect(http_method, path, [parameters], [headers])+                 Permite que você faça uma requisição HTTP e siga qualquer redirecionamento subseqüente.
++post_via_redirect(path, [parameters], [headers])+                                 Permite que você faça uma requisição HTTP POST e siga qualquer redirecionamento subseqüente.
++get_via_redirect(path, [parameters], [headers])+                                  Permite que você faça uma requisição HTTP GET e siga qualquer redirecionamento subseqüente.
++put_via_redirect(path, [parameters], [headers])+                                  Permite que você faça uma requisição HTTP PUT e siga qualquer redirecionamento subseqüente.
++delete_via_redirect(path, [parameters], [headers])+                               Permite que você faça uma requisição HTTP DELETE e siga qualquer redirecionamento subseqüente.
++open_session+                                                                     Abre uma nova instância de sessão.
 ------------------------------------------------------------------------------------------------------------------------------------------
 
-=== Integration Testing Examples === 
+=== Exemplos de Testes de Integração === 
 
-A simple integration test that exercises multiple controllers:
+Um simples teste de integração que exercita múltiplos controllers:
 
 [source,ruby]
 --------------------------------------------------
@@ -711,9 +711,9 @@ class UserFlowsTest < ActionController::IntegrationTest
 end
 --------------------------------------------------
 
-As you can see the integration test involves multiple controllers and exercises the entire stack from database to dispatcher. In addition you can have multiple session instances open simultaneously in a test and extend those instances with assertion methods to create a very powerful testing DSL (domain-specific language) just for your application.
+Como você pode ver, o teste de integração envolve múltiplos controllers e exercita toda a pilha desde a base de dados até o envio. Além disto, você pode ter múltiplas sessões abertas simultâneamente em um teste e estender estas instâncias com métodos de asserção para criar uma poderosa DSL (linguagem específica de domínio) de testes exclusiva para a sua aplicação. 
 
-Here's an example of multiple sessions and custom DSL in an integration test
+Aqui está um exemplo de múltiplas sessões e DSL customizada em um teste de integração
 
 [source,ruby]
 --------------------------------------------------
@@ -764,33 +764,33 @@ class UserFlowsTest < ActionController::IntegrationTest
 end
 --------------------------------------------------
 
-== Rake Tasks for Running your Tests ==
+== Tarefas Rake Para Rodar Testes ==
 
-You don't need to set up and run your tests by hand on a test-by-test basis. Rails comes with a number of rake tasks to help in testing. The table below lists all rake tasks that come along in the default Rakefile when you initiate a Rail project.
+Você não precisa configurar e rodar os seus testes um a um manualmente. O Rails vem com muitas tarefas rake para te ajudar a testar. A tabela abaixo lista todas as tarefas rake existentes por padrão no arquivo Rakefile quando você inicia um projeto Rails.
 
 [grid="all"]
 --------------------------------`----------------------------------------------------
-Tasks                           Description
+Tasks                           Descrição
 ------------------------------------------------------------------------------------
-+rake test+                     Runs all unit, functional and integration tests. You can also simply run +rake+ as the _test_ target is the default.
-+rake test:units+               Runs all the unit tests from +test/unit+
-+rake test:functionals+         Runs all the functional tests from +test/functional+
-+rake test:integration+         Runs all the integration tests from +test/integration+
-+rake test:recent+              Tests recent changes
-+rake test:uncommitted+         Runs all the tests which are uncommitted. Only supports Subversion
-+rake test:plugins+             Run all the plugin tests from +vendor/plugins/*/**/test+ (or specify with +PLUGIN=_name_+)
++rake test+                     Roda todos os testes unitários, funcionais e de integração. Você também pode simplesmente rodar +rake+ pois o target _test_ é padrão.
++rake test:units+               Roda todos os testes unitários de +test/unit+
++rake test:functionals+         Roda todos os testes funcionais de +test/functional+
++rake test:integration+         Roda todos os testes de integração de +test/integration+
++rake test:recent+              Testa as mudanças recentes
++rake test:uncommitted+         Roda todos os testes que não foram comitados. Só suporta Subversion
++rake test:plugins+             Roda todos os testes de plugins de +vendor/plugins/*/**/test+ (ou de modo específico com +PLUGIN=_name_+)
 ------------------------------------------------------------------------------------
 
 
-== Brief Note About Test::Unit ==
+== Breve Nota Sobre Test::Unit ==
 
-Ruby ships with a boat load of libraries. One little gem of a library is +Test::Unit+, a framework for unit testing in Ruby. All the basic assertions discussed above are actually defined in +Test::Unit::Assertions+. The class +ActiveSupport::TestCase+ which we have been using in our unit and functional tests extends +Test::Unit::TestCase+ that it is how we can use all the basic assertions in our tests.
+O Ruby contém um grande número de bibliotecas. Uma pequena gem de uma bibliotea é a +Test::Unit+, um framework para testes unitários em Ruby. Todas as asserções básicas discutidas anteriormente são na verdade em +Test::Unit::Assertions+. A classe +ActiveSupport::TestCase+ que nós estamos usando em nossos testes unitários e funcionais estendem  +Test::Unit::TestCase+. É desta forma que nós podemos usar todas as asserções básicas em nossos testes.
 
-NOTE: For more information on +Test::Unit+, refer to link:http://ruby-doc.org/stdlib/libdoc/test/unit/rdoc/[test/unit Documentation]
+NOTE: Para mais informações a respeito de +Test::Unit+, visite link:http://ruby-doc.org/stdlib/libdoc/test/unit/rdoc/[test/unit Documentation]
 
-== Setup and Teardown ==
+== Setup e Teardown ==
 
-If you would like to run a block of code before the start of each test and another block of code after the end of each test you have two special callbacks for your rescue. Let's take note of this by looking at an example for our functional test in +Posts+ controller:
+Caso você queira rodar um bloco de código antes do começo de cada teste e outro bloco de código após o fim de cada teste, você tem dois  callbacks especiais para te ajudar. Vamos dar uma olhada nisso dando uma olhada em um exemplo para nosso teste funcional do controller +Posts+:
 
 [source,ruby]
 --------------------------------------------------
@@ -798,12 +798,12 @@ require 'test_helper'
 
 class PostsControllerTest < ActionController::TestCase
 
-  # called before every single test
+  # chamado antes de cada teste
   def setup
     @post = posts(:one)
   end
 
-  # called after every single test
+  # chamado depois de cada teste
   def teardown
     # as we are re-initializing @post before every test
     # setting it to nil here is not essential but I hope 
@@ -827,14 +827,14 @@ class PostsControllerTest < ActionController::TestCase
 end
 --------------------------------------------------
 
-Above, the +setup+ method is called before each test and so +@post+ is available for each of the tests. Rails implements +setup+ and +teardown+ as ActiveSupport::Callbacks. Which essentially means you need not only use +setup+ and +teardown+ as methods in your tests. You could specify them by using:
+Acima, o método +setup+ é chamado antes de cada teste, então +@post+ está disponível para cada um dos testes. O Rails implementa +setup+ e +teardown+ como ActiveSupport::Callbacks. Isto significa que não basta somente usar +setup+ e +teardown+ como métodos nos seus testes. Você pode especificá-los usando:
 
- * a block
- * a method (like in the earlier example)
- * a method name as a symbol
- * a lambda
+ * um bloco
+ * um método (como no exemplo anterior)
+ * um nome de método como um símbolo
+ * uma função lambda
  
-Let's see the earlier example by specifying +setup+ callback by specifying a method name as a symbol:
+Vamos ver o exemplo anterior especificando o callback +setup+ por um nome de método como um símbolo:
 
 [source,ruby]
 --------------------------------------------------
@@ -842,10 +842,10 @@ require '../test_helper'
 
 class PostsControllerTest < ActionController::TestCase
 
-  # called before every single test
+  # chamado antes de cada teste
   setup :initialize_post
 
-  # called after every single test
+  # chamado depois de cada teste
   def teardown
     @post = nil
   end
@@ -877,9 +877,9 @@ class PostsControllerTest < ActionController::TestCase
 end
 --------------------------------------------------
 
-== Testing Routes ==
+== Testando Rotas ==
 
-Like everything else in you Rails application, it's recommended to test you routes. An example test for a route in the default +show+ action of +Posts+ controller above should look like:
+Como tudo mais na sua aplicação Rails, é recomendado que você teste as suas rotas. Um exemplo de teste para uma rota na action padrão +show+ do controller +Posts+ acima deve ser algo do tipo:
 
 [source,ruby]
 --------------------------------------------------
@@ -888,37 +888,37 @@ def test_should_route_to_post
 end
 --------------------------------------------------
 
-== Testing Your Mailers ==
+== Testando os seus Mailers ==
 
-Testing mailer classes requires some specific tools to do a thorough job.
+Testar classes que enviam emails (mailers) requer algumas ferramentas específicas.
 
-=== Keeping the Postman in Check ===
+=== Mantendo o 'Carteiro' Checado ===
 
-Your +ActionMailer+ classes -- like every other part of your Rails application -- should be tested to ensure that it is working as expected.
+Suas classes +ActionMailer+ -- como todas as outras partes da sua aplicação Rails -- devem ser testadas para garantir que estão funcionando como o esperado.
 
-The goals of testing your +ActionMailer+ classes are to ensure that:
+Os objetivos de testar as suas classes +ActionMailer+ são para garantir que:
 
-* emails are being processed (created and sent)
-* the email content is correct (subject, sender, body, etc)
-* the right emails are being sent at the right times
+* emails estão sendo processados (criados e enviados)
+* o conteúdo dos emails está correto (assunto, remetente, corpo, etc)
+* os emails corretos estão sendo enviados nos momentos certos
 
-==== From All Sides ====
+==== De Todos os Lados ====
 
-There are two aspects of testing your mailer, the unit tests and the functional tests. In the unit tests, you run the mailer in isolation with tightly controlled inputs and compare the output to a knownvalue (a fixture -- yay! more fixtures!). In the functional tests you don't so much test the minute details produced by the mailer Instead we test that our controllers and models are using the mailer in the right way. You test to prove that the right email was sent at the right time.
+Há dois aspectos a serem analisados ao testar o seu mailer, os testes unitários e os testes funcionais. Nos testes unitários, você roda o mailer isoladamente com entradas muito bem controladas e compara a saída com um valor conhecido (uma fixture --yay! mais fixtures!). Nos testes funcionais, você não testa somente os detalhes produzidos pelo mailer. Ao contrário, você nós testamos que nossos controllers e models estão usando o mailer da maneira correta. Você testa para provar que o email correto foi enviado na hora correta.
 
-=== Unit Testing ===
+=== Testes Unitários ===
 
-In order to test that your mailer is working as expected, you can use unit tests to compare the actual results of the mailer with pre-written examples of what should be produced.
+Com o objetivo de testar que o seu mailer está trabalhando como esperado, você pode usar testes unitários para comparar os resultados gerados pelo mailer com exemplos, escritos previamente, do que deveria ser produzido.
 
-==== Revenge of the Fixtures ====
+==== Vingança das Fixtures ====
 
-For the purposes of unit testing a mailer, fixtures are used to provide an example of how the output _should_ look. Because these are example emails, and not Active Record data like the other fixtures, they are kept in their own subdirectory apart from the other fixtures. The name of the directory within +test/fixtures+ directly corresponds to the name of the mailer. So, for a mailer named +UserMailer+, the fixtures should reside in +test/fixtures/user_mailer+ directory.
+Para o propósito de testar unitariamente um mailer, fixtures são usadas para nos dar um exemplo de como a saída _deve_ ser. Como esses são emails de exemplo, e não dados do Active Record como as outras fixtures, eles são mantidos em seus próprios subdiretórios, separados das outras fixtures. O nome do diretório em +test/fixtures+ corresponde ao nome do mailer. Então, para o mailer de nome +UserMailer+, as fixtures devem ficar no diretório +test/fixtures/user_mailer+.
 
-When you generated your mailer, the generator creates stub fixtures for each of the mailers actions. If you didn't use the generator you'll have to make those files yourself. 
+Quando você gerou o seu mailer, o gerador criou stub fixtures para cada uma das suas actions mailers. Se você não usou o gerador, você mesmo terá que gerar esses arquivos.
 
-==== The Basic Test case ====
+==== O Caso de Teste Básico ====
 
-Here's a unit test to test a mailer named +UserMailer+ whose action +invite+ is used to send an invitation to a friend. It is an adapted version of the base test created by the generator for an +invite+ action.
+Aqui está um teste unitário para testar um mailer chamado +UserMailer+ cuja action +invite+ é usada para enviar um convite para um amigo. É uma versão adaptada o teste básico criado pelo gerador para um action +invite+.
 
 [source, ruby]
 -------------------------------------------------
@@ -939,25 +939,25 @@ class UserMailerTest < ActionMailer::TestCase
 end
 -------------------------------------------------
 
-In this test, +@expected+ is an instance of +TMail::Mail+ that you can use in your tests. It is defined in +ActionMailer::TestCase+. The test above uses +@expected+ to construct an email, which it then asserts with email created by the custom mailer. The +invite+ fixture is the body of the email and is used as the sample content to assert against. The helper +read_fixture+ is used to read in the content from this file.
+Neste teste, +@expected+ é uma instância de +TMail::Mail+ que você pode usar nos seus testes. Ela é definida em +ActionMailer::TestCase+. O teste acima usa +@expected+ para construir um email, que então compara com o email criado pelo mailer customizado. A fixture +invite+ é o corpo do email e é usada como uma amostra de conteúdo para ser comparada. O helper +read_fixture+ é usado para ler o conteúdo deste arquivo.
 
-Here's the content of the +invite+ fixture:
+Aqui está o conteúdo da fixture +invite+:
 
 -------------------------------------------------
-Hi friend@example.com,
+Olá friend@example.com,
 
-You have been invited. 
+Você foi convidado. 
 
-Cheers!
+Um abraço!
 -------------------------------------------------
 
-This is the right time to understand a little more about writing tests for your mailers. The line +ActionMailer::Base.delivery_method = :test+ in +config/environments/test.rb+ sets the delivery method to test mode so that email will not actually be delivered (useful to avoid spamming your users while testing) but instead it will be appended to an array (+ActionMailer::Base.deliveries+).
+Agora é o momento certo para entender um pouco mais sobre testes para os seus mailers. A linha +ActionMailer::Base.delivery_method = :test+ em +config/environments/test.rb+ configura o método delivery para o modo de teste, então aquele email não vai ser realmente enviado (útil para evitar spams para os seus usuários enquanto estiver testando). Ao invés disso, o email vai ser colocado em um array (+ActionMailer::Base.deliveries+). 
 
-However often in unit tests, mails will not actually be sent, simply constructed, as in the example above, where the precise content of the email is checked against what it should be.
+Entretanto, muitas vezes em testes unitários, emails não serão realmente enviados ou serão simples como no exemplo acima, em que o exato conteúdo do email é comparado com o que é esperado.
 
-=== Functional Testing ===
+=== Testes Funcionais ===
 
-Functional testing for mailers involves more than just checking that the email body, recipients and so forth are correct. In functional mail tests you call the mail deliver methods and check that the appropriate emails have been appended to the delivery list. It is fairly safe to assume that the deliver methods themselves do their job You are probably more interested in is whether your own business logic is sending emails when you expect them to got out. For example, you can check that the invite friend operation is sending an email appropriately:
+Escrever testes funcionais para mailers envolve muito mais do que simplesmente checar se o corpo do email, destinatários, etc estão corretos. Em testes funcionais de emails, você chama os métodos de envio de email e verifica que os emails apropriados foram adicionados à lista de destinatários. É muito seguro assumir que os métodos de envio fazem o trabalho deles. Você provavelmente está mais interessado em saber se a sua lógica de negócio está enviando emails conforme você espera. Por exemplo, você pode checar que a operação de convidar um amigo está enviando um email apropriadamente:
 
 [source, ruby]
 ----------------------------------------------------------------
@@ -970,21 +970,21 @@ class UserControllerTest < ActionController::TestCase
     end
     invite_email = ActionMailer::Base.deliveries.first
     
-    assert_equal invite_email.subject, "You have been invited by me@example.com"
+    assert_equal invite_email.subject, "Você foi convidado por me@example.com"
     assert_equal invite_email.to[0], 'friend@example.com'
-    assert_match /Hi friend@example.com/, invite_email.body
+    assert_match /Olá friend@example.com/, invite_email.body
   end
 end
 ----------------------------------------------------------------
 
-== Other Testing Approaches
+== Outros Maneiras de Testar
 
-The built-in +test/unit+ based testing is not the only way to test Rails applications. Rails developers have come up with a wide variety of other approaches and aids for testing, including:
+O modo padrão baseado no +test/unit+ não é a única maneira de testar aplicações Rais. Programadores Rails desenvolveram uma enorme variedade de maneiras e truques para testar, incluindo:
 
-* link:http://avdi.org/projects/nulldb/[NullDB], a way to speed up testing by avoiding database use.
-* link:http://github.com/thoughtbot/factory_girl/tree/master[Factory Girl], as replacement for fixtures.
-* link:http://www.thoughtbot.com/projects/shoulda[Shoulda], an extension to +test/unit+ with additional helpers, macros, and assertions.
-* link: http://rspec.info/[RSpec], a behavior-driven development framework
+* link:http://avdi.org/projects/nulldb/[NullDB], uma maneira de acelerar os testes ao evitar o uso de banco de dados.
+* link:http://github.com/thoughtbot/factory_girl/tree/master[Factory Girl], como substituição âs fixtures.
+* link:http://www.thoughtbot.com/projects/shoulda[Shoulda], uma extensão ao +test/unit+ com helpers, macros e assertions adicionais.
+* link: http://rspec.info/[RSpec], um framework para behavior-driven development
 
 == Changelog ==
 
