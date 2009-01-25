@@ -944,20 +944,20 @@ Neste teste, +@expected+ é uma instância de +TMail::Mail+ que você pode usar 
 Aqui está o conteúdo da fixture +invite+:
 
 -------------------------------------------------
-Hi friend@example.com,
+Olá friend@example.com,
 
-You have been invited. 
+Você foi convidado. 
 
-Cheers!
+Um abraço!
 -------------------------------------------------
 
-This is the right time to understand a little more about writing tests for your mailers. The line +ActionMailer::Base.delivery_method = :test+ in +config/environments/test.rb+ sets the delivery method to test mode so that email will not actually be delivered (useful to avoid spamming your users while testing) but instead it will be appended to an array (+ActionMailer::Base.deliveries+).
+Agora é o momento certo para entender um pouco mais sobre testes para os seus mailers. A linha +ActionMailer::Base.delivery_method = :test+ em +config/environments/test.rb+ configura o método delivery para o modo de teste, então aquele email não vai ser realmente enviado (útil para evitar spams para os seus usuários enquanto estiver testando). Ao invés disso, o email vai ser colocado em um array (+ActionMailer::Base.deliveries+). 
 
-However often in unit tests, mails will not actually be sent, simply constructed, as in the example above, where the precise content of the email is checked against what it should be.
+Entretanto, muitas vezes em testes unitários, emails não serão realmente enviados ou serão simples como no exemplo acima, em que o exato conteúdo do email é comparado com o que é esperado.
 
-=== Functional Testing ===
+=== Testes Funcionais ===
 
-Functional testing for mailers involves more than just checking that the email body, recipients and so forth are correct. In functional mail tests you call the mail deliver methods and check that the appropriate emails have been appended to the delivery list. It is fairly safe to assume that the deliver methods themselves do their job You are probably more interested in is whether your own business logic is sending emails when you expect them to got out. For example, you can check that the invite friend operation is sending an email appropriately:
+Escrever testes funcionais para mailers envolve muito mais do que simplesmente checar se o corpo do email, destinatários, etc estão corretos. Em testes funcionais de emails, você chama os métodos de envio de email e verifica que os emails apropriados foram adicionados à lista de destinatários. É muito seguro assumir que os métodos de envio fazem o trabalho deles. Você provavelmente está mais interessado em saber se a sua lógica de negócio está enviando emails conforme você espera. Por exemplo, você pode checar que a operação de convidar um amigo está enviando um email apropriadamente:
 
 [source, ruby]
 ----------------------------------------------------------------
@@ -970,21 +970,21 @@ class UserControllerTest < ActionController::TestCase
     end
     invite_email = ActionMailer::Base.deliveries.first
     
-    assert_equal invite_email.subject, "You have been invited by me@example.com"
+    assert_equal invite_email.subject, "Você foi convidado por me@example.com"
     assert_equal invite_email.to[0], 'friend@example.com'
-    assert_match /Hi friend@example.com/, invite_email.body
+    assert_match /Olá friend@example.com/, invite_email.body
   end
 end
 ----------------------------------------------------------------
 
-== Other Testing Approaches
+== Outros Maneiras de Testar
 
-The built-in +test/unit+ based testing is not the only way to test Rails applications. Rails developers have come up with a wide variety of other approaches and aids for testing, including:
+O modo padrão baseado no +test/unit+ não é a única maneira de testar aplicações Rais. Programadores Rails desenvolveram uma enorme variedade de maneiras e truques para testar, incluindo:
 
-* link:http://avdi.org/projects/nulldb/[NullDB], a way to speed up testing by avoiding database use.
-* link:http://github.com/thoughtbot/factory_girl/tree/master[Factory Girl], as replacement for fixtures.
-* link:http://www.thoughtbot.com/projects/shoulda[Shoulda], an extension to +test/unit+ with additional helpers, macros, and assertions.
-* link: http://rspec.info/[RSpec], a behavior-driven development framework
+* link:http://avdi.org/projects/nulldb/[NullDB], uma maneira de acelerar os testes ao evitar o uso de banco de dados.
+* link:http://github.com/thoughtbot/factory_girl/tree/master[Factory Girl], como substituição âs fixtures.
+* link:http://www.thoughtbot.com/projects/shoulda[Shoulda], uma extensão ao +test/unit+ com helpers, macros e assertions adicionais.
+* link: http://rspec.info/[RSpec], um framework para behavior-driven development
 
 == Changelog ==
 
