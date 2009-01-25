@@ -1,5 +1,5 @@
 O Guia de Associações do Active Record
-=====================================
+======================================
 
 Este guia aborda as características de associação do ActiveRecord. Ao estudar este guia, você será capaz de:
 
@@ -1838,7 +1838,7 @@ Extensões podem referenciar a própria association proxy através de três aces
 
 http://rails.lighthouseapp.com/projects/16213-rails-guides/tickets/11[Lighthouse ticket]
 
-* Janeiro   18, 2009: Primeira versão da tradução para português por link:../authors.html#danielvlopes[Daniel Lopes]
+* Janeiro   18, 2009: Primeira versão da tradução para português por link:translators.html#danielvlopes[Daniel Lopes]
 * Setembro  28, 2008: Corrigido o diagrama +has_many :through+, adicionado o diagrama para associações polimórficas, por link :../authors.html#mgunderloy[Mike Gunderloy] . First release version.
-* Setembro  22, 2008: Adicionado diagramas, coisas diversas. por link:../authors.html#mgunderloy[Mike Gunderloy] (not yet approved for publication)
+* Setembro  22, 2008: Adicionado diagramas, coisas diversas. por link:authors.html#mgunderloy[Mike Gunderloy] (not yet approved for publication)
 * Setembro  14, 2008: Versão inicial por link:../authors.html#mgunderloy[Mike Gunderloy] (not yet approved for publication)

@@ -1,4 +1,4 @@
-desc "Geracao dos HTMLs para os guias do Rails em portugues"
+desc "Gerar HTMLs dos guias em pt-BR, use a opcao ONLY='migrations i18n.txt' para criar um unico guia."
 task :guias do
   require 'mizuho/generator'
 
@@ -11,14 +11,25 @@ task :guias do
   asciidoc_conf = 'asciidoc.conf'
 
   ignore = ['..', 'icons', 'images', 'templates', 'stylesheets']
-  ignore << 'active_record_basics.txt'
-  ignore << '.gitigore'
+  #ignore << 'active_record_basics.txt'
+  #ignore << '.gitignore'
 
-  indexless = ['index.txt', 'authors.txt']
+  indexless = ['index.txt', 'authors.txt','translators.txt']
+  
+  # Traverse all entries in source/pt-BR or only those specified in ONLY env variable
+  entries = Dir.entries(source)
+  if ENV['ONLY']
+    only = ENV['ONLY'].split(' ')
+    unless only.empty?
+      entries = entries.select do |e|
+        only.include?(e) || only.include?(e.sub(/\.txt$/, ''))
+      end
+    end
+  end  
 
   # Traverse all entries in source/
-  Dir.entries(source).each do |entry|
-    next if ignore.include?(entry)
+  entries.each do |entry|
+    next if ignore.include?(entry) or entry =~ /^\./ # because Vim is always saving hidden swap files
 
     if File.directory?(File.join(source, entry))
       # If the current entry is a directory, then we will want to compile
