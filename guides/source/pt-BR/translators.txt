@@ -16,3 +16,9 @@ Tenho dedicado parte do meu tempo ao estudo da linguagem Ruby e do framework Rub
 Interesso-me por linguagens de programação, desenvolvimento guiado por testes, metodologias de desenvolvimento de software e novas formas de simplificar tudo o que me cerca.
 Também escrevo no http://www.adolfosousa.com.br/blog[meu blog].
 ***********************************************************
+
+.Fabio Kreusch
+[[fabiokr]]]
+***********************************************************
+Fabio Kreusch é estudante do curso de Sistemas de Informação na Universidade Federal de Santa Catarina, e trabalha com desenvolvimento web. Desenvolveu sistemas com Java, e atualmente dedica-se ao aprendizado e utilização prática de conceitos e ferramentas de desenvolvimento ágil, incluindo o framework Ruby on Rails.
+***********************************************************
