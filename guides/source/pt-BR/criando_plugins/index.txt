@@ -33,16 +33,18 @@ include::test_setup.txt[]
 
 include::core_ext.txt[]
 
-include::acts_as_yaffle.txt[]
+#DESCOMENTE ABAIXO CADA ARQUIVO QUE FOR TRADUZIDO
 
-include::view_helper.txt[]
+#include::acts_as_yaffle.txt[]
 
-include::migration_generator.txt[]
+#include::view_helper.txt[]
 
-include::custom_generator.txt[]
+#include::migration_generator.txt[]
 
-include::custom_route.txt[]
+#include::custom_generator.txt[]
 
-include::odds_and_ends.txt[]
+#include::custom_route.txt[]
 
-include::appendix.txt[]
+#include::odds_and_ends.txt[]
+
+#include::appendix.txt[]

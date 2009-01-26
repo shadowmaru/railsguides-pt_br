@@ -1,38 +1,50 @@
-Guias para o Ruby on Rails
+Ruby on Rails Guides
 ====================
 
-WARNING: Esta página é resultado do projeto http://github.com/cassiomarques/railsguides-pt_br/tree/master[RailsGuides-Pt-BR] e é um trabalho em andamento.
+These guides are designed to make you immediately productive with Rails, and to help you understand how all of the pieces fit together. There are two different versions of the Guides site, and you should be sure to use the one that applies to your situation:
 
-CAUTION: Guias marcados com este ícone estão atualmente sendo escritos/traduzidos. Apesar de que eles ainda assim possam ser úteis para você, podem conter informações incompletas e até mesmo erros. Você pode ajudar revisando-os e postando seus comentários nos respectivos tickets no Lighthouse.
+* http://guides.rubyonrails.org/[Current Release version] - based on Rails 2.2
+* http://guides.rails.info/[Edge Rails version] - based on the Rails 2.3 branch
+
+WARNING: This page is the result of ongoing http://hackfest.rubyonrails.org/guide[Rails Guides hackfest] and a work in progress.
+
+CAUTION: Guides marked with this icon are currently being worked on. While they might still be useful to you, they may contain incomplete information and even errors. You can help by reviewing them and posting your comments and corrections at the respective Lighthouse ticket.
 
 ++++++++++++++++++++++++++++++++++++++
-<h2>Comece aqui</h2>
+<h2>Start Here</h2>
 ++++++++++++++++++++++++++++++++++++++
 
-.link:comecando_com_rails.html[Começando com Rails]
+.link:getting_started_with_rails.html[Getting Started with Rails]
 ***********************************************************
-Tudo que você precisa saber para instalar o Rails e criar sua primeira aplicação.
+Everything you need to know to install Rails and create your first application.
 ***********************************************************
 
 ++++++++++++++++++++++++++++++++++++++
 <h2>Models</h2>
 ++++++++++++++++++++++++++++++++++++++
 
-.link:migracoes.html[Migrações de Banco de Dados do Rails]
+.link:migrations.html[Rails Database Migrations]
 ***********************************************************
-Este guia cobre como você pode usar migrações do Active Record para alterar seu banco de dados de uma formaa estruturada e organizada.
-***********************************************************
-
-.link:associacoes_basicas.html[Associações do Active Record]
-***********************************************************
-Este guia cobre todas as associações fornecidas pelo Active Record.
+This guide covers how you can use Active Record migrations to alter your database in a structured and organized manner.
 ***********************************************************
 
-.link:finders.html[Active Record Finders]
+.link:activerecord_validations_callbacks.html[Active Record Validations and Callbacks]
+***********************************************************
+CAUTION: link:http://rails.lighthouseapp.com/projects/16213/tickets/26[Lighthouse Ticket]
+
+This guide covers how you can use Active Record validations and callbacks.
+***********************************************************
+
+.link:association_basics.html[Active Record Associations]
+***********************************************************
+This guide covers all the associations provided by Active Record.
+***********************************************************
+
+.link:active_record_querying.html[Active Record Query Interface]
 ***********************************************************
 CAUTION: link:http://rails.lighthouseapp.com/projects/16213/tickets/16[Lighthouse Ticket]
 
-This guide covers the find method defined in ActiveRecord::Base, as well as named scopes.
+This guide covers the database query interface provided by Active Record.
 ***********************************************************
 
 ++++++++++++++++++++++++++++++++++++++
@@ -101,16 +113,31 @@ ways of achieving this and how to understand what is happening "behind the scene
 of your code.
 ***********************************************************
 
-.link:benchmarking_and_profiling.html[Benchmarking and Profiling Rails Applications]
+.link:performance_testing.html[Performance Testing Rails Applications]
 ***********************************************************
-CAUTION: link:http://rails.lighthouseapp.com/projects/16213/tickets/4[Lighthouse Ticket]
-
-This guide covers ways to analyze and optimize your running Rails code.
+This guide covers ways to benchmark and profile your Rails application.
 ***********************************************************
 
 .link:creating_plugins.html[The Basics of Creating Rails Plugins]
 ***********************************************************
 This guide covers how to build a plugin to extend the functionality of Rails.
+***********************************************************
+
+.link:i18n.html[The Rails Internationalization API]
+***********************************************************
+CAUTION: link:http://rails.lighthouseapp.com/projects/16213/tickets/23[Lighthouse ticket]
+
+This guide introduces you to the basic concepts and features of the Rails I18n API and shows you how to localize your application.
+***********************************************************
+
+.link:configuring.html[Configuring Rails Applications]
+***********************************************************
+This guide covers the basic configuration settings for a Rails application.
+***********************************************************
+
+.link:command_line.html[Rails Command Line Tools and Rake tasks]
+***********************************************************
+This guide covers the command line tools and rake tasks provided by Rails.
 ***********************************************************
 
 Authors who have contributed to complete guides are listed link:authors.html[here].
