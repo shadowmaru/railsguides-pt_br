@@ -1,8 +1,8 @@
-== Request Forgery Protection ==
+== Proteção contra Falsificação de Requisições ==
 
-Cross-site request forgery is a type of attack in which a site tricks a user into making requests on another site, possibly adding, modifying or deleting data on that site without the user's knowledge or permission. The first step to avoid this is to make sure all "destructive" actions (create, update and destroy) can only be accessed with non-GET requests. If you're following RESTful conventions you're already doing this. However, a malicious site can still send a non-GET request to your site quite easily, and that's where the request forgery protection comes in. As the name says, it protects from forged requests. The way this is done is to add a non-guessable token which is only known to your server to each request. This way, if a request comes in without the proper token, it will be denied access.
+Falsificação de requisições entre sites (Cross-site request forgery) é um tipo de ataque onde um site engana um usuário fazendo-ô realizar requisições para outro site, possivelmente adicionando, modificando ou apagando dados no site sem o conhecimento e permissão do usuário. O primeiro passo para evitar isto é certificar-se de que todas as actions "destrutivas" (create, update e destroy) só possam ser acessadas com requisições de um tipo diferente de GET. Se você está seguindo as convenções RESTful você já estará fazendo isso. No entanto, um site malicioso ainda assim pode fazer solicitações de um tipo diferente de GET para o seu site facilmente, e é aí que a proteção contra a fasificação de requisições entra. Como diz o nome, ele protege contra falsificação de requisições.  Isto é feito adicionando um valor que não possa ser adivinhado e que só será conhecido pelo seu servidor a cada requisição. Desta forma, se uma requisição chegar sem o valor apropriado, ela terá seu acesso negado.
 
-If you generate a form like this:
+Se você gerar um formulário desta forma:
 
 [source, ruby]
 -----------------------------------------
@@ -12,7 +12,7 @@ If you generate a form like this:
 <% end -%>
 -----------------------------------------
 
-You will see how the token gets added as a hidden field:
+Você perceberá que o valor é adicionado como um campo do tipo hidden:
 
 [source, html]
 -----------------------------------------
@@ -22,11 +22,11 @@ You will see how the token gets added as a hidden field:
 </form>
 -----------------------------------------
 
-Rails adds this token to every form that's generated using the link:../form_helpers.html[form helpers], so most of the time you don't have to worry about it. If you're writing a form manually or need to add the token for another reason, it's available through the method `form_authenticity_token`:
+O Rails adiciona este valor para cada formulário que é gerado com os link:../form_helpers.html[helpers de formulário], então na maior parte dos casos você não precisará se preocupar com isso. Se você escrever um formulário manualmente ou precisar adicionar o valor por qualquer outra razão, ele está disponível através do método `form_authenticity_token`:
 
-.Add a JavaScript variable containing the token for use with Ajax
+.Adicionando uma variável JavaScript contendo o valor para ser utilizado com Ajax
 -----------------------------------------
 <%= javascript_tag "MyApp.authenticity_token = '#{form_authenticity_token}'" %>
 -----------------------------------------
 
-The link:../security.html[Security Guide] has more about this and a lot of other security-related issues that you should be aware of when developing a web application.
+O:../security.html[Guia de Segurança] tem mais informações sobre isto e várias outras informações sobre questões de segurança que você deve estar ciente quando estiver desenvolvendo sua aplicação web.
