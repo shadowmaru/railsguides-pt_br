@@ -56,7 +56,7 @@ Para ter bons testes, você precisará configurar dados de testes. No Rails, ist
 
 _Fixtures_ é um nome bonito para amostra de dados. As fixtures permitem que você configure a sua base de dados de teste com informações pré-definidas antes de rodar os seus testes. São independentes de banco de dados e assumem um dos dois formatos: *YAML* ou *CSV*. Neste guia nós vamos usar o *YAML*, que é o formato preferido.
 
-Você encontrará fixtures no seu diretório +test/fixtures+. Quando você roda +script/generate model+ para criar um novo model, fixture stubs serão criadas e colocadas neste diretórico automaticamente.
+Você encontrará fixtures no diretório +test/fixtures+. Quando você roda +script/generate model+ para criar um novo model, fixture stubs serão criadas e colocadas neste diretório automaticamente.
 
 ==== YAML ====
 
@@ -78,11 +78,11 @@ steve:
  profession: guy with keyboard
 ---------------------------------------------
 
-Cada fixture tem um nome seguido seguido por uma lista de pares chave/valor desejados. Registros são separados por um espaço em branco. Você pode colocar comentários em uma fixture digitando o caracter # na primeira coluna.
+Cada fixture tem um nome seguido por uma lista de pares chave/valor desejados. Registros são separados por um espaço em branco. Você pode colocar comentários em uma fixture digitando o caracter # na primeira coluna.
 
 ==== ERb Dando Uma Força ====
 
-ERb permite que você introduza código ruby em templates. Tanto as fixtures de formato YAML como CSV são pré-processadas com ERb quando carregadas. Com isso, é possível utilizar Ruby para te ajudar a gerar dados para seus testes.
+ERb permite que você introduza código ruby em templates. Tanto as fixtures de formato YAML como CSV são pré-processadas com ERb quando carregadas. Com isso, é possível utilizar Ruby para ajudar a gerar dados para seus testes.
 
 [source, ruby]
 --------------------------------------------------------------
@@ -107,7 +107,7 @@ Qualquer coisa escrita ente a tag
 <% %>
 ------------------------
 
-é considerada código Ruby. Quando esta fixture é carregada, o atributo +size+ dos três registros vão ser setados para 20/50, 20/2 e 20-69, respectivamente. O atributo +brightest_on+ também será calculado e formatado pelo Rails para ser compatível com a sua base de dados.
+é considerada código Ruby. Quando esta fixture é carregada, o atributo +size+ dos três registros vai ser setado para 20/50, 20/2 e 20-69, respectivamente. O atributo +brightest_on+ também será calculado e formatado pelo Rails para ser compatível com a sua base de dados.
 
 ==== Fixtures em Ação ====
 
@@ -115,11 +115,11 @@ Por padrão, o Rails carrega automaticamente todas as fixtures existentes na pas
 
  * Remoção de qualquer dado pré-existente na tabela correspondente à fixture
  * Carregamento dos dados da fixture na tabela
- * Cópia do dado da fixture para uma variável para o caso de você querer acessá-lo diretamente
+ * Cópia do dado da fixture para uma variável, para o caso de você querer acessá-lo diretamente
 
 ==== Hashes Com Poderes Especiais ====
 
-As fixtures são basicamente objetos Hash. Como mencionado no tópico #3 acima, é possível acessar o objeto hahs diretamente porque ele é automaticamente setado como uma variável local do caso de teste. Por exemplo:
+As fixtures são basicamente objetos Hash. Como mencionado no tópico #3 acima, é possível acessar o objeto hash diretamente porque ele é automaticamente setado como uma variável local do caso de teste. Por exemplo:
 
 [source, ruby]
 --------------------------------------------------------------
@@ -141,9 +141,9 @@ david = users(:david).find
 email(david.girlfriend.email, david.location_tonight)
 --------------------------------------------------------------
 
-== Teste Unitários para os seus Models ==
+== Testes Unitários para os seus Models ==
 
-Em Rails, testes unitários é o que você escreve para testar os seus models.
+Em Rails, você testa os seus models escrevendo testes unitários.
 
 Para este guia, nós vamos usar o recurso _scaffolding_ do Rails. Ele vai gerar o model, uma migration, controller e views para o novo recurso numa única operação. Ele também vai gerar uma suíte de testes completa seguindo as melhores práticas do Rails. Eu vou usar exemplos deste código gerado e vou complementando-o com exemplos adicionais quando necessário.
 
@@ -160,15 +160,14 @@ create  test/fixtures/posts.yml
 ...
 -------------------------------------------------------
 
-The default test stub in +test/unit/post_test.rb+ looks like this:
-O teste stub padrão em +test/unit/post_test.rb+ é algo do tipo:
+O teste stub padrão em +test/unit/post_test.rb+ se parece com isso:
 
 [source,ruby]
 --------------------------------------------------
 require 'test_helper'
 
 class PostTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
+  # Troque isso pelo seu teste real
   def test_truth
     assert true
   end
@@ -182,7 +181,7 @@ Uma análise de cada linha deste arquivo vai te orientar em relação ao código
 require 'test_helper'
 --------------------------------------------------
 
-O arquivo `test_helper.rb` especifica a configuração padrão para rodar nossos testes. Isto é incluído em todos os testes, então todos os métodos existentes neste arquivo estão disponíveis para todos os seus testes.
+O arquivo `test_helper.rb` especifica a configuração padrão para rodar nossos testes. Ele é incluído em todos os testes, então todos os métodos existentes neste arquivo estão disponíveis para todos os seus testes.
 
 [source,ruby]
 --------------------------------------------------
@@ -203,7 +202,7 @@ Qualquer método definido em um test case que começa com +test+ (case sensitive
 assert true
 --------------------------------------------------
 
-Esta linha de código é chamada de _assertion_. Uma assertion é uma linha de código que avalia um objeto (ou uma expressão) e espera alguns resultados. Por exemplo, uma assertion pode validar coisas do tipo:
+Esta linha de código é chamada de _assertion_. Uma assertion (ou asserção em português) é uma linha de código que avalia um objeto (ou uma expressão) e espera alguns resultados. Por exemplo, uma assertion pode validar coisas do tipo:
 
 * este valor é = a outro valor?  
 * este objeto é nulo?  
