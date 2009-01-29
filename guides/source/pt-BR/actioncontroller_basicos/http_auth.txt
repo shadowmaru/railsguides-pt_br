@@ -1,6 +1,6 @@
-== HTTP Basic Authentication ==
+== Autenticação Básica HTTP ==
 
-Rails comes with built-in HTTP Basic authentication. This is an authentication scheme that is supported by the majority of browsers and other HTTP clients. As an example, consider an administration section which will only be available by entering a username and a password into the browser's HTTP Basic dialog window. Using the built-in authentication is quite easy and only requires you to use one method, `authenticate_or_request_with_http_basic`.
+O Rails vem com a funcionalidade de autenticação básica HTTP. Este é um esquema de autenticação suportado pela maioria dos navegadores e outros clientes HTTP. Como exemplo, considere uma seção administrativa que só será acessível entrando com um nome de usuário e uma senha na janela de autenticação básica HTTP do navegador. Utiizando a funcionalidade de autenticação isto se torna fácil e só requer que você utilize um método, `authenticate_or_request_with_http_basic`.
 
 [source, ruby]
 -------------------------------------
@@ -21,4 +21,4 @@ private
 end
 -------------------------------------
 
-With this in place, you can create namespaced controllers that inherit from AdminController. The before filter will thus be run for all actions in those controllers, protecting them with HTTP Basic authentication.
+Com isto feito, você pode criar controllers nomeados que herdam de AdminController. O before_filter será então executado para todas as actions nos controllers filhos, protegendo-as com a autenticação básica HTTP.
