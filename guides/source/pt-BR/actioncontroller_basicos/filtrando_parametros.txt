@@ -1,0 +1,14 @@
+== Filtrando Parâmetros ==
+
+O Rails mantém um arquivo de log para cada ambiente (desenvolvimento, teste e produção) na pasta "log". Eles são extremamente úteis para quando você estiver depurando a sua aplicação, mas em uma aplicação real você pode não querer que cada porção de informação seja armazenada no arquivo de log. O método `filter_parameter_logging` pode ser utilizado para filtrar informações sensíveis de seu log. Ele funciona substituindo certos valores no hash `params` por "[FILTERED]" enquanto eles são escritos no log. Como exemplo, vejamos como filtrar todos os parâmetros com chaves que incluam "password":
+
+[source, ruby]
+-------------------------
+class ApplicationController < ActionController::Base
+
+  filter_parameter_logging :password
+
+end
+-------------------------
+
+O método funciona recursivamente em todos os níveis do hash de parâmetros e possui um segundo parâmetro opcional que é utilizado como a string de substituição caso esteja presente. Ele também pode receber um bloco que recebe cada chave existente e substitui aquelas que o bloco retornar true.
