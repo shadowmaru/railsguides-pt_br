@@ -21,5 +21,5 @@ Também escreve no http://www.adolfosousa.com.br/blog[seu blog].
 .Fabio Kreusch
 [[fabiokr]]]
 ***********************************************************
-Fabio Kreusch é estudante do curso de Sistemas de Informação na Universidade Federal de Santa Catarina, e trabalha com desenvolvimento web. Desenvolveu sistemas com Java, e atualmente dedica-se ao aprendizado e utilização prática de conceitos e ferramentas de desenvolvimento ágil, incluindo o framework Ruby on Rails.
+Fabio Kreusch é estudante do curso de Sistemas de Informação na Universidade Federal de Santa Catarina, e trabalha com desenvolvimento web. Desenvolveu sistemas com Java, e atualmente dedica-se ao aprendizado e utilização prática de conceitos e ferramentas de desenvolvimento ágil, incluindo o framework Ruby on Rails. Escreve em seu blog http://fabio.kreusch.com.br/.
 ***********************************************************
