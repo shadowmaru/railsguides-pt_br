@@ -336,7 +336,7 @@ raise if basename =!
 send_file filename, :disposition => 'inline'
 ----------------------------------------------------------------------------
 
-Outrea estratégia (adicional) é armazenar o nome dos arquivos no banco de dados e nomear os arquivos em disco a partir dos ids dos registros. Esta também é uma boa estratégia para evitar que seja executado qualquer código existente nos arquivos enviados. O plugin attachment_fu faz isso de forma similar.
+Outra estratégia (adicional) é armazenar o nome dos arquivos no banco de dados e nomear os arquivos em disco a partir dos ids dos registros. Esta também é uma boa estratégia para evitar que seja executado qualquer código existente nos arquivos enviados. O plugin attachment_fu faz isso de forma similar.
 
 == Segurança Administrativa e em Intranets
 
@@ -344,22 +344,23 @@ Outrea estratégia (adicional) é armazenar o nome dos arquivos no banco de dado
 
 Em 2007 foi criado o primeiro http://www.symantec.com/enterprise/security_response/weblog/2007/08/a_monster_trojan.html[Trojan sob medida] o qual roubou informações de uma Intranet, chamada "The Monster for employers" (Monster.com), uma aplicação web para recrutamento de profissionais. Trojans criados sob medida são muito raros, até o momento, e o risco é relativamente baixo, mas esta certamente é uma possibilidade e um exemplo de como a segurança da máquina cliente é importante também. Entretanto, a maior ameaça para aplicações administrativas e de Intranet são o XSS e o CSRF.
 
+*XSS* Se sua aplicação re-exibe input malicioso de usuários da extranet, a aplicação será vulnerável a XSS. Nomes de usuários, comentários, relatórios de spam, endereços de pedidos são apenas alguns exemplos comuns, onde pode existir XSS.
 
-*XSS*  If your application re-displays malicious user input from the extranet, the application will be vulnerable to XSS. User names, comments, spam reports, order addresses are just a few uncommon examples, where there can be XSS.
+Existindo pelo menos um único local na interface de administração ou na Intranet onde os dados adicionados pelos usuários não tenham sido devidamente sanitizados faz com que toda a aplicação fique vunerável. Exploits possíveis incluem roubar o cookie privilegiado de um administrador, injetar um iframe para roubar o password do administrador ou instalar software malicioso através de falhas de segurança no browser, de forma a tomar o controle do computador do administrador.
 
-Having one single place in the admin interface or Intranet where the input has not been sanitized, makes the entire application vulnerable. Possible exploits include stealing the privileged administrator's cookie, injecting an iframe to steal the administrator's password or installing malicious software through browser security holes to take over the administrator's computer.
+Leia a seção sobre Injeção para aprender medidas preventivas contra XSS. É [,#fffcdb]#recomendado utilizar o plugin SafeErb# também em Intranets ou interfaces administrativas.
 
-Refer to the Injection section for countermeasures against XSS. It is [,#fffcdb]#recommended to use the SafeErb plugin# also in an Intranet or administration interface.
+*CSRF*  Cross-Site Reference Forgery (CSRF) é um método de ataque bastante poderoso, o qual permite que o atacante faça tudo que um administrador ou usário da Intranet podem fazer. Como você já viu acima como o CSRF funciona, aqui estão alguns exemplos do que atacantes podem fazer na Intranet ou interface administrativas.
 
-*CSRF*  Cross-Site Reference Forgery (CSRF) is a giant attack method, it allows the attacker to do everything the administrator or Intranet user may do. As you have already seen above how CSRF works, here are a few examples of what attackers can do in the Intranet or admin interface.
+Um exemplo real é uma http://www.symantec.com/enterprise/security_response/weblog/2008/01/driveby_pharming_in_the_ wild.html[reconfiguração de roteador por CSRF]. Os atacantes enviam um e-mail malicioso, contendo CSRF, para usuários mexicanos. O e-mail afirma que existe um e-card aguardando por eles, mas também contém uma tag image que resulta em request HTTP Get para reconfigurar o roteador do usuário (o qual é um modelo popular no México). O request altera as configurações de DNS de forma que requests para um banco sediado no México sejam mapeados para o site do atacante. Todos que acessarem o site do banco através deste roteador verão o site falso do atacante e terão seus dados roubados.
 
-A real-world example is a http://www.symantec.com/enterprise/security_response/weblog/2008/01/driveby_pharming_in_the_ wild.html[router reconfiguration by CSRF]. The attackers sent a malicious e-mail, with CSRF in it, to Mexican users. The e-mail claimed there was an e-card waiting for them, but it also contained an image tag that resulted in a HTTP-GET request to reconfigure the user's router (which is a popular model in Mexico). The request changed the DNS-settings so that requests to a Mexico-based banking site would be mapped to the attacker's site. Everyone who accessed the banking site through that router saw the attacker's fake web site and had his credentials stolen.
+Outro exemplo altera o endereço de e-mail e o password do Goggle Adsense através de http://www.0x000000.com/index.php?i=213&bin=11010101[CSRF]. Caso a vítima se autentique no Google Adsense, a interface administrativa para campanhas de propaganda do Google, um atacante pode roubar seus dados.
 
-Another example changed Google Adsense's e-mail address and password by http://www.0x000000.com/index.php?i=213&bin=11010101[CSRF]. If the victim was logged into Google Adsense, the administration interface for Google advertisements campaigns, an attacker could change his credentials. 
+Outro ataque popular é fazer com que sua aplicação web, blog ou fórum espalhem XSS malicioso. Óbviamente o atacante precisa conhecer a estrutura de URL, mas a maioria das URLs do Rails são bastante simples ou são fáceis de entender, caso esta seja a interface admninistrativa de uma aplicação open-source. O atacante pode até mesmo tentar descobrir essa estrutura apenas incluindo tags IMG maliciosas que tentem cada combinação possível.
 
-Another popular attack is to spam your web application, your blog or forum to propagate malicious XSS. Of course, the attacker has to know the URL structure, but most Rails URLs are quite straightforward or they will be easy to find out, if it is an open-source application's admin interface. The attacker may even do 1,000 lucky guesses by just including malicious IMG-tags which try every possible combination.
+Para [,#fffcdb]#medidas preventivas contra CSRF em interfaces admninistrativas e aplicações de Intranet, leia a seção de CSRF#.
 
-For [,#fffcdb]#countermeasures against CSRF in administration interfaces and Intranet applications, refer to the countermeasures in the CSRF section#.
+== PAREI AQUI
 
 === Additional precautions
 
