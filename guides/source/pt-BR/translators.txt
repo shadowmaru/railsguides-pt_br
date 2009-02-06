@@ -23,3 +23,12 @@ Também escreve no http://www.adolfosousa.com.br/blog[seu blog].
 ***********************************************************
 Fabio Kreusch é estudante do curso de Sistemas de Informação na Universidade Federal de Santa Catarina, e trabalha com desenvolvimento web. Desenvolveu sistemas com Java, e atualmente dedica-se ao aprendizado e utilização prática de conceitos e ferramentas de desenvolvimento ágil, incluindo o framework Ruby on Rails. Escreve em seu blog http://fabio.kreusch.com.br/.
 ***********************************************************
+
+.Carlos Antonio da Silva
+[[carlosantoniodasilva]]]
+***********************************************************
+Carlos Antonio da Silva é formado em Sistemas de Informação e pós-graduado em Gerenciamento de Projetos,
+atualmente trabalha como desenvolvedor web utilizando Ruby on Rails e também dá suporte a aplicativos desenvolvidos na ferramente Delphi.
+Tem disponibilizado parte de seu tempo livre para estudos sobre a linguagem Ruby, testes, metodologias ágeis e GTD.
+http://carlosantoniodasilva.wordpress.com[Seu blog]
+***********************************************************
