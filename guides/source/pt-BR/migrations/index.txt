@@ -1,16 +1,16 @@
-Migrações
+Migrations
 ==========
 
-Migrações é a forma conveniente de você alterar seu banco de dados de uma maneira organizada e estruturada. Você poderia editar fragmentos de SQL na mão mas você teria a responsabilidade de comunicar aos outros desenvolvedores que eles precisam ir lá e executá-los. Você também necessita acompanhar as mudanças na máquina de produção na próxima vez que você for fazer deploy. O Active Record marca as migrações que já foram executadas e tudo que você precisa fazer é atualizar seu código e rodar `rake db:migrate`. O Active Record irá trabalhar para que suas migrações sejam executadas.
+Migrations é a forma conveniente de você alterar seu banco de dados de uma maneira organizada e estruturada. Você poderia editar fragmentos de SQL na mão mas você teria a responsabilidade de comunicar aos outros desenvolvedores que eles precisam ir lá e executá-los. Você também necessitaria acompanhar as mudanças na máquina de produção na próxima vez que você fosse fazer um deploy. O Active Record marca as migrations que já foram executadas, então tudo que você precisa fazer é atualizar seu código e rodar `rake db:migrate`. O Active Record saberá quais migrations devem ser rodadas. Ele também irá atualizar o seu arquivo db/schema.rb para refletir a estrutura da sua base de dados.
 
-Migrações é a forma de você descrever essas transformações usando Ruby. A grande coisa disso tudo (como muito das funcionalidades do Active Record) é a independência do banco de dados: você não precisa se preocupar com mais nenhuma sintaxe para CREATE TABLE, ou que você se preocupe sobre variações de SELECT * (você pode abstrair os requisitos específicos de banco de dados SQL). Por exemplo, você poderia usar SQLite 3 no desenvolvimento, mas MySQL em produção.
+Migrations também permitem que você descreva estas transformações usando Ruby. A grande sacada disto tudo (como a maioria das funcionalidades do Active Record) é a independência do banco de dados: você não precisa se preocupar com mais nenhuma sintaxe para CREATE TABLE, ou sobre variações de SELECT * (você pode abstrair os requisitos específicos de banco de dados SQL). Por exemplo, você poderia usar SQLite 3 no desenvolvimento, mas MySQL em produção.
 
-Você aprenderá tudo sobre migrações incluindo:
+Você aprenderá tudo sobre migrations incluindo:
 
-* Os geradores que você pode usar para criá-los
+* Os geradores que você pode usar para criá-las
 * Os métodos que o Active Record provê para manipular seu banco de dados
-* As tarefas Rake que você pode manipular
-* Como eles são relativo ao `schema.rb`
+* As tarefas Rake que as manipulam
+* Como elas se relacionam com o `schema.rb`
 
 include::anatomia_de_uma_migracao.txt[]
 include::criando_uma_migracao.txt[]

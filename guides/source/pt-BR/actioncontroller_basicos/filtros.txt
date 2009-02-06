@@ -1,0 +1,119 @@
+== Filtros ==
+
+Filtros são métodos que são executados antes, depois ou "durante" uma action de um controller. Por exemplo, um filtro pode verificar se o usuário logado tem permissão para acessar um determinado controller ou action. Filtros são herdados, então se você criar um filtro em ApplicationController, ele será executado em cada controller da sua aplicação. Um filtro simples e comum é um que requer um usuário logado para executar uma action. Você pode definir o método filtro desta forma:
+
+[source, ruby]
+---------------------------------
+class ApplicationController < ActionController::Base
+
+private
+
+  def require_login
+    unless logged_in?
+      flash[:error] = "Você deve estar logado para acessar esta seção"
+      redirect_to new_login_url # Previne que a ação corrente seja executada
+    end
+  end
+
+  # O método logged_in? simplesmente retorna true se o usuário estiver logado
+  # e false em caso contrário. Ele faz isto "booleanizando" o método current_user
+  # que nós criamos anteriormente utilizando um operador ! duplo. Saiba que isto
+  # não é comum em Ruby e é desencorajado a não ser que você realmente queira converter
+  # algo em true ou false.
+  def logged_in?
+    !!current_user
+  end
+
+end
+---------------------------------
+
+O método simplesmente armazena uma mensagem de erro no flash e redireciona para o formulário de login se o usuário não estiver logado. Se um filtro 'before' (um filtro que é executado antes da ação) renderizar ou redirecionar, a action não será executada. Se houverem filtro adicionais a serem executados após a renderização ou redirecionamento, eles também serão cancelados. Para utilizar este filtro em um controller, utilize o método `before_filter`:
+
+[source, ruby]
+---------------------------------
+class ApplicationController < ActionController::Base
+
+  before_filter :require_login
+
+end
+---------------------------------
+
+Neste exemplo, o filtro é adicionado ao ApplicationController e consequentemente a todos os controllers da aplicação. Isto fará com que tudo na aplicação exija que o usuário esteja logado para utilizá-lo. Por razões óbvias (o usuário nem conseguiria logar!), nem todos os controllers ou actions devem exijir isto. Você pode evitar que este filtro seja executado antes de algumas actions com `skip_before_filter` :
+
+[source, ruby]
+---------------------------------
+class LoginsController < Application
+
+  skip_before_filter :require_login, :only => [:new, :create]
+
+end
+---------------------------------
+
+Agora as actions "new" e "create" do +LoginsController+ irão funcionar como antes, sem exigir que o usuário esteja logado. A opção `:only` é utilizada para pular a execução do filtro para determinadas actions, e também existe a opção `:except`,  que funciona da forma contrária. Estas opções também podem ser utilizadas quando estiver adicionando filtros, assim você pode criar um filtro que só é executado para algumas actions.
+
+=== Filtros Posteriores (After Filters) e Filtros Durante (Around Filters) ===
+
+Além do filtro anterior (before filter), você também pode executar filtros depois de uma action ou até mesmo um filtro que é executado antes e depois de uma action. O filtro posterior é similar ao filtro anterior, mas, adicionalmente, como a action já foi executada, ele também provê acesso aos dados de resposta que estão para serem enviados ao cliente. Obviamente, filtros posteriores não podem evitar que actions sejam executadas. Filtros durante ficam responsáveis por executar uma action, e eles podem escolher não fazê-lo, que é a forma de o filtro durante evitar que uma action seja executada.
+
+[source, ruby]
+---------------------------------
+# Exemplo pego da documentação de filtros da API do Rails:
+# http://api.rubyonrails.org/classes/ActionController/Filters/ClassMethods.html
+class ApplicationController < Application
+
+  around_filter :catch_exceptions
+
+private
+
+  def catch_exceptions
+    yield
+  rescue => exception
+    logger.debug "Exceção capturada! #{exception}"
+    raise
+  end
+
+end
+---------------------------------
+
+=== Outras Formas de Utilizar Filtros ===
+
+Enquanto a forma mais comum de utilização dos filtros é criar métodos privados e utilizar os *_filter (before, after, etc), existem outras duas formas de fazer esta mesma coisa.
+
+A primeira é utilizar um bloco diretamente com os métodos *_filter. O bloco recebe um controller como argumento, e o filtro `require_login` mostrado acima poderia ser reescrito da seguinte forma utilizando um bloco:
+
+[source, ruby]
+---------------------------------
+class ApplicationController < ActionController::Base
+
+  before_filter { |controller| redirect_to new_login_url unless controller.send(:logged_in?) }
+
+end
+---------------------------------
+
+Perceba que o filtro neste caso utiliza o método `send` já que o método `logged_in?` é privado e o filtro não é executado no escopo do controller. Esta não é a forma mais recomendada de implementar este filtro, mas para casos mais simples ela pode ser útil.
+
+A segunda forma é utilizar uma classe (na verdade, qualquer objeto que responda aos métodos corretamente servirão) para lidar com o filtro. Isto é útil para casos mais complexos que não podem ser implementados de forma legível e reutilizável através dos outros dois métodos. Como exemplo, você poderia reescrever o filtro de login utilizando uma classe:
+
+[source, ruby]
+---------------------------------
+class ApplicationController < ActionController::Base
+
+  before_filter LoginFilter
+
+end
+
+class LoginFilter
+
+  def self.filter(controller)
+    unless logged_in?
+      controller.flash[:error] = "Você deve estar logado para acessar esta seção"
+      controller.redirect_to controller.new_login_url
+    end
+  end
+
+end
+---------------------------------
+
+Lembre-se, este não é o exemplo ideal para este filtro, porque ele não é executado no escopo do controller mas recebe o controller como um argumento. A classe filtro tem um método de classe chamado `filter` que é executado antes ou depois da action, dependendo de ele ser um filtro anterior ou posterior. Classes utilizadas como filtros durante também podem utilizar este mesmo método `filter`, que será executado da mesma forma. O método deve realizar um `yield` para executar a ação. Alternativamente, ela pode ter um método `before` e um `after` para serem executados antes e depois da action.
+
+A documentação da API do Rails tem link:http://api.rubyonrails.org/classes/ActionController/Filters/ClassMethods.html[mais informações sobre filtros].

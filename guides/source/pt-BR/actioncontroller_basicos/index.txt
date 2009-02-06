@@ -21,19 +21,19 @@ include::sessao.txt[]
 
 include::cookies.txt[]
 
-include::filters.txt[]
+include::filtros.txt[]
 
-include::verification.txt[]
+include::verificacoes.txt[]
 
 include::csrf.txt[]
 
-include::request_response_objects.txt[]
+include::objetos_request_response.txt[]
 
 include::http_auth.txt[]
 
 include::streaming.txt[]
 
-include::parameter_filtering.txt[]
+include::filtrando_parametros.txt[]
 
 include::rescue.txt[]
 

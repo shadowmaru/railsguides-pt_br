@@ -1,16 +1,16 @@
-== Streaming and File Downloads ==
+== Streaming e Download de Arquivos ==
 
-Sometimes you may want to send a file to the user instead of rendering an HTML page. All controllers in Rails have the `send_data` and the `send_file` methods, that will both stream data to the client. `send_file` is a convenience method which lets you provide the name of a file on the disk and it will stream the contents of that file for you.
+Algumas vezes você pode querer enviar um arquivo para o usuário ao invés de renderizar uma página HTML. Todos os controllers no Rails possuem os métodos `send_data` e `send_file`, que podem ser utilizados para enviar dados para o cliente. `send_file` é um método conveniente que permite a você dizer o nome de um arquivo no disco, e ele se encarregará de enviar o conteúdo do arquivo para você.
 
-To stream data to the client, use `send_data`:
+Para enviar dados para o cliente, utilize `send_data`:
 
 [source, ruby]
 ----------------------------
 require "prawn"
 class ClientsController < ApplicationController
 
-  # Generate a PDF document with information on the client and return it.
-  # The user will get the PDF as a file download.
+  # Gera um documento PDF com informações do cliente e o retorna.
+  # O usuário receberá o PDF como um arquivo para download.
   def download_pdf
     client = Client.find(params[:id])
     send_data(generate_pdf, :filename => "#{client.name}.pdf", :type => "application/pdf")
@@ -29,17 +29,17 @@ private
 end
 ----------------------------
 
-The `download_pdf` action in the example above will call a private method which actually generates the file (a PDF document) and returns it as a string. This string will then be streamed to the client as a file download and a filename will be suggested to the user. Sometimes when streaming files to the user, you may not want them to download the file. Take images, for example, which can be embedded into HTML pages. To tell the browser a file is not meant to be downloaded, you can set the `:disposition` option to "inline". The opposite and default value for this option is "attachment".
+A action `download_pdf` no exemplo acima invocará um método privado que gera o arquivo (um documento PDF) e retorna-o como uma string. Esta string será então enviada para o cliente como um arquivo para ser baixado e um nome para o arquivo será sugerido ao usuário. Algumas vezes quando enviado arquivos para o usuário, você pode não querer que ele baixe o arquivo. Imagens, por exemplo, que podem ser inseridas em páginas HTML. Para dizer ao navegador que um arquivo não é para ser baixado, você pode atribuir à opção `:disposition` o valor "inline". O oposto e disto e que é o valor padrão para esta opção é "attachment".
 
-=== Sending Files ===
+=== Enviando Arquivos ===
 
-If you want to send a file that already exists on disk, use the `send_file` method. This is usually not recommended, but can be useful if you want to perform some authentication before letting the user download the file.
+Se você quiser enviar um arquivo já existente no disco, utilize o método `send_file`. Isto não é recomendado, mas pode ser útil caso você queira fazer alguma autenticação antes de permitir que o usuário baixe o arquivo.
 
 [source, ruby]
 ----------------------------
 class ClientsController < ApplicationController
 
-  # Stream a file that has already been generated and stored on disk
+  # Envia um arquivo já existente em disco
   def download_pdf
     client = Client.find(params[:id])
     send_data("#{RAILS_ROOT}/files/clients/#{client.id}.pdf", :filename => "#{client.name}.pdf", :type => "application/pdf")
@@ -48,21 +48,21 @@ class ClientsController < ApplicationController
 end
 ----------------------------
 
-This will read and stream the file 4Kb at the time, avoiding loading the entire file into memory at once. You can turn off streaming with the `:stream` option or adjust the block size with the `:buffer_size` option.
+Isto irá ler e enviar o arquivo 4Kb por vez, evitando carregar o arquivo inteiro na memória de uma só vez. Você pode desligar o streaming com a opção `:stream` ou ajustas o tamanho dos blocos com a opção `:buffer_size`.
 
-WARNING: Be careful when using (or just don't use) "outside" data (params, cookies, etc) to locate the file on disk, as this is a security risk that might allow someone to gain access to files they are not meant to see.
+WARNING: Tome cuidado quando utilizar (ou simplesmente não utilize) dados "de fora" (parâmetros, cookies, etc) para localizar um arquivo em disco, já que isto é um risco de segurança que pode permitir a alguém obter acesso a arquivos que não deveria.
 
-TIP: It is not recommended that you stream static files through Rails if you can instead keep them in a public folder on your web server. It is much more efficient to let the user download the file directly using Apache or another web server, keeping the request from unnecessarily going through the whole Rails stack.
+TIP: Não é recomendado fazer stream de arquivos estáticos através do Rails se você pode simplesmente mantê-los em uma pasta pública no seu servidor web. É muito mais eficiente deixar o usuário baixar o arquivo utilizando diretamente o Apache ou outro servidor web, não precisando fazer com que a requisição passe por toda a pilha de controle do Rails.
 
-=== RESTful Downloads ===
+=== Downloads RESTful ===
 
-While `send_data` works just fine, if you are creating a RESTful application having separate actions for file downloads is usually not necessary. In REST terminology, the PDF file from the example above can be considered just another representation of the client resource. Rails provides an easy and quite sleek way of doing "RESTful downloads". Here's how you can rewrite the example so that the PDF download is a part of the `show` action, without any streaming:
+Apesar de o método `send_data` funcionar bem, se você estiver criando uma aplicação RESTful, ter actions separadas para baixar arquivos geralmente não é necessário. Na terminologia REST, o arquivo PDF do exemplo acima pode ser considerado simplesmente outra representação de um recurso para o cliente. O Rails provê uma forma fácil de permitir "downloads RESTful". Aqui está como você pode reescrever o exemplo para que o download do PDF seja parte da action `show`, sem qualquer streaming:
 
 [source, ruby]
 ----------------------------
 class ClientsController < ApplicationController
 
-  # The user can request to receive this resource as HTML or PDF.
+  # O usuário pode solicitar este recurso como um HTML ou PDF.
   def show
     @client = Client.find(params[:id])
 
@@ -75,16 +75,16 @@ class ClientsController < ApplicationController
 end
 ----------------------------
 
-In order for this example to work, you have to add the PDF MIME type to Rails. This can be done by adding the following line to the file `config/initializers/mime_types.rb`:
+Para este exemplo funcionar, você deve adicionar o MIME type PDF ao Rails. Isto pode ser feito adicionar a seguinte linha ao arquivo `config/initializers/mime_types.rb`:
 
 [source, ruby]
 ----------------------------
 Mime::Type.register "application/pdf", :pdf
 ----------------------------
 
-NOTE: Configuration files are not reloaded on each request, so you have to restart the server in order for their changes to take effect.
+NOTE: Arquivos de configuração não são recarregados a cada requisição, então você deverá reiniciar o servidor para que as alterações sejam efetivadas.
 
-Now the user can request to get a PDF version of a client just by adding ".pdf" to the URL:
+Agora o usuário pode requisitar uma versão PDF de um cliente simplesmente adicionando ".pdf" a URL:
 
 ----------------------------
 GET /clients/1.pdf

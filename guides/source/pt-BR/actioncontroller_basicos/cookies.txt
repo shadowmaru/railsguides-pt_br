@@ -1,25 +1,25 @@
 == Cookies ==
 
-Your application can store small amounts of data on the client - called cookies - that will be persisted across requests and even sessions. Rails provides easy access to cookies via the `cookies` method, which - much like the `session` - works like a hash:
+A sua aplicação pode armazenar pequenas quantidades de dados no cliente - através dos chamados cookies - que persistirá entre requisições e até mesmo entre sessões. O Rails provê fácil acesso a cookies através do método `cookies`, que - assim como o método `session` - funciona como um hash:
 
 [source, ruby]
 -----------------------------------------
 class CommentsController < ApplicationController
 
   def new
-    #Auto-fill the commenter's name if it has been stored in a cookie
+    #Recupera automaticamente o nome do comentador se tiver sido armazenado em um cookie
     @comment = Comment.new(:name => cookies[:commenter_name])
   end
 
   def create
     @comment = Comment.new(params[:comment])
     if @comment.save
-      flash[:notice] = "Thanks for your comment!"
+      flash[:notice] = "Obrigado pelo seu comentário!"
       if params[:remember_name]
-        # Remember the commenter's name
+        # Memorizar o nome do comentador
         cookies[:commenter_name] = @comment.name
       else
-        # Don't remember, and delete the name if it has been remembered before
+        # Não memorizar, e apagar o nome se tiver sido memorizado antes
         cookies.delete(:commenter_name)
       end
       redirect_to @comment.article
@@ -31,4 +31,4 @@ class CommentsController < ApplicationController
 end
 -----------------------------------------
 
-Note that while for session values, you set the key to `nil`, to delete a cookie value, you should use `cookies.delete(:key)`.
+Perceba que, enquanto para valores da sessão você atribui `nil` à chave para removê-la, para apagar o valor de um cookie você deve utilizar `cookies.delete(:key)`.

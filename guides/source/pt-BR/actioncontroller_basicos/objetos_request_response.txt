@@ -1,0 +1,43 @@
+== Os objetos +request+ e +response+ ==
+
+Em cada controller existem dois métodos de acesso que apontam para os objetos request (requisição) e response (resposta) associados com o ciclo da requisição em andamento. O método `request` contém uma instância de AbstractRequest e o método `response` retorna um objeto +response+ representando o que será enviado de volta para o cliente.
+
+=== O Objeto +request+ ===
+
+O objeto request contém várias informações úteis sobre a requisição vinda do cliente. Para ver uma lista completa com os métodos disponíveis, verifique a link:http://api.rubyonrails.org/classes/ActionController/AbstractRequest.html[documentação da API]. Dentre as propriedades acessíveis estão:
+
+ * host - O hostname utilizado nesta requisição.
+ * domain - O hostname sem o primeiro segmento (geralmente "www").
+ * format - O tipo de conteúdo solicitado pelo cliente.
+ * method - O método HTTP utilizado na requisição.
+ * get?, post?, put?, delete?, head? - Retorna true se o método HTTP é get/post/put/delete/head.
+ * headers - Retorna um hash contendo os cabeçalhos associados a requisição.
+ * port - O número da porta (inteiro) utilizado na requisição.
+ * protocol - O protocolo utilizado na requisição.
+ * query_string - A string de consulta que faz parte da URL - tudo depois de "?".
+ * remote_ip - O endereço IP do cliente.
+ * url - A URL inteira utilizada na requisição.
+
+==== +path_parameters+, +query_parameters+ e +request_parameters+ ====
+
+O Rails armazena todos os parâmetros enviados com a requisição no hash `params`, seja eles tendo sido enviados como parte da string de consulta na URL ou no corpo de um post. O objeto de requisição tem três métodos de acesso que lhe dão acesso a estes parâmetros dependendo da forma como eles vem. O hash `query_parameters` contém os parâmetros que foram enviados como parte da string de consulta na URL, enquanto o hash `request_parameters` contém os parâmetros enviados como parte do corpo de um post. O hash `path_parameters` contém parâmetros que foram reconhecidos pelo roteamento como parte do caminho levando ao controller e a action.
+
+=== O Objeto +response+ ===
+
+O objeto response geralmente não é utilizado diretamente. Ele é construído durante a execução de uma action e renderização dos dados que serão enviados para o usuário, mas algumas vezes - como num filtro posterior - pode ser útil acessar o objeto de resposta diretamente. Alguns dos métodos de acesso também possuem setters, permitindo que você altere seus valores.
+
+ * body - A string de dados que será enviada de volta para o cliente. Geralmente contém código HTML.
+ * status - O código de status HTTP para a resposta, como 200 para uma requisição com sucesso ou 404 para arquivo não encontrado.
+ * location - A URL que o cliente está sendo redirecionado, se houver redirecionamento.
+ * content_type - O tipo de conteúdo da resposta.
+ * charset - O conjunto de caracteres sendo utilizado na resposta. O padrão é "utf8".
+ * headers - Os cabeçalhos sendo utilizados na resposta.
+
+==== Atribuindo Cabeçalhos Personalizados ====
+
+Se você quiser atribuir cabeçalhos personalizados para um resposta, então `response.headers` será seu amigo. O atributo de cabeçalhos é um hash que mapeia nomes de cabeçalhos para seus valores, e o Rails irá atribuir alguns deles - como "Content-Type" - automaticamente. Se você quiser adicionar ou alterar um cabeçalho, simplesmente adicione-o ao `headers` com seu nome e valor:
+
+[source, ruby]
+-------------------------------------
+response.headers["Content-Type"] = "application/pdf"
+-------------------------------------
